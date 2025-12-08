@@ -8,21 +8,24 @@ import {
   Chip,
 } from "@material-tailwind/react";
 
-const KpiCard = ({ title, value, price, color, bg }) => {
+const KpiCard = ({ title, value, price, color, bg, img }) => {
   return (
     <Card className="shadow-sm border border-gray-200 !rounded-lg">
       <CardBody className="p-4">
-        <div className="flex justify-between items-center">
-          <Typography className="font-medium !text-xs text-gray-600">
+        <div className="flex items-center gap-2">
+          {img}
+          <Typography className="font-medium !text-xs text-black">
             {title}
           </Typography>
-          <Chip
-            className={"px-2 py-1"}
-            value={value}
-            style={{ color, backgroundColor: bg }}
-          />
+          {value && (
+            <Chip
+              className={"px-2 py-1"}
+              value={value}
+              style={{ color, backgroundColor: bg }}
+            />
+          )}
         </div>
-        <Typography color="blue-gray" className="mt-1 font-bold text-2xl">
+        <Typography className="mt-1 font-bold text-2xl text-black">
           {price}
         </Typography>
       </CardBody>
@@ -33,39 +36,58 @@ const KpiCard = ({ title, value, price, color, bg }) => {
 const data = [
   {
     title: "Cash In Hand",
-    value: "+14%",
+    // value: "+14%",
     price: "₹50,846.90",
     color: "#108F6F",
     bg: "#EAF8F4",
+    img: <img className="h-5 w-5" src="/nav-icons/cash.svg" />,
   },
   {
     title: "Bank Balance",
-    value: "+12%",
+    // value: "+12%",
     price: "₹10,342",
     color: "#108F6F",
     bg: "#EAF8F4",
+    img: <img className="h-5 w-5" src="/nav-icons/bank_balance.svg" />,
   },
   {
     title: "Receivables",
-    value: "-10%",
+    // value: "-10%",
     price: "₹19,720",
     color: "#E53935",
     bg: "#F8DCDC",
+    img: <img className="h-5 w-5" src="/nav-icons/receipt.svg" />,
   },
   {
     title: "Payables",
-    value: "+1.4%",
+    // value: "+1.4%",
     price: "₹20,000",
     color: "#108F6F",
     bg: "#EAF8F4",
+    img: <img className="h-5 w-5" src="/nav-icons/payment.svg" />,
   },
   {
     title: "Loans & ODs",
-    value: "-10%",
+    // value: "-10%",
     price: "₹19,720",
     color: "#E53935",
     bg: "#F8DCDC",
+    img: <img className="h-5 w-5" src="/nav-icons/loans.svg" />,
   },
+  // {
+  //   title: "Payments",
+  //   // value: "-10%",
+  //   price: "₹19,720",
+  //   // color: "#E53935",
+  //   // bg: "#F8DCDC",
+  // },
+  // {
+  //   title: "Receipts",
+  //   // value: "-10%",
+  //   price: "₹19,720",
+  //   // color: "#E53935",
+  //   // bg: "#F8DCDC",
+  // },
 ];
 
 const KPIStrip = () => {

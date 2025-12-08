@@ -326,7 +326,7 @@ const SalesInfo = () => {
         </div>
       </div> */}
       <Card className="col-span-6 shadow-sm border border-gray-200 !rounded-lg flex my-5">
-        <div className="grid lg:grid-cols-2 grid-cols-1 items-center m-7 mb-2">
+        <div className="flex flex-wrap items-center m-7 mb-2 justify-between gap-2">
           <div className="flex items-center gap-2">
             <Typography
               variant="small"
@@ -402,7 +402,7 @@ const SalesInfo = () => {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex items-center gap-2 lg:!ml-auto">
+          <div className="flex items-center gap-2">
             <div className="flex items-center gap-2">
               <Select
                 className="bg-white-600"
@@ -472,7 +472,7 @@ const SalesInfo = () => {
             </TabsHeader>
             <TabsBody>
               <TabPanel value="sales_register">
-                <table className="w-full min-w-max table-auto">
+                <table className="w-full table-auto">
                   <thead>
                     <tr>
                       {SALES_TABLE_HEAD.map(({ head, customeStyle }) => (
@@ -534,8 +534,8 @@ const SalesInfo = () => {
                                 {amount}
                               </Typography>
                             </td>
-                            <td className={`${classes} flex justify-center`}>
-                              <div className="w-max">
+                            <td className="border-b border-gray-300">
+                              <div className="w-full flex justify-center">
                                 <Chip
                                   variant="ghost"
                                   value={status}

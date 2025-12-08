@@ -11,52 +11,52 @@ const TABLE_ROW = [
   {
     number: "#MS-415646",
     customer: "Viking Burrito",
-    amount: "$14,000",
+    amount: "₹14,000",
   },
   {
     number: "#RV-126749",
     customer: "Stone Tech Zone",
-    amount: "$3,000",
+    amount: "₹3,000",
   },
   {
     number: "#QW-103578",
     customer: "Fiber Notion",
-    amount: "$20,000",
+    amount: "₹20,000",
   },
   {
     number: "#MS-415688",
     customer: "Blue Bird",
-    amount: "$5,000",
+    amount: "₹5,000",
   },
   {
     number: "#RV-126300",
     customer: "Code Space",
-    amount: "$2,000",
+    amount: "₹2,000",
   },
   {
     number: "#MS-415646",
     customer: "Viking Burrito",
-    amount: "$14,000",
+    amount: "₹14,000",
   },
   {
     number: "#RV-126749",
     customer: "Stone Tech Zone",
-    amount: "$3,000",
+    amount: "₹3,000",
   },
   {
     number: "#QW-103578",
     customer: "Fiber Notion",
-    amount: "$20,000",
+    amount: "₹20,000",
   },
   {
     number: "#MS-415688",
     customer: "Blue Bird",
-    amount: "$5,000",
+    amount: "₹5,000",
   },
   {
     number: "#RV-126300",
     customer: "Code Space",
-    amount: "$2,000",
+    amount: "₹2,000",
   },
 ];
 

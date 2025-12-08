@@ -19,29 +19,13 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { BellIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
-
-// import {
-//   UserCircleIcon,
-//   Cog6ToothIcon,
-//   InboxArrowDownIcon,
-//   PowerIcon,
-// } from "@heroicons/react/24/outline";
-
 import {
-  Cog6ToothIcon,
-  //   BellIcon,
-  SparklesIcon,
-  BuildingLibraryIcon,
-  ChatBubbleBottomCenterTextIcon,
-  UserIcon,
-  GlobeAltIcon,
-  CurrencyDollarIcon,
-  ClockIcon,
-  ExclamationTriangleIcon,
-  //   ArrowRightOnRectangleIcon,
-  DocumentTextIcon,
-} from "@heroicons/react/24/outline";
+  BellIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/24/solid";
+
+import CreateInvoiceDrawer from "./Drawers/Sales/CreateInvoiceDrawer";
 
 const Notification = () => {
   return (
@@ -66,7 +50,7 @@ const Notification = () => {
           </svg>
         </IconButton>
       </MenuHandler>
-      <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-20">
+      <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-30">
         <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
           <Typography variant="small" color="gray" className="font-semibold">
             All
@@ -94,20 +78,15 @@ const Company = () => {
 
   return (
     <Select
-      label="Select Comapny"
+      label="Select Company"
       value={value}
       onChange={(val) => setValue(val)}
-      className="border-black !focus:border-green-500"
       containerProps={{
         style: {
           minWidth: "200px",
         },
       }}
       color="green"
-      labelProps={{
-        className:
-          "bg-white h-[11px] text-[11px] select-none before:border-t-black after:border-t-black before:border-l-black after:border-l-black before:border-r-black after:border-r-black text-black",
-      }}
     >
       {companies.map((company) => (
         <Option
@@ -135,7 +114,7 @@ const FYear = () => {
       // className="w-[150px]"
       containerProps={{
         style: {
-          minWidth: "150px",
+          minWidth: "130px",
         },
       }}
       color="green"
@@ -153,46 +132,6 @@ const FYear = () => {
   );
 };
 
-const NavListMenu = ({ list }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedvalue, setSelectedValue] = useState(list[0]);
-
-  return (
-    <Menu open={isMenuOpen} handler={setIsMenuOpen}>
-      <MenuHandler>
-        <Button
-          size="sm"
-          variant="outlined"
-          className="hidden items-center justify-between gap-2 lg:flex cursor-pointer border-[#D5DAE1]  h-[40px] rounded-lg w-[160px]"
-        >
-          {selectedvalue?.label}
-          <ChevronDownIcon
-            strokeWidth={2.5}
-            className={`h-3.5 w-3.5 transition-transform ${
-              isMenuOpen ? "rotate-180" : ""
-            }`}
-          />
-        </Button>
-      </MenuHandler>
-      <MenuList className="hidden max-h-72 whitespace-nowrap lg:block min-w-[150px] max-w-[150px] border-gray-200 z-10">
-        {list.map((item) => (
-          <MenuItem
-            key={item.label}
-            className="p-2 overflow-auto"
-            onClick={(e) => {
-              const newValue = e.target.innerText;
-              const value = list.find((i) => i.label === newValue);
-              setSelectedValue(value);
-            }}
-          >
-            {item.label}
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
-  );
-};
-
 const Profile = ({ toggleDrawer }) => {
   // const [open, setOpen] = useState(false);
 
@@ -200,14 +139,15 @@ const Profile = ({ toggleDrawer }) => {
     <>
       <Menu>
         <MenuHandler>
-          <p className="relative shrink-0 rounded-full ring-light-light size-[35px] bg-[#E1E6EA] text-xs flex items-center justify-center border-none cursor-pointer">
-            <img
+          <p className="relative shrink-0 rounded-full ring-light-light size-[35px] bg-[#E1E6EA] text-xs flex items-center justify-center border-none cursor-pointer h-[35px] !w-[35px] font-bold">
+            {/* <img
               src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
               className="h-[35px] !w-[35px] rounded-full shrink-0"
-            />
+            /> */}
+            JD
           </p>
         </MenuHandler>
-        <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-20">
+        <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-30">
           <MenuItem disabled className="flex items-center gap-4 py-2 pl-2 pr-8">
             <Typography variant="small" color="black" className="font-black">
               John Doe
@@ -232,8 +172,231 @@ const Profile = ({ toggleDrawer }) => {
   );
 };
 
+const CreateFilter = ({ toggleDrawerHandler }) => {
+  const [openSalesMenu, setOpenSalesMenu] = useState(false);
+  const [openPurchaseMenu, setOpenPurchaseMenu] = useState(false);
+  const [openFinancialsMenu, setOpenFinancialsMenu] = useState(false);
+  const [openInventoryMenu, setOpenInventoryMenu] = useState(false);
+  const [openLedgerMenu, setOpenLedgerMenu] = useState(false);
+
+  return (
+    <>
+      <Menu>
+        <MenuHandler>
+          <Button
+            variant="outlined"
+            className="border-[#b0bec5] normal-case h-[2.5rem] focus:ring-0 text-[#455a64] text-[14px] font-normal hover:border-[#108f6f] hover:text-[#108f6f] flex items-center px-[12px] leading-[20px]"
+            ripple={false}
+          >
+            {" "}
+            Create{" "}
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              strokeWidth="0"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-3 w-3 ml-1"
+            >
+              <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"></path>
+            </svg>
+          </Button>
+        </MenuHandler>
+        <MenuList>
+          <Menu
+            placement="right-start"
+            open={openSalesMenu}
+            handler={setOpenSalesMenu}
+            allowHover
+            offset={15}
+          >
+            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+              <MenuItem>
+                Sales
+                <ChevronUpIcon
+                  strokeWidth={2.5}
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    openSalesMenu ? "rotate-90" : ""
+                  }`}
+                />
+              </MenuItem>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
+                Create Invoice
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Create Quotation
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Create Sales Order
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Create Delivery Note
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Create Note
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu
+            placement="right-start"
+            open={openPurchaseMenu}
+            handler={setOpenPurchaseMenu}
+            allowHover
+            offset={15}
+          >
+            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+              <MenuItem>
+                Purchase
+                <ChevronUpIcon
+                  strokeWidth={2.5}
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    openPurchaseMenu ? "rotate-90" : ""
+                  }`}
+                />
+              </MenuItem>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Create Purchase Invoice
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Create Purchase Order
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Debit Note
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu
+            placement="right-start"
+            open={openFinancialsMenu}
+            handler={setOpenFinancialsMenu}
+            allowHover
+            offset={15}
+          >
+            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+              <MenuItem>
+                Voucher
+                <ChevronUpIcon
+                  strokeWidth={2.5}
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    openFinancialsMenu ? "rotate-90" : ""
+                  }`}
+                />
+              </MenuItem>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Payment Voucher
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Receipt Voucher
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Contra Voucher
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Journal Voucher
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu
+            placement="right-start"
+            open={openInventoryMenu}
+            handler={setOpenInventoryMenu}
+            allowHover
+            offset={15}
+          >
+            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+              <MenuItem>
+                Inventory
+                <ChevronUpIcon
+                  strokeWidth={2.5}
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    openInventoryMenu ? "rotate-90" : ""
+                  }`}
+                />
+              </MenuItem>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Stock Adjustment
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Stock Transfer
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Add Item
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Add Warehouse
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <Menu
+            placement="right-start"
+            open={openLedgerMenu}
+            handler={setOpenLedgerMenu}
+            allowHover
+            offset={15}
+          >
+            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+              <MenuItem>
+                Ledgers
+                <ChevronUpIcon
+                  strokeWidth={2.5}
+                  className={`h-3.5 w-3.5 transition-transform ${
+                    openLedgerMenu ? "rotate-90" : ""
+                  }`}
+                />
+              </MenuItem>
+            </MenuHandler>
+            <MenuList>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Sundry Creditors
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Sundry Debitors
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Duities & Taxes
+              </MenuItem>
+              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+                Custom Groups
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </MenuList>
+      </Menu>
+    </>
+  );
+};
+
 const Header = ({ toggleDrawer }) => {
   const [openNav, setOpenNav] = useState(false);
+  const [areDrawersOpen, setAreDrawersOpen] = useState({
+    salesInvoice: false,
+    salesQuotation: false,
+    salesOrder: false,
+    salesDeliveryNote: false,
+    salesNote: false,
+    purchaseInvoice: false,
+    purchaseOrder: false,
+    purchaseDebitNote: false,
+    paymentVoucher: false,
+    receiptVoucher: false,
+    contraVoucher: false,
+    journalVoucher: false,
+    stockAdjustment: false,
+    stockTransfer: false,
+    addItem: false,
+    addWarehouse: false,
+  });
 
   useEffect(() => {
     window.addEventListener(
@@ -242,109 +405,127 @@ const Header = ({ toggleDrawer }) => {
     );
   }, []);
 
+  const toggleDrawerHandler = (key) => {
+    setAreDrawersOpen((prev) => {
+      return { ...prev, [key]: !prev[key] };
+    });
+  };
+
   const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4">
-      <li>
-        <Company />
-      </li>
-      <li>
-        <FYear />
-      </li>
-      <li>
-        <Notification />
-      </li>
-      <li>
-        <IconButton
-          variant="text"
-          className={
-            "cursor-pointer p-3 rounded-full fill-black hover:fill-[#108F6F] hover:bg-transparent focus:fill-[#108F6F]"
-          }
-          onClick={() => {
-            toggleDrawer();
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            id="Layer_1"
-            data-name="Layer 1"
-            viewBox="0 0 24 24"
-            className="h-5 w-5"
+    <>
+      <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4">
+        <li>
+          <CreateFilter toggleDrawerHandler={toggleDrawerHandler} />
+        </li>
+        <li>
+          <FYear />
+        </li>
+        <li>
+          <Company />
+          {/* <span className="text-[10px]">Last sync 30 min</span> */}
+        </li>
+        <li>
+          <Notification />
+        </li>
+        <li>
+          <IconButton
+            variant="text"
+            className={
+              "cursor-pointer p-3 rounded-full fill-black hover:fill-[#108F6F] hover:bg-transparent focus:fill-[#108F6F]"
+            }
+            onClick={() => {
+              toggleDrawer();
+            }}
           >
-            <path d="M10.36.06c.85-.09,3.09-.11,3.86.12.95.28,1.79,1.13,2.02,2.1.1.43.02,1.04.33,1.35.55.55,1.15-.02,1.72-.17,1.05-.27,2.21.03,2.96.82.4.42,1.85,2.92,2.02,3.48.36,1.2,0,2.41-.93,3.22-.32.27-.78.41-.84.89-.08.68.43.79.84,1.14,2.14,1.85.54,4.22-.65,6.07-.79,1.24-2.06,1.85-3.53,1.41-.51-.16-.87-.55-1.42-.26-.5.26-.36.7-.44,1.14-.24,1.41-1.34,2.45-2.77,2.57-.86.07-2.95.1-3.73-.12-.96-.27-1.82-1.14-2.06-2.11-.1-.43-.02-1.04-.33-1.35-.55-.55-1.15.02-1.72.17-1.05.27-2.21-.03-2.96-.82-.42-.45-1.91-3.02-2.05-3.6-.29-1.18.04-2.3.95-3.09.32-.27.78-.41.84-.89.08-.68-.43-.79-.84-1.14-2.14-1.85-.54-4.22.65-6.07.79-1.24,2.06-1.85,3.53-1.41.51.16.87.55,1.42.26s.39-1.02.53-1.55c.31-1.15,1.4-2.02,2.59-2.15ZM13.91,2.45c-.14-.13-.37-.21-.57-.22-.68-.06-2.02-.06-2.7,0-.57.05-.75.37-.83.9-.02.14,0,.29-.02.44-.29,1.69-1.98,2.8-3.66,2.41-.68-.16-1.31-.87-1.91-.05-.33.45-1.14,1.85-1.36,2.35-.39.9.34,1.05.84,1.5,1.27,1.13,1.29,3.25.03,4.4-.48.44-1.25.62-.89,1.49.2.48,1.06,1.96,1.38,2.39.58.79,1.18.14,1.83-.03,1.74-.45,3.44.69,3.75,2.44.05.26-.01.58.12.85.1.2.4.41.63.44.6.08,2.17.06,2.8,0,1.02-.09.74-1.09.96-1.78.5-1.57,2.26-2.4,3.82-1.88.6.2,1.11.7,1.64-.03.33-.46,1.14-1.84,1.36-2.35.39-.9-.34-1.05-.84-1.5-1.19-1.06-1.29-3.01-.23-4.2.51-.57,1.5-.75,1.07-1.73-.22-.51-1.03-1.91-1.36-2.35-.6-.81-1.23-.1-1.91.05-1.67.38-3.38-.72-3.66-2.41-.06-.37.04-.81-.29-1.11Z" />
-            <path d="M11.63,6.57c3.43-.24,6.24,2.81,5.75,6.21-.6,4.17-5.67,6.14-8.9,3.36-3.71-3.19-1.7-9.23,3.14-9.57ZM11.68,8.76c-4.53.45-3.41,7.47,1.1,6.39,3.86-.93,2.87-6.79-1.1-6.39Z" />
-          </svg>
-        </IconButton>
-      </li>
-      <li>
-        <Profile toggleDrawer={toggleDrawer} />
-      </li>
-    </ul>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              id="Layer_1"
+              data-name="Layer 1"
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+            >
+              <path d="M10.36.06c.85-.09,3.09-.11,3.86.12.95.28,1.79,1.13,2.02,2.1.1.43.02,1.04.33,1.35.55.55,1.15-.02,1.72-.17,1.05-.27,2.21.03,2.96.82.4.42,1.85,2.92,2.02,3.48.36,1.2,0,2.41-.93,3.22-.32.27-.78.41-.84.89-.08.68.43.79.84,1.14,2.14,1.85.54,4.22-.65,6.07-.79,1.24-2.06,1.85-3.53,1.41-.51-.16-.87-.55-1.42-.26-.5.26-.36.7-.44,1.14-.24,1.41-1.34,2.45-2.77,2.57-.86.07-2.95.1-3.73-.12-.96-.27-1.82-1.14-2.06-2.11-.1-.43-.02-1.04-.33-1.35-.55-.55-1.15.02-1.72.17-1.05.27-2.21-.03-2.96-.82-.42-.45-1.91-3.02-2.05-3.6-.29-1.18.04-2.3.95-3.09.32-.27.78-.41.84-.89.08-.68-.43-.79-.84-1.14-2.14-1.85-.54-4.22.65-6.07.79-1.24,2.06-1.85,3.53-1.41.51.16.87.55,1.42.26s.39-1.02.53-1.55c.31-1.15,1.4-2.02,2.59-2.15ZM13.91,2.45c-.14-.13-.37-.21-.57-.22-.68-.06-2.02-.06-2.7,0-.57.05-.75.37-.83.9-.02.14,0,.29-.02.44-.29,1.69-1.98,2.8-3.66,2.41-.68-.16-1.31-.87-1.91-.05-.33.45-1.14,1.85-1.36,2.35-.39.9.34,1.05.84,1.5,1.27,1.13,1.29,3.25.03,4.4-.48.44-1.25.62-.89,1.49.2.48,1.06,1.96,1.38,2.39.58.79,1.18.14,1.83-.03,1.74-.45,3.44.69,3.75,2.44.05.26-.01.58.12.85.1.2.4.41.63.44.6.08,2.17.06,2.8,0,1.02-.09.74-1.09.96-1.78.5-1.57,2.26-2.4,3.82-1.88.6.2,1.11.7,1.64-.03.33-.46,1.14-1.84,1.36-2.35.39-.9-.34-1.05-.84-1.5-1.19-1.06-1.29-3.01-.23-4.2.51-.57,1.5-.75,1.07-1.73-.22-.51-1.03-1.91-1.36-2.35-.6-.81-1.23-.1-1.91.05-1.67.38-3.38-.72-3.66-2.41-.06-.37.04-.81-.29-1.11Z" />
+              <path d="M11.63,6.57c3.43-.24,6.24,2.81,5.75,6.21-.6,4.17-5.67,6.14-8.9,3.36-3.71-3.19-1.7-9.23,3.14-9.57ZM11.68,8.76c-4.53.45-3.41,7.47,1.1,6.39,3.86-.93,2.87-6.79-1.1-6.39Z" />
+            </svg>
+          </IconButton>
+        </li>
+        <li>
+          <Profile toggleDrawer={toggleDrawer} />
+        </li>
+      </ul>
+    </>
   );
 
   return (
-    <Navbar className="header fixed top-0 z-20 left-0 right-0 items-stretch shrink-0 mx-auto border-0 bg-white shadow-xl rounded-none min-w-full">
-      <div className="mx-auto flex items-center text-blue-gray-900 gap-5">
-        <Typography
-          as="a"
-          href="#"
-          className="cursor-pointer py-1.5 font-medium text-black w-[240px]"
-        >
-          TallyDekho
-        </Typography>
-        <div className="flex justify-between w-full items-center gap-5">
-          <div className="flex rounded-md ring-1 ring-inset ring-gray-300 w-full max-w-[678px] h-[40px] bg-[#F5F7F9] items-center focus-within:ring-[#108F6F] ">
-            <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-              <img className="" src="/media/custom/search-sm.svg" />
-            </span>
-            <input
-              id="header-search-input"
-              name="header-search-input"
-              type="text"
-              placeholder="Search for customers, items, invoices, ledgers or vouchers"
-              className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-black sm:text-sm/6 focus:border-0"
-            />
-          </div>
-          <IconButton
-            variant="text"
-            className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-            ripple={false}
-            onClick={() => setOpenNav(!openNav)}
+    <>
+      <Navbar className="header fixed top-0 z-30 left-0 right-0 items-stretch shrink-0 mx-auto border-0 bg-white shadow-xl rounded-none min-w-full">
+        <div className="mx-auto flex items-center text-blue-gray-900 gap-5">
+          <Typography
+            as="a"
+            href="#"
+            className="cursor-pointer py-1.5 font-medium text-black w-[240px]"
           >
-            {openNav ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            )}
-          </IconButton>
-          <div className="hidden lg:block">{navList}</div>
+            TallyDekho
+          </Typography>
+          <div className="flex justify-between w-full items-center gap-5">
+            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 w-full max-w-[678px] h-[40px] bg-[#F5F7F9] items-center focus-within:ring-[#108F6F]">
+              <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
+                <img className="" src="/media/custom/search-sm.svg" />
+              </span>
+              <input
+                id="header-search-input"
+                name="header-search-input"
+                type="text"
+                placeholder="Search for customers, items, invoices, ledgers or vouchers"
+                className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-black sm:text-sm/6 focus:border-0"
+              />
+            </div>
+            <IconButton
+              variant="text"
+              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
+              ripple={false}
+              onClick={() => setOpenNav(!openNav)}
+            >
+              {openNav ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  className="h-6 w-6"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </IconButton>
+            <div className="hidden lg:block">{navList}</div>
+          </div>
         </div>
-      </div>
-    </Navbar>
+      </Navbar>
+      <CreateInvoiceDrawer
+        open={areDrawersOpen.salesInvoice}
+        toggleDrawer={toggleDrawerHandler}
+      />
+    </>
   );
 };
 

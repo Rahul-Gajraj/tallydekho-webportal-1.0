@@ -3,11 +3,17 @@ import React, { useMemo, useState } from "react";
 import Chart from "react-apexcharts";
 
 import {
+  Alert,
+  Avatar,
   Card,
   CardBody,
   CardHeader,
-  Option,
-  Select,
+  Chip,
+  IconButton,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 
@@ -133,26 +139,8 @@ const SalesReceiptsComparision = () => {
         <Typography variant="h6" color="blue-gray">
           Sales vs Receipts — Last 30 Days
         </Typography>
-        <Typography variant="small" className="font-normal text-gray-600 mt-1">
-          Updated: 24/11/2025, 17:58:16
-        </Typography>
       </CardHeader>
       <CardBody className="!p-2">
-        {/* <div className="flex gap-2 flex-wrap items-center justify-center px-4 !mt-4 gap-6">
-          <div className="flex items-center gap-1">
-            <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
-            <Typography variant="small" className="font-normal text-gray-600">
-              Sales
-            </Typography>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="h-2 w-2 bg-green-500 rounded-full"></span>
-            <Typography variant="small" className="font-normal text-gray-600">
-              Receipts
-            </Typography>
-          </div>
-        </div> */}
-        {/** chart */}
         <AreaChart
           colors={["#4CAF50", "#2196F3"]}
           options={{
@@ -215,23 +203,29 @@ const SalesReceiptsComparision = () => {
   );
 };
 
-const KpiCard = ({ title, price, action }) => {
+const KpiCard = ({ title, price, value, color, bg, img }) => {
   return (
     <Card className="shadow-sm border border-gray-200 !rounded-lg">
       <CardBody className="p-4">
         <div className="flex justify-between items-center">
-          <Typography className="font-medium !text-xs text-gray-600">
-            {title}
-          </Typography>
-          <Typography className="font-medium !text-xs text-blue-600 cursor-pointer">
-            View
-          </Typography>
+          <div className="flex items-center gap-2">
+            {img}
+            <Typography className="font-medium !text-sm text-black">
+              {title}
+            </Typography>
+          </div>
+          {value ? (
+            <Chip
+              className={"px-2 py-1"}
+              value={value}
+              style={{ color, backgroundColor: bg }}
+            />
+          ) : (
+            <span className="h-[24px]"></span>
+          )}
         </div>
-        <Typography color="blue-gray" className="mt-1 font-bold text-2xl">
+        <Typography color="black" className="mt-1 font-bold text-2xl">
           {price}
-        </Typography>
-        <Typography className="font-medium !text-xs text-gray-600">
-          {action}
         </Typography>
       </CardBody>
     </Card>
@@ -243,70 +237,110 @@ const SalesReport = () => {
 
   const data = [
     {
-      title: "Total Sales",
-      price: "₹ 12,45,300",
-      action: "(This Month)",
+      title: "Today",
+      price: "₹92,000",
+      value: "+14%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      img: <img src="/media/kpi-strip/today.svg" className="h-5 w-5" />,
     },
     {
-      title: "Total Receipts",
-      price: "₹ 9,87,400",
-      action: "(This Month)",
+      title: "MTD",
+      price: "₹1.27M",
+      value: "-10%",
+      color: "#F23031",
+      bg: "#FFEBEA",
+      img: <img src="/media/kpi-strip/mtd.svg" className="h-5 w-5" />,
     },
     {
-      title: "Pending Deliveries",
-      price: "34",
-      action: "Orders awaiting dispatch",
+      title: "YTD",
+      price: "₹7.4M",
+      value: "+12%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      img: <img src="/media/kpi-strip/mtd.svg" className="h-5 w-5" />,
     },
     {
-      title: "Average Invoice Value",
-      price: "₹ 10,450",
-      action: "(Last 30 days)",
+      title: "Avg Ticket",
+      price: "₹14,350",
+      value: "+12%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      img: <img src="/media/kpi-strip/avg_ticket.svg" className="h-5 w-5" />,
+    },
+    {
+      title: "Outstanding",
+      price: "₹812k",
+      value: "+10%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      img: <img src="/media/kpi-strip/outstanding.svg" className="h-5 w-5" />,
+    },
+    {
+      title: "Credit Notes",
+      price: "3",
+      img: <img src="/media/kpi-strip/credit_notes.svg" className="h-5 w-5" />,
+    },
+  ];
+
+  const alerts = [
+    {
+      title: "14 invoices due for IRN generation",
+      // subtitle: "Generate now",
+      img: <img src="/media/alerts/warning.svg" className="h-5 w-5 mt-[3px]" />,
+    },
+    {
+      title: "9 E-Way Bills expiring in <24 hrs",
+      // subtitle: "Check batch-wise report",
+      img: <img src="/media/alerts/warning.svg" className="h-6 w-6 mt-[3px]" />,
+    },
+    {
+      title: "Credits left: 28",
+      // subtitle: "Buy more ▸",
+      img: <img src="/media/alerts/warning.svg" className="h-6 w-6 mt-[3px]" />,
+    },
+    {
+      title: "14 invoices pending IRN",
+      // subtitle: "14 invoices pending IRN",
+      img: <img src="/media/alerts/warning.svg" className="h-5 w-5 mt-[3px]" />,
     },
   ];
 
   return (
     <section className="mx-auto mt-[90px]">
       <Card className="shadow-sm border border-gray-200 !rounded-lg p-4">
-        <div className="flex md:items-center gap-x-5 flex-col md:flex-row justify-between">
+        <div className="flex md:items-center gap-3 flex-col md:flex-row justify-between">
           <Typography className="font-bold text-xl text-black">
             Sales
           </Typography>
-          <div>
-            <Select
-              className="bg-white-600"
-              label="Period"
-              value={value}
-              onChange={(val) => setValue(val)}
-              containerProps={{
-                style: {
-                  minWidth: "200px",
-                },
-              }}
-              color="green"
+          <Tooltip
+            placement="bottom"
+            className="border border-blue-gray-50 bg-white px-4 py-3 shadow-xl shadow-black/10 text-black"
+            content="E-Way Bill"
+          >
+            <IconButton
+              variant="text"
+              className={
+                "cursor-pointer p-3 rounded-full fill-black hover:fill-[#108F6F] hover:bg-transparent focus:fill-[#108F6F] mr-10"
+              }
             >
-              <Option
-                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                value="0"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                id="Layer_1"
+                data-name="Layer 1"
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
               >
-                This Month
-              </Option>
-              <Option
-                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                value="1"
-              >
-                Last 30 Days
-              </Option>
-              <Option
-                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                value="2"
-              >
-                This Quarter
-              </Option>
-            </Select>
-          </div>
+                <path d="M3.6.01h16.71c1.42.19,2.54,1.37,2.67,2.81v17.61c-.19,1.81-1.7,3-3.51,2.83-.76-.07-1.66-.61-2.41-.81-.54-.14-.76-.04-1.25.15-1.62.62-3.04,1.85-4.87,1.23-.95-.33-1.9-.94-2.84-1.28-.44-.16-.69-.22-1.15-.1-.72.19-1.58.7-2.32.8-1.84.23-3.4-.96-3.6-2.81V2.78C1.17,1.38,2.24.27,3.6.01ZM3.86,1.7c-.65.12-1.11.67-1.15,1.33v17.18c.53,2.62,2.95.58,4.47.45,1.27-.1,2.89.98,4.08,1.44.65.25.82.24,1.47,0,1.21-.45,2.78-1.55,4.08-1.44,1.09.09,2.57,1.13,3.53.82.54-.17.91-.72.94-1.28V3.04c-.05-.72-.56-1.29-1.29-1.35l-16.13.02Z" />
+                <path d="M6.24,5.62h11.44c1.01.1,1.11,1.47.11,1.68H6.22c-.96-.21-.92-1.46.01-1.68Z" />
+                <path d="M5.74,11.56c-.46-.5-.17-1.3.48-1.41h11.56c1,.24.9,1.56-.11,1.69H6.38c-.21,0-.5-.13-.64-.28Z" />
+                <path d="M6.18,14.65h5.94c.96.18.96,1.49,0,1.67h-5.9c-.92-.2-.95-1.42-.05-1.67Z" />
+              </svg>
+            </IconButton>
+          </Tooltip>
         </div>
       </Card>
-      <div className="mt-6 grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 items-center gap-5">
+      <div className="mt-6 grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 items-center gap-5">
         {data.map((props, key) => (
           <KpiCard key={key} {...props} />
         ))}
@@ -322,66 +356,29 @@ const SalesReport = () => {
             <Typography color="black" className="font-bold text-lg">
               Alerts
             </Typography>
-            {/* <Typography
-                variant="small"
-                className="font-normal text-gray-600 mt-1"
-              >
-                Updated: 24/11/2025, 17:58:16
-              </Typography> */}
           </CardHeader>
-          <CardBody className="!p-2 mx-4">
-            <div className="flex flex-col gap-8">
-              <div className="flex flex-col gap-2">
-                <Typography className="font-semibold text-sm">
-                  Overdue Invoices
-                </Typography>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Typography className="text-sm font-medium">
-                      INV-1002 — Beta Traders
-                    </Typography>
-                    <Typography className="text-sm">(₹18,000)</Typography>
-                  </div>
-                  <Typography className="text-sm font-medium" color="red">
-                    12d
-                  </Typography>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Typography className="text-sm font-medium">
-                      INV-1010 — OldCo
-                    </Typography>
-                    <Typography className="text-sm">(₹5,600)</Typography>
-                  </div>
-                  <Typography className="text-sm font-medium" color="red">
-                    5d
-                  </Typography>
-                </div>
-                <Typography
-                  className="text-sm font-semibold cursor-pointer underline"
-                  color="blue"
-                >
-                  Open register
-                </Typography>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Typography className="font-semibold text-sm">
-                  High Credit Customers
-                </Typography>
-                <Typography className="text-sm font-medium">
-                  Gamma LLC — ₹75,000
-                </Typography>
-                <Typography className="text-sm font-medium">
-                  Acme Corp — ₹42,000
-                </Typography>
-                <Typography
-                  className="text-sm font-semibold cursor-pointer underline"
-                  color="blue"
-                >
-                  View customers
-                </Typography>
-              </div>
-            </div>
+          <CardBody className="!p-2 !pt-0 mx-4">
+            <List className="pt-0 gap-4">
+              {alerts.map(({ title, subtitle, img }) => (
+                <Card key={title} className="border shadow-none">
+                  <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                    <ListItemPrefix className="items-start mr-2">
+                      {img}
+                    </ListItemPrefix>
+                    <div>
+                      <Typography color="black">{title}</Typography>
+                      <Typography
+                        variant="small"
+                        color="gray"
+                        className="font-normal"
+                      >
+                        {subtitle}
+                      </Typography>
+                    </div>
+                  </ListItem>
+                </Card>
+              ))}
+            </List>
           </CardBody>
         </Card>
       </div>

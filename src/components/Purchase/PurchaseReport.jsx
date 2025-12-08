@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Chip,
   Option,
   Select,
   Typography,
@@ -200,13 +201,24 @@ const PurchaseReceiptsComparision = () => {
   );
 };
 
-const KpiCard = ({ title, price }) => {
+const KpiCard = ({ title, price, value, color, bg }) => {
   return (
     <Card className="shadow-sm border border-gray-200 !rounded-lg">
       <CardBody className="p-4">
-        <Typography className="font-medium !text-xs text-gray-600">
-          {title}
-        </Typography>
+        <div className="flex justify-between items-center">
+          <Typography className="font-medium !text-xs text-gray-600">
+            {title}
+          </Typography>
+          {value ? (
+            <Chip
+              className={"px-2 py-1"}
+              value={value}
+              style={{ color, backgroundColor: bg }}
+            />
+          ) : (
+            <span className="h-[24px]"></span>
+          )}
+        </div>
         <Typography color="blue-gray" className="mt-1 font-bold text-2xl">
           {price}
         </Typography>
@@ -220,20 +232,46 @@ const PurchaseReport = () => {
 
   const data = [
     {
-      title: "Total Purchase",
-      price: "₹ 8,90,200",
+      title: "Today",
+      price: "₹92,000",
+      value: "+14%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      // action: "(This Month)",
     },
     {
-      title: "Total Receipts",
-      price: "₹ 6,70,100",
+      title: "MTD",
+      price: "₹1.27M",
+      value: "-10%",
+      color: "#F23031",
+      bg: "#FFEBEA",
+      // action: "(This Month)",
     },
     {
-      title: "Pending Amount",
-      price: "₹ 2,20,100",
+      title: "YTD",
+      price: "₹7.4M",
+      value: "+12%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      // action: "Orders awaiting dispatch",
     },
     {
-      title: "Average Purchase Value",
-      price: "₹ 9,200",
+      title: "Avg Ticket",
+      price: "₹14,350",
+      value: "+12%",
+      color: "#108F6F",
+      bg: "#EAF8F4",
+      // action: "(Last 30 days)",
+    },
+    {
+      title: "Credit Notes",
+      price: "3",
+      // action: "(Last 30 days)",
+    },
+    {
+      title: "Outstanding",
+      price: "₹812k",
+      // action: "(Last 30 days)",
     },
   ];
 
@@ -263,7 +301,7 @@ const PurchaseReport = () => {
           </div>
         </div>
       </Card>
-      <div className="mt-6 grid lg:grid-cols-5 md:grid-cols-2 grid-cols-1 items-center gap-5">
+      <div className="mt-6 grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 items-center gap-5">
         {data.map((props, key) => (
           <KpiCard key={key} {...props} />
         ))}

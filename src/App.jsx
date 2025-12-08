@@ -9,9 +9,9 @@ import Login from "./pages/Login/Login";
 import Header from "./components/Layout/Header";
 import Sidebar from "./components/Layout/Sidebar";
 import PrivateRoutes from "./components/Routes/PrivateRoutes";
-import SettingDrawer from "./components/Layout/SettingDrawer";
 import PublicRoutes from "./components/Routes/PublicRoutes";
 import CustomToast from "./components/Toast";
+import SettingDrawer from "./components/Layout/Drawers/SettingDrawer";
 
 function App() {
   const [isSettingDraweOpen, setIsSettingDrawerOpen] = useState(false);

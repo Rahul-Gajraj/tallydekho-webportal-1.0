@@ -307,7 +307,7 @@ const PurchaseInfo = () => {
                 // onChange={(val) => setValue(val)}
                 containerProps={{
                   style: {
-                    minWidth: "100px",
+                    minWidth: "150px",
                   },
                 }}
               >

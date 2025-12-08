@@ -34,3 +34,18 @@
   box-shadow: none;
   background-color: transparent !important;
 }
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 5px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #eaebf3;
+}
+
+.darkMode::-webkit-scrollbar-thumb {
+  background-color: #504b6d;
+}
