@@ -286,22 +286,18 @@ const SalesReport = () => {
   const alerts = [
     {
       title: "14 invoices due for IRN generation",
-      // subtitle: "Generate now",
       img: <img src="/media/alerts/warning.svg" className="h-5 w-5 mt-[3px]" />,
     },
     {
       title: "9 E-Way Bills expiring in <24 hrs",
-      // subtitle: "Check batch-wise report",
       img: <img src="/media/alerts/warning.svg" className="h-6 w-6 mt-[3px]" />,
     },
     {
       title: "Credits left: 28",
-      // subtitle: "Buy more ▸",
       img: <img src="/media/alerts/warning.svg" className="h-6 w-6 mt-[3px]" />,
     },
     {
       title: "14 invoices pending IRN",
-      // subtitle: "14 invoices pending IRN",
       img: <img src="/media/alerts/warning.svg" className="h-5 w-5 mt-[3px]" />,
     },
   ];
@@ -359,22 +355,13 @@ const SalesReport = () => {
           </CardHeader>
           <CardBody className="!p-2 !pt-0 mx-4">
             <List className="pt-0 gap-4">
-              {alerts.map(({ title, subtitle, img }) => (
+              {alerts.map(({ title, img }) => (
                 <Card key={title} className="border shadow-none">
                   <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
                     <ListItemPrefix className="items-start mr-2">
                       {img}
                     </ListItemPrefix>
-                    <div>
-                      <Typography color="black">{title}</Typography>
-                      <Typography
-                        variant="small"
-                        color="gray"
-                        className="font-normal"
-                      >
-                        {subtitle}
-                      </Typography>
-                    </div>
+                    <Typography color="black">{title}</Typography>
                   </ListItem>
                 </Card>
               ))}

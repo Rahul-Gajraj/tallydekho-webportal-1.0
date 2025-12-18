@@ -1,3 +1,131 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+.fc-toolbar-chunk,
+.fc-toolbar-chunk div {
+  display: flex;
+  align-items: center !important;
+  gap: 10px;
+}
+
+.fc-button-primary {
+  background-color: transparent !important;
+  border: 3px solid #f5f7f9 !important;
+  border-radius: 12px !important;
+  color: #000 !important;
+  text-transform: capitalize !important;
+}
+
+.fc .fc-button-primary {
+  box-shadow: none !important;
+}
+
+.fc-today-button {
+  margin-left: 0px !important;
+}
+
+.fc-prev-button .fc-icon,
+.fc-next-button .fc-icon {
+  color: #000;
+}
+
+.fc-event-time {
+  display: none;
+}
+
+.fc-daygrid-event {
+  /* margin-left: 10px !important;
+    margin-right: 10px !important; */
+  margin: 5px !important;
+}
+
+.fc-dayGridMonth-button,
+.fc-timeGridWeek-button,
+.fc-timeGridDay-button,
+.fc-listMonth-button {
+  padding: 16px 40px;
+}
+
+.fc-dayGridMonth-button:last-of-type,
+.fc-timeGridWeek-button:last-of-type,
+.fc-timeGridDay-button:last-of-type,
+.fc-listMonth-button:last-of-type,
+.fc-dayGridMonth-button:first-of-type,
+.fc-timeGridWeek-button:first-of-type,
+.fc-timeGridDay-button:first-of-type,
+.fc-listMonth-button:first-of-type {
+  border-radius: 6px;
+}
+
+.fc-dayGridMonth-button:first-of-type,
+.fc-timeGridWeek-button:first-of-type,
+.fc-timeGridDay-button:first-of-type,
+.fc-listMonth-button:first-of-type {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fc-dayGridMonth-button:last-of-type,
+.fc-timeGridWeek-button:last-of-type,
+.fc-timeGridDay-button:last-of-type,
+.fc-listMonth-button:last-of-type {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.fc-toolbar-title {
+  font-weight: 600;
+  font-size: 1.25rem !important;
+}
+
+.fc-button:empty:not(.fc-sidebarToggle-button),
+.fc-toolbar-chunk:empty {
+  display: none;
+}
+ 
+.fc-h-event {
+    background-color: transparent;
+    border: none;
+}
+
+.event-box {
+  background: #fff;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid #e3e3e3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  overflow-x: auto;
+  white-space: nowrap; 
+}
+
+.event-box::-webkit-scrollbar {
+  height: 0;
+}
+
+.event-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.event-status {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.fc-daygrid-event {
+  overflow: visible !important;
+}
+
+.fc-scrollgrid-sync-table {
+  table-layout: fixed !important;
+}
+
+.fc-daygrid-more-link {
+  margin-left: 4px;
+  font-weight: 600;
+  color: #3c59ff;
+}

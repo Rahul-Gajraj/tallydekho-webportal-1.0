@@ -1,0 +1,308 @@
+import React from "react";
+
+import {
+  Card,
+  CardBody,
+  Input,
+  Option,
+  Select,
+  Typography,
+} from "@material-tailwind/react";
+
+const EXPENSES_TABLE_HEAD = [
+  {
+    head: "Date",
+    customeStyle: "text-center",
+  },
+  {
+    head: "Voucher No.",
+  },
+  {
+    head: "Category",
+  },
+  {
+    head: "Mode",
+  },
+  {
+    head: "Amount",
+  },
+  {
+    head: "Status",
+  },
+  {
+    head: "Docs",
+  },
+  {
+    head: "Actions",
+  },
+];
+
+const EXPENSES_TABLE_ROW = [
+  {
+    date: "09 Dec 2025",
+    voucherNo: "EXP/25-26/143",
+    category: "Travel - Client Visit",
+    mode: "Bank",
+    amount: "₹12,500",
+    status: "Paid",
+  },
+  {
+    date: "09 Dec 2025",
+    voucherNo: "EXP/25-26/142",
+    category: "Office Rent - Dec",
+    mode: "Cash",
+    amount: "₹80,000",
+    status: "Unpaid",
+  },
+  {
+    date: "08 Dec 2025",
+    voucherNo: "EXP/25-26/141",
+    category: "Fuel & Conveyance",
+    mode: "Bank",
+    amount: "₹9,800",
+    status: "Paid",
+  },
+];
+
+const ExpenseRegister = () => {
+  return (
+    <>
+      <Card>
+        <CardBody>
+          <div className="flex items-center gap-2 flex-wrap justify-between">
+            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[230px]">
+              <span className="pl-3">
+                <img src="/media/custom/search-sm.svg" />
+              </span>
+              <input
+                id="header-search-input"
+                name="header-search-input"
+                type="text"
+                placeholder="Search by category, ledger or voucher no"
+                className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                // value={itemsListSearchText}
+                // onChange={(e) => setItemsListSearchText(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <div className="w-[150px]">
+                <Select
+                  className="bg-white-600"
+                  label="Period"
+                  containerProps={{
+                    style: {
+                      minWidth: "150px",
+                    },
+                  }}
+                  // value={value}
+                  // onChange={(val) => setValue(val)}
+                  color="green"
+                >
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    All
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    2024-2025
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    2025-2026
+                  </Option>
+                </Select>
+              </div>
+              <div className="w-[150px]">
+                <Select
+                  className="bg-white-600"
+                  label="Category"
+                  containerProps={{
+                    style: {
+                      minWidth: "150px",
+                    },
+                  }}
+                  // value={value}
+                  // onChange={(val) => setValue(val)}
+                  color="green"
+                >
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    All
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    Sheets
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    Pipes
+                  </Option>
+                </Select>
+              </div>
+              <div className="w-[150px]">
+                <Select
+                  className="bg-white-600"
+                  label="Mode"
+                  containerProps={{
+                    style: {
+                      minWidth: "150px",
+                    },
+                  }}
+                  // value={value}
+                  // onChange={(val) => setValue(val)}
+                  color="green"
+                >
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    All
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    Bank
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    Cash
+                  </Option>
+                </Select>
+              </div>
+              <div className="w-[150px]">
+                <Select
+                  className="bg-white-600"
+                  label="Status"
+                  containerProps={{
+                    style: {
+                      minWidth: "150px",
+                    },
+                  }}
+                  // value={value}
+                  // onChange={(val) => setValue(val)}
+                  color="green"
+                >
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    All
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    Paid
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    Unpaid
+                  </Option>
+                </Select>
+              </div>
+              <div className="w-[150px]">
+                <Input
+                  label="Total"
+                  readOnly
+                  value="₹1,274,560"
+                  containerProps={{
+                    style: {
+                      minWidth: "150px",
+                    },
+                  }}
+                  className="pointer-events-none bg-[#f5f7f9]"
+                />
+              </div>
+              <div className="w-[150px]">
+                <Input
+                  label="Tax"
+                  readOnly
+                  value="₹138,240"
+                  containerProps={{
+                    style: {
+                      minWidth: "150px",
+                    },
+                  }}
+                  className="pointer-events-none bg-[#f5f7f9]"
+                />
+              </div>
+            </div>
+          </div>
+          <table className="mt-4 min-w-full table-auto text-left">
+            <thead>
+              <tr>
+                {EXPENSES_TABLE_HEAD.map(({ head, customeStyle }) => (
+                  <th
+                    key={head}
+                    className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
+                  >
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal leading-none opacity-70 pl-3"
+                    >
+                      {head}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {EXPENSES_TABLE_ROW.map((row, index) => {
+                const { date, voucherNo, category, mode, amount, status } = row;
+                const isLast = index === EXPENSES_TABLE_ROW.length - 1;
+                const classes = "p-4 px-0 border-b border-blue-gray-50";
+
+                return (
+                  <tr key={index}>
+                    <td className={classes}>
+                      <Typography variant="small" className="font-normal pl-3">
+                        {date}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography variant="small" className="font-normal pl-3">
+                        {voucherNo}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography variant="small" className="font-normal pl-3">
+                        {category}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography variant="small" className="font-normal pl-3">
+                        {mode}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography variant="small" className="font-normal pl-3">
+                        {amount}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <Typography variant="small" className="font-normal pl-3">
+                        {status}
+                      </Typography>
+                    </td>
+                    <td className={classes}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 -960 960 960"
+                        className="w-5 h-5 ml-3"
+                        fill="#108f6f"
+                      >
+                        <path d="M360-440h240q17 0 28.5-11.5T640-480q0-17-11.5-28.5T600-520H360q-17 0-28.5 11.5T320-480q0 17 11.5 28.5T360-440Zm0 120h240q17 0 28.5-11.5T640-360q0-17-11.5-28.5T600-400H360q-17 0-28.5 11.5T320-360q0 17 11.5 28.5T360-320Zm0 120h120q17 0 28.5-11.5T520-240q0-17-11.5-28.5T480-280H360q-17 0-28.5 11.5T320-240q0 17 11.5 28.5T360-200ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm480-520H580q-25 0-42.5-17.5T520-660v-140H240v640h480v-440ZM240-800v200-200 640-640Z" />
+                      </svg>
+                    </td>
+                    <td className={classes}>
+                      <div className="flex gap-3 pl-3">
+                        <Typography
+                          variant="small"
+                          className="font-normal cursor-pointer"
+                          color="green"
+                        >
+                          Share PDF
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          className="font-normal cursor-pointer"
+                          color="green"
+                        >
+                          Download
+                        </Typography>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </CardBody>
+      </Card>
+    </>
+  );
+};
+
+export default ExpenseRegister;

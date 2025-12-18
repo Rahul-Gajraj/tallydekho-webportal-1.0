@@ -353,7 +353,6 @@ const SalesInfo = () => {
                   mode="range"
                   selected={date}
                   onSelect={(dates) => {
-                    console.log(dates);
                     if (dates) {
                       setDate(dates);
                     }

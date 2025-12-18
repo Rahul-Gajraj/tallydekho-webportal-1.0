@@ -364,9 +364,6 @@ const InventoryReport = () => {
                 },
               ]}
             />
-            <div className="grid grid-cols-2 gap-3">
-              <div className="col-span-1"></div>
-            </div>
           </CardBody>
         </Card>
         <Card className="xl:col-span-4 md:col-span-6 sm:col-span-12 ">

@@ -210,7 +210,11 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             allowHover
             offset={15}
           >
-            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+            <MenuHandler
+              className={`flex items-center justify-between hover:!bg-[#eaf8f4] active:!bg-[#eaf8f4] hover:text-[#108f6f] active:text-[#108f6f] focus:bg-[#eaf8f4] focus:text-[#108f6f] ${
+                openSalesMenu ? "bg-[#eaf8f4] text-[#108f6f]" : ""
+              }`}
+            >
               <MenuItem>
                 Sales
                 <ChevronUpIcon
@@ -228,16 +232,28 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
               >
                 Create Invoice
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Create Quotation
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Create Sales Order
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Create Delivery Note
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Create Note
               </MenuItem>
             </MenuList>
@@ -249,7 +265,11 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             allowHover
             offset={15}
           >
-            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+            <MenuHandler
+              className={`flex items-center justify-between hover:!bg-[#eaf8f4] active:!bg-[#eaf8f4] hover:text-[#108f6f] active:text-[#108f6f] focus:bg-[#eaf8f4] focus:text-[#108f6f] ${
+                openPurchaseMenu ? "bg-[#eaf8f4] text-[#108f6f]" : ""
+              }`}
+            >
               <MenuItem>
                 Purchase
                 <ChevronUpIcon
@@ -261,13 +281,22 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
               </MenuItem>
             </MenuHandler>
             <MenuList>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Create Purchase Invoice
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Create Purchase Order
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Debit Note
               </MenuItem>
             </MenuList>
@@ -279,7 +308,11 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             allowHover
             offset={15}
           >
-            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+            <MenuHandler
+              className={`flex items-center justify-between hover:!bg-[#eaf8f4] active:!bg-[#eaf8f4] hover:text-[#108f6f] active:text-[#108f6f] focus:bg-[#eaf8f4] focus:text-[#108f6f] ${
+                openFinancialsMenu ? "bg-[#eaf8f4] text-[#108f6f]" : ""
+              }`}
+            >
               <MenuItem>
                 Voucher
                 <ChevronUpIcon
@@ -291,16 +324,28 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
               </MenuItem>
             </MenuHandler>
             <MenuList>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Payment Voucher
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Receipt Voucher
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Contra Voucher
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Journal Voucher
               </MenuItem>
             </MenuList>
@@ -312,7 +357,11 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             allowHover
             offset={15}
           >
-            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+            <MenuHandler
+              className={`flex items-center justify-between hover:!bg-[#eaf8f4] active:!bg-[#eaf8f4] hover:text-[#108f6f] active:text-[#108f6f] focus:bg-[#eaf8f4] focus:text-[#108f6f] ${
+                openInventoryMenu ? "bg-[#eaf8f4] text-[#108f6f]" : ""
+              }`}
+            >
               <MenuItem>
                 Inventory
                 <ChevronUpIcon
@@ -324,16 +373,28 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
               </MenuItem>
             </MenuHandler>
             <MenuList>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Stock Adjustment
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Stock Transfer
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Add Item
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Add Warehouse
               </MenuItem>
             </MenuList>
@@ -345,7 +406,11 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             allowHover
             offset={15}
           >
-            <MenuHandler className="flex items-center justify-between hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:text-[#108F6F] active:text-[#108F6F] focus:bg-[#EAF8F4] focus:text-[#108F6F]">
+            <MenuHandler
+              className={`flex items-center justify-between hover:!bg-[#eaf8f4] active:!bg-[#eaf8f4] hover:text-[#108f6f] active:text-[#108f6f] focus:bg-[#eaf8f4] focus:text-[#108f6f] ${
+                openLedgerMenu ? "bg-[#eaf8f4] text-[#108f6f]" : ""
+              }`}
+            >
               <MenuItem>
                 Ledgers
                 <ChevronUpIcon
@@ -357,16 +422,28 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
               </MenuItem>
             </MenuHandler>
             <MenuList>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Sundry Creditors
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Sundry Debitors
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Duities & Taxes
               </MenuItem>
-              <MenuItem className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]">
+              <MenuItem
+                className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
+                onClick={() => toggleDrawerHandler("salesInvoice")}
+              >
                 Custom Groups
               </MenuItem>
             </MenuList>

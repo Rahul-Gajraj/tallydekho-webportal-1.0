@@ -18,6 +18,7 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
+  Switch,
 } from "@material-tailwind/react";
 import moment from "moment";
 
@@ -28,6 +29,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { DayPicker } from "react-day-picker";
+
 import AddCustomerDialog from "../../Dialogs/Sales/AddCustomerDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 
@@ -42,11 +44,10 @@ const ITEM_TABLE_HEAD = [
 
 const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
   const [ledgers, setLedgers] = useState([
-    "Purchase - Raw Material",
-    "Purchase - Finished Goods",
-    "Expenses",
-    "Capital Purchases",
-    "Etc",
+    "Cash Sales",
+    "Credit Sales",
+    "Off-Books",
+    "On-Books",
   ]);
   const [selectedLeger, setSelectedLedger] = useState(ledgers[0]);
   const [customers, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
@@ -114,123 +115,116 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
           </IconButton>
         </div>
         <div className="space-y-4 pb-6 pt-5">
-          <div className="flex gap-4">
-            <Select
-              label="Ledger Selection"
-              value={selectedLeger}
-              onChange={(val) => setSelectedLedger(val)}
-              containerProps={{
-                style: {
-                  minWidth: "200px",
-                },
-              }}
-              color="green"
-            >
-              {ledgers.map((ledger) => (
-                <Option
-                  key={ledger}
-                  value={ledger}
-                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                >
-                  {ledger}
-                </Option>
-              ))}
-            </Select>
-            <div className="w-full">
-              <Input
+          <div className="grid grid-cols-2 gap-4">
+            <div className="sm:col-span-1 col-span-2">
+              <Select
+                label="Ledger Selection"
+                value={selectedLeger}
+                onChange={(val) => setSelectedLedger(val)}
                 color="green"
-                label="Invoice Number"
-                containerProps={{
-                  className: "!min-w-full",
-                }}
-              />
+              >
+                {ledgers.map((ledger) => (
+                  <Option
+                    key={ledger}
+                    value={ledger}
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    {ledger}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="sm:col-span-1 col-span-2">
+              {/* <Switch
+                label={
+                  <Typography color="blue-gray" className="font-medium">
+                    Optional/Regular
+                  </Typography>
+                }
+              /> */}
+              <Input color="green" label="Invoice Number" />
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Popover
-              placement="bottom"
-              open={popoverOpen}
-              handler={setPopoverOpen}
-            >
-              <PopoverHandler>
-                <Button
-                  variant="outlined"
-                  className="flex items-center gap-3 !border-[#B0BEC5] !w-[348.5px] text-[#455a64] font-medium justify-between focus:ring-0"
-                  ripple={false}
-                >
-                  {moment(date).format("DD MMM, yyyy")}
-                  <CalendarDaysIcon
-                    strokeWidth={2}
-                    className="w-4 h-4 text-gray-600"
+          <div className="grid grid-cols-2 gap-4">
+            <div className="sm:col-span-1 col-span-2">
+              <Popover
+                placement="bottom"
+                open={popoverOpen}
+                handler={setPopoverOpen}
+              >
+                <PopoverHandler>
+                  <Button
+                    variant="outlined"
+                    className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px]"
+                    ripple={false}
+                  >
+                    {moment(date).format("DD MMM, yyyy")}
+                    <CalendarDaysIcon
+                      strokeWidth={2}
+                      className="w-4 h-4 text-gray-600"
+                    />
+                  </Button>
+                </PopoverHandler>
+                <PopoverContent className="z-[9999]">
+                  <DayPicker
+                    selected={date}
+                    onDayClick={(newDate) => {
+                      if (newDate) {
+                        setDate(newDate);
+                        setPopoverOpen(false);
+                      }
+                    }}
+                    showOutsideDays
+                    className="border-0"
+                    classNames={{
+                      caption:
+                        "flex justify-center py-2 mb-4 relative items-center",
+                      caption_label: "text-sm !font-medium text-gray-900",
+                      nav: "flex items-center",
+                      nav_button:
+                        "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                      nav_button_previous: "absolute left-1.5",
+                      nav_button_next: "absolute right-1.5",
+                      table: "w-full border-collapse",
+                      head_row: "flex !font-medium text-gray-900",
+                      head_cell: "m-0.5 w-9 !font-normal text-sm",
+                      row: "flex w-full mt-2",
+                      cell: "text-gray-600 rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                      day: "h-9 w-9 p-0 !font-normal",
+                      day_range_end: "day-range-end",
+                      day_selected:
+                        "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                      day_today: "rounded-md bg-gray-200 text-gray-900",
+                      day_outside:
+                        "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                      day_disabled: "text-gray-500 opacity-50",
+                      day_hidden: "invisible",
+                    }}
+                    components={{
+                      IconLeft: ({ ...props }) => (
+                        <ChevronLeftIcon
+                          {...props}
+                          className="h-4 w-4 stroke-2"
+                        />
+                      ),
+                      IconRight: ({ ...props }) => (
+                        <ChevronRightIcon
+                          {...props}
+                          className="h-4 w-4 stroke-2"
+                        />
+                      ),
+                    }}
                   />
-                </Button>
-              </PopoverHandler>
-              <PopoverContent className="z-[9999]">
-                <DayPicker
-                  selected={date}
-                  onDayClick={(newDate) => {
-                    console.log(newDate);
-                    if (newDate) {
-                      setDate(newDate);
-                      setPopoverOpen(false);
-                    }
-                  }}
-                  showOutsideDays
-                  className="border-0"
-                  classNames={{
-                    caption:
-                      "flex justify-center py-2 mb-4 relative items-center",
-                    caption_label: "text-sm !font-medium text-gray-900",
-                    nav: "flex items-center",
-                    nav_button:
-                      "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
-                    nav_button_previous: "absolute left-1.5",
-                    nav_button_next: "absolute right-1.5",
-                    table: "w-full border-collapse",
-                    head_row: "flex !font-medium text-gray-900",
-                    head_cell: "m-0.5 w-9 !font-normal text-sm",
-                    row: "flex w-full mt-2",
-                    cell: "text-gray-600 rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                    day: "h-9 w-9 p-0 !font-normal",
-                    day_range_end: "day-range-end",
-                    day_selected:
-                      "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
-                    day_today: "rounded-md bg-gray-200 text-gray-900",
-                    day_outside:
-                      "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
-                    day_disabled: "text-gray-500 opacity-50",
-                    day_hidden: "invisible",
-                  }}
-                  components={{
-                    IconLeft: ({ ...props }) => (
-                      <ChevronLeftIcon
-                        {...props}
-                        className="h-4 w-4 stroke-2"
-                      />
-                    ),
-                    IconRight: ({ ...props }) => (
-                      <ChevronRightIcon
-                        {...props}
-                        className="h-4 w-4 stroke-2"
-                      />
-                    ),
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-            <div className="w-[348.5px]">
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div className="sm:col-span-1 col-span-2">
               <Select
                 label="Customer Selection"
                 value={selectedCustomer}
                 onChange={(val) => {
-                  console.log(val);
                   setSelectedCustomer(val);
                 }}
-                // containerProps={{
-                //   style: {
-                //     minWidth: "100%",
-                //   },
-                // }}
                 color="green"
                 key={selectedCustomer}
               >
@@ -264,6 +258,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
             {/* <div className="flex items-center w-full"> */}
             {/* </div> */}
           </div>
+
           <div className="flex gap-3 items-center">
             <Typography variant="h6" color="blue-gray">
               Item/Services

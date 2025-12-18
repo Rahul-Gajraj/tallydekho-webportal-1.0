@@ -19,6 +19,10 @@ export default withMT({
           50: "#eaf8f4",
           500: "#108f6f",
         },
+        red: {
+          50: "#fdebea",
+          500: "#f46a6c",
+        },
       },
     },
   },

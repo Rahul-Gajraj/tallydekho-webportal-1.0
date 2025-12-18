@@ -28,6 +28,7 @@ const seletedSideValue = {
   sales: 2,
   purchase: 3,
   inventory: 4,
+  financials: 5,
 };
 
 const Sidebar = () => {
@@ -55,13 +56,14 @@ const Sidebar = () => {
 
   return (
     <Card className="sidebar top-0 bottom-0 z-20 hidden lg:flex flex-col items-stretch shrink-0 border-r border-r-gray rounded-none overflow-hidden">
-      <List className="cursor-pointer mt-20">
+      <List className="cursor-pointer mt-20 max-w-[224px]">
         <Link to="/">
           <ListItem
             className={`${LIST_ITEM_STYLES} ${
               isActive("/") ? "!text-[#108F6F] !bg-[#EAF8F4]" : ""
             }`}
             ripple={false}
+            onClick={() => handleOpen(1)}
           >
             <ListItemPrefix>
               <svg
@@ -103,6 +105,7 @@ const Sidebar = () => {
               isActive("/sales") ? "!text-[#108F6F] !bg-[#EAF8F4]" : ""
             }`}
             ripple={false}
+            onClick={() => handleOpen(2)}
           >
             <ListItemPrefix>
               <svg
@@ -125,6 +128,7 @@ const Sidebar = () => {
               isActive("/purchase") ? "!text-[#108F6F] !bg-[#EAF8F4]" : ""
             }`}
             ripple={false}
+            onClick={() => handleOpen(3)}
           >
             <ListItemPrefix>
               <svg
@@ -152,6 +156,7 @@ const Sidebar = () => {
               isActive("/inventory") ? "!text-[#108F6F] !bg-[#EAF8F4]" : ""
             }`}
             ripple={false}
+            onClick={() => handleOpen(4)}
           >
             <ListItemPrefix>
               <svg
@@ -167,6 +172,127 @@ const Sidebar = () => {
             Inventory
           </ListItem>
         </Link>
+        <Accordion
+          open={open === 5}
+          icon={
+            <ChevronDownIcon
+              strokeWidth={2.5}
+              className={`mx-auto h-4 w-4 transition-transform ${
+                open === 5 ? "rotate-180" : ""
+              }`}
+            />
+          }
+        >
+          <ListItem className="p-0" ripple={false} selected={open === 5}>
+            <AccordionHeader
+              onClick={() => handleOpen(5)}
+              className={`border-b-0 p-3 ${LIST_ITEM_STYLES} ${
+                open === 5 ? "!text-[#108F6F] !bg-[#EAF8F4]" : ""
+              } rounded-lg`}
+            >
+              <ListItemPrefix>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 -960 960 960"
+                  className="w-5 h-5"
+                  fill={open === 5 ? "#108F6F" : "black"}
+                >
+                  <path d="M571-270q11-10 12-25t-10-26L462-438l1-3h10q54 0 89.5-33t43.5-77h17q10 0 16.5-7t6.5-17q0-10-6.5-16.5T623-598h-18q-3-15-10.5-28.5T576-653h47q10 0 16.5-7t6.5-17q0-10-6.5-16.5T623-700H343q-12 0-20.5 8.5T314-671q0 12 8.5 20t20.5 8h127q26 0 42.5 13t22.5 32H337q-10 0-16.5 7t-6.5 17q0 10 6.5 16.5T337-551h199q-6 20-23 34.5T467-502h-68q-13 0-22.5 6T362-479q-5 11-3 22.5t11 21.5l150 164q10 11 25 11t26-10ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+                </svg>
+              </ListItemPrefix>
+              <Typography className="mr-auto font-normal">
+                Financials
+              </Typography>
+            </AccordionHeader>
+          </ListItem>
+          {open == 5 && (
+            <AccordionBody className="py-0">
+              <List>
+                <Link to="/financials/expenses">
+                  <ListItem
+                    className={`${LIST_ITEM_STYLES} w-[200px] text-sm ${
+                      isActive("/financials/expenses")
+                        ? "!text-[#108F6F] !bg-[#EAF8F4]"
+                        : ""
+                    }`}
+                    ripple={false}
+                  >
+                    Expenses
+                  </ListItem>
+                </Link>
+                <Link to="/financials/payments-receipts">
+                  <ListItem
+                    className={`${LIST_ITEM_STYLES} w-[200px] text-sm ${
+                      isActive("/financials/payments-receipts")
+                        ? "!text-[#108F6F] !bg-[#EAF8F4]"
+                        : ""
+                    }`}
+                    ripple={false}
+                  >
+                    Payments & Receipts
+                  </ListItem>
+                </Link>
+                <Link to="/financials/cash-bank">
+                  <ListItem
+                    className={`${LIST_ITEM_STYLES} w-[200px] text-sm ${
+                      isActive("/financials/cash-bank")
+                        ? "!text-[#108F6F] !bg-[#EAF8F4]"
+                        : ""
+                    }`}
+                    ripple={false}
+                  >
+                    Cash & Bank
+                  </ListItem>
+                </Link>
+                <Link to="/financials/receivables-payables">
+                  <ListItem
+                    className={`${LIST_ITEM_STYLES} w-[200px] text-sm ${
+                      isActive("/financials/receivables-payables")
+                        ? "!text-[#108F6F] !bg-[#EAF8F4]"
+                        : ""
+                    }`}
+                    ripple={false}
+                  >
+                    {" "}
+                    Receivables & Payables
+                  </ListItem>
+                </Link>
+                <Link to="/financials/loans-ods">
+                  <ListItem
+                    className={`${LIST_ITEM_STYLES} w-[200px] text-sm ${
+                      isActive("/financials/loans-ods")
+                        ? "!text-[#108F6F] !bg-[#EAF8F4]"
+                        : ""
+                    }`}
+                    ripple={false}
+                  >
+                    Loans & ODs
+                  </ListItem>
+                </Link>
+              </List>
+            </AccordionBody>
+          )}
+        </Accordion>
+        {/* <Link to="/financials">
+          <ListItem
+            className={`${LIST_ITEM_STYLES} ${
+              isActive("/financials") ? "!text-[#108F6F] !bg-[#EAF8F4]" : ""
+            }`}
+            ripple={false}
+          >
+            <ListItemPrefix>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                className="w-5 h-5"
+                fill={isActive("/financials") ? "#108F6F" : "black"}
+              >
+                <path d="M571-270q11-10 12-25t-10-26L462-438l1-3h10q54 0 89.5-33t43.5-77h17q10 0 16.5-7t6.5-17q0-10-6.5-16.5T623-598h-18q-3-15-10.5-28.5T576-653h47q10 0 16.5-7t6.5-17q0-10-6.5-16.5T623-700H343q-12 0-20.5 8.5T314-671q0 12 8.5 20t20.5 8h127q26 0 42.5 13t22.5 32H337q-10 0-16.5 7t-6.5 17q0 10 6.5 16.5T337-551h199q-6 20-23 34.5T467-502h-68q-13 0-22.5 6T362-479q-5 11-3 22.5t11 21.5l150 164q10 11 25 11t26-10ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
+              </svg>
+            </ListItemPrefix>
+            Financials
+          </ListItem>
+        </Link> */}
         {/* <Link to="/inventory">
           <ListItem
             className={`${LIST_ITEM_STYLES} ${
@@ -189,17 +315,17 @@ const Sidebar = () => {
           </ListItem>
         </Link> */}
         {/* <Accordion
-          open={open === 3}
+          open={open === 5}
           icon={
             <ChevronDownIcon
               strokeWidth={2.5}
               className={`mx-auto h-4 w-4 transition-transform ${
-                open === 3 ? "rotate-180" : ""
+                open === 5 ? "rotate-180" : ""
               }`}
             />
           }
         >
-          <ListItem className="p-0" selected={open === 3}>
+          <ListItem className="p-0" selected={open === 5}>
             <AccordionHeader
               onClick={() => handleOpen(3)}
               className="border-b-0 p-3"
