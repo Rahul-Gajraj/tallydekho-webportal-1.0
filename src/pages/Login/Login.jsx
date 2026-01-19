@@ -87,7 +87,6 @@ function Login({ isLogged }) {
                 >
                   <Typography
                     variant="h1"
-                    color="black"
                     className="mb-4 !text-3xl lg:text-4xl"
                   >
                     Login
@@ -99,7 +98,6 @@ function Login({ isLogged }) {
                       <label htmlFor="mobile">
                         <Typography
                           variant="small"
-                          color="black"
                           className="block font-medium"
                         >
                           Your Phone Number
@@ -165,11 +163,7 @@ function Login({ isLogged }) {
                     </div>
                     {isOtpSend && (
                       <div className="flex flex-col gap-2">
-                        <Typography
-                          variant="small"
-                          color="black"
-                          className="font-medium"
-                        >
+                        <Typography variant="small" className="font-medium">
                           We have sent OTP on your mobile number
                           {/* +{mobile.slice(0, 2)} {mobile.slice(2, 5)}***
                           {mobile.slice(8)} */}
@@ -189,7 +183,6 @@ function Login({ isLogged }) {
                         />
                         <Typography
                           variant="small"
-                          color="black"
                           className="text-[12px] underline cursor-pointer"
                           onClick={() => setOtp("")}
                         >
@@ -238,7 +231,7 @@ function Login({ isLogged }) {
                 className="md:px-24 md:py-10 py-8 border border-gray-300"
               >
                 <div className="text-center mb-2">
-                  <h3 className="text-2xl font-semibold text-black mb-5">
+                  <h3 className="text-2xl font-semibold mb-5">
                     Would you like to sync with Tally?
                   </h3>
                   <div className="flex flex-col">

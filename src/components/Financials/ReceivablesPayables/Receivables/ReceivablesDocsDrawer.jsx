@@ -52,10 +52,10 @@ const ReceivablesDocsDrawer = ({ open, toggleDrawer, data }) => {
     >
       <div className="relative mt-0 flex justify-between">
         <div>
-          <Typography variant="h4" color="black">
+          <Typography variant="h4">
             Bill-554 ABC Traders
           </Typography>
-          <Typography variant="small" color="blue-gray">
+          <Typography variant="small">
             12 Junw 2025 - Due on 12 Jul 2025 - ₹380,000
           </Typography>
         </div>
@@ -72,7 +72,7 @@ const ReceivablesDocsDrawer = ({ open, toggleDrawer, data }) => {
           <Chip value="Overdue" color="green" size="sm" />
         </div>
         <div>
-          <Typography color="black" className="font-semibold">
+          <Typography className="font-semibold">
             Amounts
           </Typography>
           <div className="grid grid-cols-2">
@@ -95,7 +95,7 @@ const ReceivablesDocsDrawer = ({ open, toggleDrawer, data }) => {
           </div>
         </div>
         <div>
-          <Typography color="black" className="font-semibold">
+          <Typography className="font-semibold">
             Party & Document
           </Typography>
           <div className="grid grid-cols-2 gap-3">
@@ -126,7 +126,7 @@ const ReceivablesDocsDrawer = ({ open, toggleDrawer, data }) => {
                       <div className="flex gap-5 items-center">
                         {icon}
                         <div>
-                          <Typography variant="h6" color="black">
+                          <Typography variant="h6">
                             {title}
                           </Typography>
                           <Typography variant="small" className="font-normal">

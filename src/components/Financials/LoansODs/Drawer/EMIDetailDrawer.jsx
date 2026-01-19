@@ -35,7 +35,7 @@ const EMIDetailDrawer = ({ open, toggleDrawer, data }) => {
       size={700}
     >
       <div className="relative mt-0 flex justify-between">
-        <Typography variant="h4" color="black">
+        <Typography variant="h4">
           EMI Details
         </Typography>
         <img
@@ -47,7 +47,7 @@ const EMIDetailDrawer = ({ open, toggleDrawer, data }) => {
       </div>
       {data && data.emis && (
         <div>
-          <Typography color="black" className="font-semibold">
+          <Typography className="font-semibold">
             EMI's on {data.date}
           </Typography>
           <table className="mt-10 min-w-full table-auto text-left">
@@ -60,8 +60,7 @@ const EMIDetailDrawer = ({ open, toggleDrawer, data }) => {
                   >
                     <Typography
                       variant="small"
-                      color="blue-gray"
-                      className="font-normal leading-none opacity-70 pl-3"
+                      className="font-normal leading-none pl-3"
                     >
                       {head}
                     </Typography>

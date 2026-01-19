@@ -13,8 +13,40 @@
   stroke: #108f6f;
 }
 
+.rdp-range_start .rdp-day_button,
+.rdp-range_end .rdp-day_button {
+  background-color: #108f6f !important;
+  border-color: #108f6f !important;
+}
+
+.rdp-today {
+  color: #108f6f !important;
+}
+
+.rdp-range_middle {
+  background-color: #eaf9f4 !important;
+}
+
+.rdp-chevron {
+  fill: #108f6f !important;
+}
+
+/* .rdp-range_start {
+  background-color: linear-gradient(90deg, transparent 50%, #eaf9f4 50%) !important;
+}
+
+.rdp-range_end {
+  background-color: linear-gradient(90deg, #eaf9f4 50%, transparent 50%) !important;
+} */
+
 .rdp-months {
   display: block !important;
+}
+
+.rdp-range_end .rdp-day_button,
+.rdp-range_start .rdp-day_button {
+  color: white !important;
+  background-color: #108f6f !important;
 }
 
 .PhoneInputCountryIcon--border,
@@ -43,7 +75,7 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: #eaebf3;
+  background-color: #2a8f6f;
 }
 
 .darkMode::-webkit-scrollbar-thumb {

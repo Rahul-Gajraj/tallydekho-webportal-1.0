@@ -59,7 +59,7 @@ const LoadDetailDrawer = ({ open, toggleDrawer, data }) => {
       size={700}
     >
       <div className="relative mt-0 flex justify-between">
-        <Typography variant="h4" color="black">
+        <Typography variant="h4">
           {data ? data.title : "Machinery Loan"}
         </Typography>
         <img
@@ -95,7 +95,7 @@ const LoadDetailDrawer = ({ open, toggleDrawer, data }) => {
             {amounts.map(({ title, subtitle, icon }) => (
               <Card key={title} className="border shadow-none col-span-1">
                 <ListItem className="block hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                  <Typography variant="h6" color="black">
+                  <Typography variant="h6">
                     {title}
                   </Typography>
                   <Typography variant="small" className="font-normal">
@@ -116,7 +116,7 @@ const LoadDetailDrawer = ({ open, toggleDrawer, data }) => {
             {outstanding.map(({ title, subtitle, icon }) => (
               <Card key={title} className="border shadow-none col-span-1">
                 <ListItem className="block hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                  <Typography variant="h6" color="black">
+                  <Typography variant="h6">
                     {title}
                   </Typography>
                   <Typography variant="small" className="font-normal">
@@ -130,7 +130,7 @@ const LoadDetailDrawer = ({ open, toggleDrawer, data }) => {
       </Card>
       {data && data.emis && (
         <div>
-          <Typography color="black" className="font-semibold">
+          <Typography className="font-semibold">
             EMI Schedule Preview
           </Typography>
           <table className="mt-10 min-w-full table-auto text-left">
@@ -143,8 +143,7 @@ const LoadDetailDrawer = ({ open, toggleDrawer, data }) => {
                   >
                     <Typography
                       variant="small"
-                      color="blue-gray"
-                      className="font-normal leading-none opacity-70 pl-3"
+                      className="font-normal leading-none pl-3"
                     >
                       {head}
                     </Typography>

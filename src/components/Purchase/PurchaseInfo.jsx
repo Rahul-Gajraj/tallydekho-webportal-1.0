@@ -32,177 +32,155 @@ import {
 
 import moment from "moment";
 
+const PURCHASE_TABLE_HEAD = [
+  {
+    head: "Date",
+    customeStyle: "pl-4",
+  },
+  {
+    head: "Purchase #",
+  },
+  {
+    head: "Supplier",
+  },
+  {
+    head: "Amount",
+  },
+  {
+    head: "Status",
+  },
+  {
+    head: "Valid up to",
+  },
+  {
+    head: "Docs",
+  },
+];
+
+const PURCHASE_TABLE_ROW = [
+  {
+    date: "2025-11-02",
+    purchaseNumber: "PUR-5001",
+    supplier: "Sigma Suppliers",
+    amount: "₹ 32,000",
+    status: "Unpaid",
+    docs: "Receipt",
+  },
+  {
+    date: "2025-11-08",
+    purchaseNumber: "PUR-5002",
+    supplier: "Omega Traders",
+    amount: "₹ 15,000",
+    status: "Paid",
+    docs: "Note",
+  },
+];
+
+const ORDER_TABLE_HEAD = [
+  {
+    head: "Date",
+    customeStyle: "pl-4",
+  },
+  {
+    head: "PO #",
+  },
+  {
+    head: "Supplier",
+  },
+  {
+    head: "Amount",
+  },
+  {
+    head: "Status",
+  },
+  {
+    head: "Docs",
+  },
+];
+
+const ORDER_TABLE_ROW = [
+  {
+    date: "2025-11-03",
+    poNumber: "	PO-6001",
+    supplier: "Sigma Suppliers",
+    amount: "₹ 32,000",
+    status: "Pending",
+    docs: "Quotation",
+  },
+];
+
+const DELIVERY_TABLE_HEAD = [
+  {
+    head: "Date",
+    customeStyle: "pl-4",
+  },
+  {
+    head: "DN #",
+  },
+  {
+    head: "Supplier",
+  },
+  {
+    head: "Amount",
+  },
+  {
+    head: "Status",
+  },
+  {
+    head: "Vehicle No.",
+  },
+  {
+    head: "Docs",
+  },
+];
+
+const DELIVERY_TABLE_ROW = [
+  {
+    date: "2025-11-06",
+    dnNumber: "DN-7001",
+    supplier: "Omega Traders",
+    amount: "₹ 24,500",
+    status: "Delivered",
+    vehicleNumber: "MH12-AB-1234",
+    docs: "Invoice",
+  },
+];
+
+const DEBIT_TABLE_HEAD = [
+  {
+    head: "Date",
+    customeStyle: "pl-4",
+  },
+  {
+    head: "DN #",
+  },
+  {
+    head: "Supplier",
+  },
+  {
+    head: "Amount",
+  },
+  {
+    head: "Status",
+  },
+  {
+    head: "Docs",
+  },
+];
+
+const DEBIT_TABLE_ROW = [
+  {
+    date: "2025-11-07",
+    dnNumber: "DN-8001",
+    supplier: "Sigma Suppliers",
+    amount: "₹ 1,200",
+    status: "Issued",
+    docs: "Invoice",
+  },
+];
+
 const PurchaseInfo = () => {
-  const PURCHASE_TABLE_HEAD = [
-    {
-      head: "Date",
-      customeStyle: "text-center",
-    },
-    {
-      head: "Purchase #",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Supplier",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Amount",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Status",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Valid up to",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Docs",
-      //   customeStyle: "text-center",
-    },
-  ];
-
-  const PURCHASE_TABLE_ROW = [
-    {
-      date: "2025-11-02",
-      purchaseNumber: "PUR-5001",
-      supplier: "Sigma Suppliers",
-      amount: "₹ 32,000",
-      status: "Unpaid",
-      //   validUpTo: "",
-      docs: "Receipt",
-    },
-    {
-      date: "2025-11-08",
-      purchaseNumber: "PUR-5002",
-      supplier: "Omega Traders",
-      amount: "₹ 15,000",
-      status: "Paid",
-      //   validUpTo: "IRN-001",
-      docs: "Note",
-    },
-  ];
-
-  const ORDER_TABLE_HEAD = [
-    {
-      head: "Date",
-      customeStyle: "text-center",
-    },
-    {
-      head: "PO #",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Supplier",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Amount",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Status",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Docs",
-      //   customeStyle: "text-center",
-    },
-  ];
-
-  const ORDER_TABLE_ROW = [
-    {
-      date: "2025-11-03",
-      poNumber: "	PO-6001",
-      supplier: "Sigma Suppliers",
-      amount: "₹ 32,000",
-      status: "Pending",
-      docs: "Quotation",
-    },
-  ];
-
-  const DELIVERY_TABLE_HEAD = [
-    {
-      head: "Date",
-      customeStyle: "text-center",
-    },
-    {
-      head: "DN #",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Supplier",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Amount",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Status",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Vehicle No.",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Docs",
-      //   customeStyle: "text-center",
-    },
-  ];
-
-  const DELIVERY_TABLE_ROW = [
-    {
-      date: "2025-11-06",
-      dnNumber: "DN-7001",
-      supplier: "Omega Traders",
-      amount: "₹ 24,500",
-      status: "Delivered",
-      vehicleNumber: "MH12-AB-1234",
-      docs: "Invoice",
-    },
-  ];
-
-  const DEBIT_TABLE_HEAD = [
-    {
-      head: "Date",
-      customeStyle: "text-center",
-    },
-    {
-      head: "DN #",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Supplier",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Amount",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Status",
-      //   customeStyle: "text-center",
-    },
-    {
-      head: "Docs",
-      //   customeStyle: "text-center",
-    },
-  ];
-
-  const DEBIT_TABLE_ROW = [
-    {
-      date: "2025-11-07",
-      dnNumber: "DN-8001",
-      supplier: "Sigma Suppliers",
-      amount: "₹ 1,200",
-      status: "Issued",
-      docs: "Invoice",
-    },
-  ];
+  const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
 
   const [date, setDate] = useState({
     from: new Date(),
@@ -214,24 +192,26 @@ const PurchaseInfo = () => {
       <Card className="col-span-6 shadow-sm border border-gray-200 !rounded-lg flex my-5">
         <div className="grid lg:grid-cols-2 grid-cols-1 items-center m-7 mb-2">
           <div className="flex items-center gap-2">
-            <Typography
-              variant="small"
-              className="font-normal shrink-0 text-gray-600"
-            >
+            <Typography variant="small" className="font-normal shrink-0">
               Date Range
             </Typography>
-            <Popover placement="bottom">
+            <Popover
+              open={isDateRangeOpen}
+              handler={setIsDateRangeOpen}
+              placement="bottom"
+            >
               <PopoverHandler>
                 <Button
                   variant="outlined"
-                  className="flex items-center gap-3 !border-gray-300"
+                  className={`flex items-center gap-3 font-normal ${
+                    isDateRangeOpen ? "border-[#108f6f]" : "border-[#b0bec5]"
+                  } hover:border-[2px] ${
+                    isDateRangeOpen ? "!border-[2px]" : "broder-px"
+                  } hover:border-[#108f6f] shadow-none`}
                 >
                   {moment(date.from).format("DD MMM, yyyy")} -{" "}
                   {moment(date.to).format("DD MMM, yyyy")}
-                  <CalendarDaysIcon
-                    strokeWidth={2}
-                    className="w-4 h-4 text-gray-600"
-                  />
+                  <CalendarDaysIcon strokeWidth={2} className="w-4 h-4" />
                 </Button>
               </PopoverHandler>
               <PopoverContent className="z-20">
@@ -254,7 +234,7 @@ const PurchaseInfo = () => {
                     head_row: "flex !font-medium text-gray-900",
                     head_cell: "m-0.5 w-9 !font-normal text-sm",
                     row: "flex w-full mt-2",
-                    cell: "text-gray-600 rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                    cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
                     day: "h-9 w-9 p-0 !font-normal",
                     day_range_end: "day-range-end",
                     day_selected:
@@ -295,10 +275,17 @@ const PurchaseInfo = () => {
                     minWidth: "100px",
                   },
                 }}
+                color="green"
               >
-                <Option>All</Option>
-                <Option>Paid</Option>
-                <Option>Unpaid</Option>
+                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                  All
+                </Option>
+                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                  Paid
+                </Option>
+                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                  Unpaid
+                </Option>
               </Select>
               <Select
                 className="bg-white-600"
@@ -310,21 +297,27 @@ const PurchaseInfo = () => {
                     minWidth: "150px",
                   },
                 }}
+                color="green"
               >
-                <Option>All</Option>
-                <Option>Purchase Invoice</Option>
-                <Option>Debit Note</Option>
+                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                  All
+                </Option>
+                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                  Purchase Invoice
+                </Option>
+                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                  Debit Note
+                </Option>
               </Select>
             </div>
             <Input
               label="Search in registers..."
               icon={<MagnifyingGlassIcon className="h-5" />}
               className="w-[150px]"
+              color="green"
             />
           </div>
         </div>
-        {/* <CardHeader floated={false} shadow={false} className="p-2 !rounded-lg">
-        </CardHeader> */}
 
         <CardBody className="pt-4">
           <Tabs value="purchase_register">
@@ -342,14 +335,10 @@ const PurchaseInfo = () => {
                       {PURCHASE_TABLE_HEAD.map(({ head, customeStyle }) => (
                         <th
                           key={head}
-                          className={"border-b border-gray-300 pb-4"}
+                          className={`border-b border-gray-300 pb-4 ${customeStyle}`}
                         >
-                          <div className="flex gap-2 justify-center">
-                            <Typography
-                              color="blue-gray"
-                              variant="small"
-                              className="!font-bold"
-                            >
+                          <div className="flex">
+                            <Typography variant="small" className="!font-bold">
                               {head}
                             </Typography>
                           </div>
@@ -371,42 +360,42 @@ const PurchaseInfo = () => {
                         },
                         index
                       ) => {
-                        const classes = "!p-4 border-b border-gray-300";
+                        const classes = "!py-4 border-b border-gray-300";
                         return (
                           <tr key={index}>
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal ml-4"
                               >
-                                {date}
+                                {date || "-"}
                               </Typography>
                             </td>
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
-                                {purchaseNumber}
+                                {purchaseNumber || "-"}
                               </Typography>
                             </td>
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
-                                {supplier}
+                                {supplier || "-"}
                               </Typography>
                             </td>
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
-                                {amount}
+                                {amount || "-"}
                               </Typography>
                             </td>
-                            <td className={`${classes} flex justify-center`}>
+                            <td className={classes}>
                               <div className="w-max">
                                 <Chip
                                   variant="ghost"
@@ -424,23 +413,17 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
-                                {validUpTo ?? ""}
+                                {validUpTo ?? "-"}
                               </Typography>
                             </td>
                             <td className="border-b border-gray-300">
-                              <div className="w-full flex justify-center gap-1">
-                                {docs.split(",").map((doc, idx) => (
-                                  <Chip
-                                    key={idx}
-                                    variant="ghost"
-                                    value={doc ? doc.trim() : ""}
-                                    className="bg-[#ECFDF5] text-[#4F8A75] normal-case"
-                                    // color=""
-                                  />
-                                ))}
-                              </div>
+                              <img
+                                src="/media/common/docs.svg"
+                                alt="docs"
+                                className="w-5 h-5 ml-2"
+                              />
                             </td>
                           </tr>
                         );
@@ -456,14 +439,10 @@ const PurchaseInfo = () => {
                       {ORDER_TABLE_HEAD.map(({ head, customeStyle }) => (
                         <th
                           key={head}
-                          className={"border-b border-gray-300 pb-4"}
+                          className={`border-b border-gray-300 pb-4 ${customeStyle}`}
                         >
-                          <div className="flex gap-2 justify-center">
-                            <Typography
-                              color="blue-gray"
-                              variant="small"
-                              className="!font-bold"
-                            >
+                          <div className="flex">
+                            <Typography variant="small" className="!font-bold">
                               {head}
                             </Typography>
                           </div>
@@ -477,13 +456,13 @@ const PurchaseInfo = () => {
                         { date, poNumber, supplier, amount, status, docs },
                         index
                       ) => {
-                        const classes = "!p-4 border-b border-gray-300";
+                        const classes = "!py-4 border-b border-gray-300";
                         return (
                           <tr key={index}>
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal ml-4"
                               >
                                 {date}
                               </Typography>
@@ -491,7 +470,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {poNumber}
                               </Typography>
@@ -499,7 +478,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {supplier}
                               </Typography>
@@ -507,12 +486,12 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {amount}
                               </Typography>
                             </td>
-                            <td className={`${classes} flex justify-center`}>
+                            <td className={classes}>
                               <div className="w-max">
                                 <Chip
                                   variant="ghost"
@@ -528,17 +507,11 @@ const PurchaseInfo = () => {
                               </div>
                             </td>
                             <td className="border-b border-gray-300">
-                              <div className="w-full flex justify-center gap-1">
-                                {docs.split(",").map((doc, idx) => (
-                                  <Chip
-                                    key={idx}
-                                    variant="ghost"
-                                    value={doc ? doc.trim() : ""}
-                                    className="bg-[#ECFDF5] text-[#4F8A75] normal-case"
-                                    // color=""
-                                  />
-                                ))}
-                              </div>
+                              <img
+                                src="/media/common/docs.svg"
+                                alt="docs"
+                                className="w-5 h-5 ml-2"
+                              />
                             </td>
                           </tr>
                         );
@@ -554,14 +527,10 @@ const PurchaseInfo = () => {
                       {DELIVERY_TABLE_HEAD.map(({ head, customeStyle }) => (
                         <th
                           key={head}
-                          className={"border-b border-gray-300 pb-4"}
+                          className={`border-b border-gray-300 pb-4 ${customeStyle}`}
                         >
-                          <div className="flex gap-2 justify-center">
-                            <Typography
-                              color="blue-gray"
-                              variant="small"
-                              className="!font-bold"
-                            >
+                          <div className="flex">
+                            <Typography variant="small" className="!font-bold">
                               {head}
                             </Typography>
                           </div>
@@ -583,13 +552,13 @@ const PurchaseInfo = () => {
                         },
                         index
                       ) => {
-                        const classes = "!p-4 border-b border-gray-300";
+                        const classes = "!py-4 border-b border-gray-300";
                         return (
                           <tr key={index}>
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal ml-4"
                               >
                                 {date}
                               </Typography>
@@ -597,7 +566,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {dnNumber}
                               </Typography>
@@ -605,7 +574,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {supplier}
                               </Typography>
@@ -613,12 +582,12 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {amount}
                               </Typography>
                             </td>
-                            <td className={`${classes} flex justify-center`}>
+                            <td className={classes}>
                               <div className="w-max">
                                 <Chip
                                   variant="ghost"
@@ -636,23 +605,17 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {vehicleNumber}
                               </Typography>
                             </td>
                             <td className="border-b border-gray-300">
-                              <div className="w-full flex justify-center gap-1">
-                                {docs.split(",").map((doc, idx) => (
-                                  <Chip
-                                    key={idx}
-                                    variant="ghost"
-                                    value={doc ? doc.trim() : ""}
-                                    className="bg-[#ECFDF5] text-[#4F8A75] normal-case"
-                                    // color=""
-                                  />
-                                ))}
-                              </div>
+                              <img
+                                src="/media/common/docs.svg"
+                                alt="docs"
+                                className="w-5 h-5 ml-2"
+                              />
                             </td>
                           </tr>
                         );
@@ -668,14 +631,10 @@ const PurchaseInfo = () => {
                       {DEBIT_TABLE_HEAD.map(({ head, customeStyle }) => (
                         <th
                           key={head}
-                          className={"border-b border-gray-300 pb-4"}
+                          className={`border-b border-gray-300 pb-4 ${customeStyle}`}
                         >
-                          <div className="flex gap-2 justify-center">
-                            <Typography
-                              color="blue-gray"
-                              variant="small"
-                              className="!font-bold"
-                            >
+                          <div className="flex">
+                            <Typography variant="small" className="!font-bold">
                               {head}
                             </Typography>
                           </div>
@@ -695,7 +654,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {date}
                               </Typography>
@@ -703,7 +662,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {dnNumber}
                               </Typography>
@@ -711,7 +670,7 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {supplier}
                               </Typography>
@@ -719,12 +678,12 @@ const PurchaseInfo = () => {
                             <td className={classes}>
                               <Typography
                                 variant="small"
-                                className="!font-normal text-gray-600 text-center"
+                                className="!font-normal"
                               >
                                 {amount}
                               </Typography>
                             </td>
-                            <td className={`${classes} flex justify-center`}>
+                            <td className={classes}>
                               <div className="w-max">
                                 <Chip
                                   variant="ghost"
@@ -740,17 +699,11 @@ const PurchaseInfo = () => {
                               </div>
                             </td>
                             <td className="border-b border-gray-300">
-                              <div className="w-full flex justify-center gap-1">
-                                {docs.split(",").map((doc, idx) => (
-                                  <Chip
-                                    key={idx}
-                                    variant="ghost"
-                                    value={doc ? doc.trim() : ""}
-                                    className="bg-[#ECFDF5] text-[#4F8A75] normal-case"
-                                    // color=""
-                                  />
-                                ))}
-                              </div>
+                              <img
+                                src="/media/common/docs.svg"
+                                alt="docs"
+                                className="w-5 h-5 ml-2"
+                              />
                             </td>
                           </tr>
                         );

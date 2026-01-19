@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Navbar,
-  MobileNav,
   Typography,
   Button,
   IconButton,
@@ -26,16 +25,33 @@ import {
 } from "@heroicons/react/24/solid";
 
 import CreateInvoiceDrawer from "./Drawers/Sales/CreateInvoiceDrawer";
+import CreateQuotationDrawer from "./Drawers/Sales/CreateQuotationDrawer";
+import CreateSalesOrderDrawer from "./Drawers/Sales/CreateSalesOrderDrawer";
+import CreateDeliveryNoteDrawer from "./Drawers/Sales/CreatedeliveryNoteDrawer";
+import CreateCreditNoteDrawer from "./Drawers/Sales/CreatCreditNoteDrawer";
+import CreatePurchaseInvoiceDrawer from "./Drawers/Purchase/PurchaceInvoiceDrawer";
+import CreatePurchaseOrderDrawer from "./Drawers/Purchase/PurchaseOrderDrawer";
+import PurchaseDebitNoteDrawer from "./Drawers/Purchase/PurchaseDebitNoteDrawer";
+import PaymentVoucher from "./Drawers/Voucher/PaymentVoucher";
+import ReceiptVoucherDrawer from "./Drawers/Voucher/ReceiptVoucherDrawer";
+import ContraVoucherDrawer from "./Drawers/Voucher/ContraVoucher";
+import JournalVoucherDrawer from "./Drawers/Voucher/JournalVoucher";
+import StockAdjustment from "./Drawers/Inventory/StockAdjustment";
+import StockTransfer from "./Drawers/Inventory/StockTransfer";
+import AddItem from "./Drawers/Inventory/AddItem";
+import AddWarehouse from "./Drawers/Inventory/AddWarehouse";
 
 const Notification = () => {
+  const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
+
   return (
-    <Menu>
+    <Menu open={openNotificationMenu} handler={setOpenNotificationMenu}>
       <MenuHandler>
         <IconButton
           variant="text"
-          className={
-            "cursor-pointer p-3 rounded-full fill-black hover:fill-[#108F6F] hover:bg-transparent focus:fill-[#108F6F]"
-          }
+          className={`cursor-pointer p-3 rounded-full ${
+            openNotificationMenu ? "fill-[#108f6f]" : "fill-[#868a8c]"
+          } hover:fill-[#108f6f] hover:bg-transparent focus:fill-[#108f6f]`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,20 +67,14 @@ const Notification = () => {
         </IconButton>
       </MenuHandler>
       <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-30">
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
-          <Typography variant="small" color="gray" className="font-semibold">
-            All
-          </Typography>
+        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 hover:!bg-[#eaf8f4] ">
+          <Typography variant="small">All</Typography>
         </MenuItem>
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
-          <Typography variant="small" color="gray" className="font-semibold">
-            Transaction
-          </Typography>
+        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 hover:!bg-[#eaf8f4] ">
+          <Typography variant="small">Transaction</Typography>
         </MenuItem>
-        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8">
-          <Typography variant="small" color="gray" className="font-semibold">
-            Analytics
-          </Typography>
+        <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 hover:!bg-[#eaf8f4] ">
+          <Typography variant="small">Analytics</Typography>
         </MenuItem>
       </MenuList>
     </Menu>
@@ -115,6 +125,7 @@ const FYear = () => {
       containerProps={{
         style: {
           minWidth: "130px",
+          // borderWidth: '1px'
         },
       }}
       color="green"
@@ -123,7 +134,7 @@ const FYear = () => {
         <Option
           key={fYear}
           value={fYear}
-          className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+          className="hover:!bg-[#eaf8f4] focus:!bg-[#eaf8f4] data-[selected=true]:bg-[#eaf8f4] data-[selected=true]:!text-[#108F6F]"
         >
           {fYear}
         </Option>
@@ -149,19 +160,19 @@ const Profile = ({ toggleDrawer }) => {
         </MenuHandler>
         <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-30">
           <MenuItem disabled className="flex items-center gap-4 py-2 pl-2 pr-8">
-            <Typography variant="small" color="black" className="font-black">
+            <Typography variant="small" className="font-black">
               John Doe
             </Typography>
           </MenuItem>
           <MenuItem disabled className="flex items-center gap-4 py-2 pl-2 pr-8">
-            <Typography variant="small" color="black" className="font-black">
+            <Typography variant="small" className="font-black">
               9876543210
             </Typography>
           </MenuItem>
           <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 hover:bg-[#f8dcdc]">
             <Typography
               variant="small"
-              className="font-semibold text-[#e53935]"
+              className="font-semibold !text-[#e53935]"
             >
               Log Out
             </Typography>
@@ -179,13 +190,21 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
   const [openInventoryMenu, setOpenInventoryMenu] = useState(false);
   const [openLedgerMenu, setOpenLedgerMenu] = useState(false);
 
+  const [openCreateMenu, setOpenCreateMenu] = useState(false);
+
   return (
     <>
-      <Menu>
+      <Menu open={openCreateMenu} handler={setOpenCreateMenu}>
         <MenuHandler>
           <Button
             variant="outlined"
-            className="border-[#b0bec5] normal-case h-[2.5rem] focus:ring-0 text-[#455a64] text-[14px] font-normal hover:border-[#108f6f] hover:text-[#108f6f] flex items-center px-[12px] leading-[20px]"
+            className={`${
+              openCreateMenu ? "border-[#108f6f]" : "border-[#b0bec5]"
+            } normal-case h-[2.5rem] focus:ring-0 ${
+              openCreateMenu ? "!text-[#108f6f]" : ""
+            } text-[14px] font-normal hover:border-[#108f6f] hover:!text-[#108f6f] flex items-center px-[12px] leading-[20px] hover:border-[2px] ${
+              openCreateMenu ? "!border-[2px]" : "broder-px"
+            }`}
             ripple={false}
           >
             {" "}
@@ -234,27 +253,27 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("salesQuotation")}
               >
                 Create Quotation
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("salesOrder")}
               >
                 Create Sales Order
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("salesDeliveryNote")}
               >
                 Create Delivery Note
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("salesNote")}
               >
-                Create Note
+                Credit Note
               </MenuItem>
             </MenuList>
           </Menu>
@@ -283,19 +302,19 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             <MenuList>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("purchaseInvoice")}
               >
                 Create Purchase Invoice
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("purchaseOrder")}
               >
                 Create Purchase Order
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("purchaseDebitNote")}
               >
                 Debit Note
               </MenuItem>
@@ -326,25 +345,25 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             <MenuList>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("paymentVoucher")}
               >
                 Payment Voucher
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("receiptVoucher")}
               >
                 Receipt Voucher
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("contraVoucher")}
               >
                 Contra Voucher
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("journalVoucher")}
               >
                 Journal Voucher
               </MenuItem>
@@ -375,25 +394,25 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             <MenuList>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("stockAdjustment")}
               >
                 Stock Adjustment
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("stockTransfer")}
               >
                 Stock Transfer
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("addItem")}
               >
                 Add Item
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("addWarehouse")}
               >
                 Add Warehouse
               </MenuItem>
@@ -454,8 +473,7 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
   );
 };
 
-const Header = ({ toggleDrawer }) => {
-  const [openNav, setOpenNav] = useState(false);
+const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
   const [areDrawersOpen, setAreDrawersOpen] = useState({
     salesInvoice: false,
     salesQuotation: false,
@@ -474,13 +492,6 @@ const Header = ({ toggleDrawer }) => {
     addItem: false,
     addWarehouse: false,
   });
-
-  useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
-  }, []);
 
   const toggleDrawerHandler = (key) => {
     setAreDrawersOpen((prev) => {
@@ -508,7 +519,7 @@ const Header = ({ toggleDrawer }) => {
           <IconButton
             variant="text"
             className={
-              "cursor-pointer p-3 rounded-full fill-black hover:fill-[#108F6F] hover:bg-transparent focus:fill-[#108F6F]"
+              "cursor-pointer p-3 rounded-full fill-[#868a8c] hover:fill-[#108F6F] hover:bg-transparent focus:fill-[#108F6F]"
             }
             onClick={() => {
               toggleDrawer();
@@ -535,71 +546,101 @@ const Header = ({ toggleDrawer }) => {
 
   return (
     <>
-      <Navbar className="header fixed top-0 z-30 left-0 right-0 items-stretch shrink-0 mx-auto border-0 bg-white shadow-xl rounded-none min-w-full">
-        <div className="mx-auto flex items-center text-blue-gray-900 gap-5">
-          <Typography
-            as="a"
-            href="#"
-            className="cursor-pointer py-1.5 font-medium text-black w-[240px]"
-          >
-            TallyDekho
-          </Typography>
-          <div className="flex justify-between w-full items-center gap-5">
-            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 w-full max-w-[678px] h-[40px] bg-[#F5F7F9] items-center focus-within:ring-[#108F6F]">
-              <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-                <img className="" src="/media/custom/search-sm.svg" />
-              </span>
-              <input
-                id="header-search-input"
-                name="header-search-input"
-                type="text"
-                placeholder="Search for customers, items, invoices, ledgers or vouchers"
-                className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-black sm:text-sm/6 focus:border-0"
-              />
-            </div>
-            <IconButton
-              variant="text"
-              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-              ripple={false}
-              onClick={() => setOpenNav(!openNav)}
-            >
-              {openNav ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </IconButton>
-            <div className="hidden lg:block">{navList}</div>
+      <header
+        className="header flex fixed top-0 z-30 left-0 right-0 border-0 bg-white shadow rounded-none px-5 transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+        style={{
+          paddingLeft: isPinned ? 251 : 60,
+        }}
+      >
+        <div className="container-fixed flex justify-between lg:gap-4 items-center pl-5">
+          <div className="flex rounded-md ring-1 focus-within:ring-2 ring-inset ring-gray-300 w-full max-w-[500px] h-[40px] bg-[#F5F7F9] items-center focus-within:ring-[#108F6F]">
+            <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
+              <img className="" src="/media/custom/search-sm.svg" />
+            </span>
+            <input
+              id="header-search-input"
+              name="header-search-input"
+              type="text"
+              placeholder="Search for customers, items, invoices, ledgers or vouchers"
+              className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
+            />
           </div>
+          <div className="hidden lg:block">{navList}</div>
         </div>
-      </Navbar>
+      </header>
+
+      {/* Sales Drawers Start */}
       <CreateInvoiceDrawer
         open={areDrawersOpen.salesInvoice}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <CreateQuotationDrawer
+        open={areDrawersOpen.salesQuotation}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <CreateSalesOrderDrawer
+        open={areDrawersOpen.salesOrder}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <CreateDeliveryNoteDrawer
+        open={areDrawersOpen.salesDeliveryNote}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <CreateCreditNoteDrawer
+        open={areDrawersOpen.salesNote}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      {/* Sales Drawers End */}
+
+      {/* Purchase Drawers Start */}
+      <CreatePurchaseInvoiceDrawer
+        open={areDrawersOpen.purchaseInvoice}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <CreatePurchaseOrderDrawer
+        open={areDrawersOpen.purchaseOrder}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <PurchaseDebitNoteDrawer
+        open={areDrawersOpen.purchaseDebitNote}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      {/* Purchase Drawers End */}
+
+      {/* Voucher Drawers Start */}
+      <PaymentVoucher
+        open={areDrawersOpen.paymentVoucher}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <ReceiptVoucherDrawer
+        open={areDrawersOpen.receiptVoucher}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <ContraVoucherDrawer
+        open={areDrawersOpen.contraVoucher}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <JournalVoucherDrawer
+        open={areDrawersOpen.journalVoucher}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      {/* Voucher Drawers End */}
+
+      {/* Inventory Drawers Start */}
+      <StockAdjustment
+        open={areDrawersOpen.stockAdjustment}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <StockTransfer
+        open={areDrawersOpen.stockTransfer}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <AddItem
+        open={areDrawersOpen.addItem}
+        toggleDrawer={toggleDrawerHandler}
+      />
+      <AddWarehouse
+        open={areDrawersOpen.addWarehouse}
         toggleDrawer={toggleDrawerHandler}
       />
     </>

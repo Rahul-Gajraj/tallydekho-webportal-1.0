@@ -94,11 +94,7 @@ const CustomerSupplierTabs = () => {
                   key={head}
                   className={`border-b border-gray-300 pb-4 ${customeStyle}`}
                 >
-                  <Typography
-                    color="blue-gray"
-                    variant="small"
-                    className="!font-bold"
-                  >
+                  <Typography variant="small" className="!font-bold">
                     {head}
                   </Typography>
                 </th>
@@ -114,7 +110,7 @@ const CustomerSupplierTabs = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      className="!font-normal text-gray-600 text-center"
+                      className="!font-normal text-center"
                     >
                       {name}
                     </Typography>
@@ -122,7 +118,7 @@ const CustomerSupplierTabs = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      className="!font-normal text-gray-600 text-center"
+                      className="!font-normal text-center"
                     >
                       {amount}
                     </Typography>
@@ -146,11 +142,7 @@ const CustomerSupplierTabs = () => {
                   key={head}
                   className={`border-b border-gray-300 pb-4 ${customeStyle}`}
                 >
-                  <Typography
-                    color="blue-gray"
-                    variant="small"
-                    className="!font-bold"
-                  >
+                  <Typography variant="small" className="!font-bold">
                     {head}
                   </Typography>
                 </th>
@@ -166,7 +158,7 @@ const CustomerSupplierTabs = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      className="!font-normal text-gray-600 text-center"
+                      className="!font-normal text-center"
                     >
                       {name}
                     </Typography>
@@ -174,7 +166,7 @@ const CustomerSupplierTabs = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      className="!font-normal text-gray-600 text-center"
+                      className="!font-normal text-center"
                     >
                       {amount}
                     </Typography>
@@ -197,9 +189,7 @@ const CustomerSupplierTabs = () => {
         shadow={false}
         className="p-2 flex gap-6 flex-wrap items-center justify-between"
       >
-        <Typography variant="h6" color="black">
-          Top 5
-        </Typography>
+        <Typography variant="h6">Top 5</Typography>
       </CardHeader>
       <CardBody className="!p-2 mx-4">
         <Tabs value="customers">

@@ -16,6 +16,7 @@ import {
   Checkbox,
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import Error from "../../../Error/Error";
 
 const defaultValues = {
@@ -58,10 +59,8 @@ const AddCustomerDialog = ({ open, handleOpen, addHandler }) => {
         className="p-4"
       >
         <DialogHeader className="relative m-0 block">
-          <Typography variant="h4" color="blue-gray">
-            Add Customer
-          </Typography>
-          <Typography className="mt-1 font-normal text-gray-600">
+          <Typography variant="h4">Add Customer</Typography>
+          <Typography className="mt-1 font-normal">
             Fill the form for information
           </Typography>
           <IconButton
@@ -107,11 +106,7 @@ const AddCustomerDialog = ({ open, handleOpen, addHandler }) => {
             <Textarea rows={2} label="Billing Address" color="green" />
             <Checkbox
               label={
-                <Typography
-                  variant="small"
-                  color="gray"
-                  className="ml-2 leading-none"
-                >
+                <Typography variant="small" className="ml-2 leading-none">
                   Same as billing address
                 </Typography>
               }
@@ -150,6 +145,7 @@ const AddCustomerDialog = ({ open, handleOpen, addHandler }) => {
               //     handleOpen("customer");
               //   }}
               type="submit"
+              style={{ color: "white !important" }}
             >
               Add Product
             </Button>

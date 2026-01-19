@@ -26,10 +26,10 @@ const ReceivablesPayables = () => {
   const [selectedTab, setSelectedTab] = useState("receivables");
 
   return (
-    <div className="mx-5 h-[100vh] overflow-y-scroll">
-      <section className="mx-auto mt-[90px]">
+    <div className="mx-5">
+      <section className="mx-auto mt-8">
         <Card className="shadow-sm border border-gray-200 !rounded-lg p-4 grid grid-cols-3">
-          <Typography className="font-bold text-xl text-black col-span-2">
+          <Typography className="font-bold text-xl col-span-2">
             Receivables & Payables
           </Typography>
           <div className="col-span-1 flex gap-3 justify-end">

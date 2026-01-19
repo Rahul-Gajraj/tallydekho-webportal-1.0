@@ -6,8 +6,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import bootstrap5Plugin from "@fullcalendar/bootstrap5";
-import EMIDetailDrawer from "./Drawer/EMIDetailDrawer";
 import toast from "react-hot-toast";
+
+import EMIDetailDrawer from "./Drawer/EMIDetailDrawer";
 
 const date = new Date();
 const nextDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
@@ -100,7 +101,8 @@ const EVENTS = [
 const EMICalendar = ({ setSelectedEvent }) => {
   const CALENDER_DATA = useMemo(() => {
     return EVENTS.map((event) => {
-      return { ...event, title: `${event.emi} - ${event.loan}` };
+      // return { ...event, title: `${event.emi} - ${event.loan}` };
+      return { ...event, title: event.loan };
     });
   }, []);
 
@@ -123,15 +125,33 @@ const EMICalendar = ({ setSelectedEvent }) => {
   };
 
   const renderEventContent = (eventInfo) => {
+    const viewType = eventInfo.view.type;
     const { title, textColor } = eventInfo.event;
     const { status, bgColor } = eventInfo.event.extendedProps;
 
     return {
-      html: `<div style="background-color: ${bgColor}; border: 1px solid ${textColor};" class="event-box">
+      html: `<div style="background-color: ${
+        viewType == "listMonth" ? "" : bgColor
+      }; padding: ${viewType == "listMonth" ? "0px" : "1px 6px"};" class="event-box">
             <span class="event-title">${title}</span>
-            <span class="event-status">${status}</span>
         </div>`,
     };
+  };
+
+  const handleEventDidMount = (info) => {
+    const viewType = info.view.type;
+    const { title, textColor } = info.event;
+    const { status, bgColor } = info.event.extendedProps;
+
+    if (viewType === "listMonth") {
+      const dot = info.el.querySelector(".fc-list-event-dot");
+
+      if (dot) {
+        dot.classList.add("custom-list-dot");
+        dot.style.border =
+          `5px solid ${textColor}` || "5px solid #3788d8";
+      }
+    }
   };
 
   const handleDayClick = (dateStr) => {
@@ -142,169 +162,84 @@ const EMICalendar = ({ setSelectedEvent }) => {
       setSelectedEvent({ date: eventsForDay[0].date, emis: eventsForDay });
       // console.log(eventsForDay);
     } else {
-      setSelectedEvent(null)
+      setSelectedEvent(null);
       // toast.error('No events on this date')
     }
+  };
+
+  const calendarOptions = {
+    events: CALENDER_DATA,
+    plugins: [
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+      bootstrap5Plugin,
+    ],
+    initialView: "dayGridMonth",
+    headerToolbar: {
+      start: "prev,next, title",
+      // end: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+      end: "dayGridMonth,listMonth",
+    },
+    views: {
+      week: {
+        titleFormat: { year: "numeric", month: "long", day: "numeric" },
+      },
+    },
+    height: "auto",
+    editable: true,
+    eventResizableFromStart: true,
+    dragScroll: true,
+    dayMaxEvents: 2,
+    navLinks: true,
+    // eventClassNames({ event: calendarEvent }) {
+    //   const colorName = calendarEvent._def.extendedProps.bgColor;
+    //   return [
+    //     `bg-[${colorName}]`,
+    //   ];
+    // },
+    // eventClick({ event: clickedEvent }) {
+    //   dispatch(handleSelectEvent(clickedEvent))
+    //   handleAddEventSidebarToggle()
+    // },
+    // customButtons: {
+    //   sidebarToggle: {
+    //     icon: 'bi bi-list',
+    //     click() {
+    //       handleLeftSidebarToggle()
+    //     }
+    //   }
+    // },
+    // dateClick(info) {
+    //   const ev = { ...blankEvent }
+    //   ev.start = info.date
+    //   ev.end = info.date
+    //   ev.allDay = true
+
+    //   // @ts-ignore
+    //   dispatch(handleSelectEvent(ev))
+    //   handleAddEventSidebarToggle()
+    // },
+    // eventDrop({ event: droppedEvent }) {
+    //   dispatch(updateEvent(droppedEvent))
+    // },
+    // eventResize({ event: resizedEvent }) {
+    //   dispatch(updateEvent(resizedEvent))
+    // },
+    // ref: calendarRef,
+
+    // Get direction from app state (store)
+    // direction
   };
 
   return (
     <>
       <section className="mt-5">
         <FullCalendar
-          // plugins={[
-          //   dayGridPlugin,
-          //   timeGridPlugin,
-          //   listPlugin,
-          //   interactionPlugin,
-          //   bootstrap5Plugin,
-          // ]}
-          plugins={[dayGridPlugin, interactionPlugin, bootstrap5Plugin]}
-          initialView="dayGridMonth"
-          // initialView="listWeek"
-          // themeSystem="bootstrap5"
-          editable={true}
-          selectable={true}
-          dayMaxEvents={2}
-          // dayMaxEventRows={2}
-          moreLinkContent={(args) => `+${args.num} more`}
+          {...calendarOptions}
           eventContent={renderEventContent}
-          dayCellContent={renderDayCell}
-          events={
-            //     [
-            //   {
-            //     id: 1,
-            //     url: "",
-            //     title: "Design Review",
-            //     start: date,
-            //     end: date,
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Business",
-            //     },
-            //     backgroundColor: "green",
-            //     borderColor: "green",
-            //   },
-            //   {
-            //     id: 2,
-            //     url: "",
-            //     title: "Meeting With Client",
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -11),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -10),
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Business",
-            //     },
-            //   },
-            //   {
-            //     id: 3,
-            //     url: "",
-            //     title: "Family Trip",
-            //     allDay: true,
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -9),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -9),
-            //     extendedProps: {
-            //       calendar: "Holiday",
-            //     },
-            //   },
-            //   {
-            //     id: 4,
-            //     url: "",
-            //     title: "Doctor's Appointment",
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -11),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -10),
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Personal",
-            //     },
-            //   },
-            //   {
-            //     id: 5,
-            //     url: "",
-            //     title: "Dart Game?",
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "ETC",
-            //     },
-            //   },
-            //   {
-            //     id: 6,
-            //     url: "",
-            //     title: "Meditation",
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Personal",
-            //     },
-            //   },
-            //   {
-            //     id: 7,
-            //     url: "",
-            //     title: "Dinner",
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Family",
-            //       status: "done",
-            //     },
-            //   },
-            //   {
-            //     id: 8,
-            //     url: "",
-            //     title: "Product Review",
-            //     start: new Date(date.getFullYear(), date.getMonth() + 1, -13),
-            //     end: new Date(date.getFullYear(), date.getMonth() + 1, -12),
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Business",
-            //     },
-            //   },
-            //   {
-            //     id: 9,
-            //     url: "",
-            //     title: "Monthly Meeting",
-            //     start: nextMonth,
-            //     end: nextMonth,
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Business",
-            //     },
-            //   },
-            //   {
-            //     id: 10,
-            //     url: "",
-            //     title: "Monthly Checkup",
-            //     start: prevMonth,
-            //     end: prevMonth,
-            //     allDay: true,
-            //     extendedProps: {
-            //       calendar: "Personal",
-            //     },
-            //   },
-            // ]
-            CALENDER_DATA
-          }
-          dateClick={(info) => handleDayClick(info.dateStr)}
-          eventClick={(info) => {
-            const date = info.event.startStr.split("T")[0];
-            handleDayClick(date);
-          }}
-          dayCellDidMount={(arg) => {
-            arg.el.addEventListener("click", () => {
-              const dateStr = arg.date.toISOString().split("T")[0];
-              handleDayClick(dateStr);
-            });
-          }}
-          height="auto"
-          headerToolbar={{
-            start: "prev,title,next, today",
-            //   center: "title",
-            right: "",
-          }}
-          showNonCurrentDates={false}
+          eventDidMount={handleEventDidMount}
         />
       </section>
     </>

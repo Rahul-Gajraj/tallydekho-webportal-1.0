@@ -80,7 +80,7 @@ const InvoiceTable = () => {
         shadow={false}
         className="p-2 flex gap-6 flex-wrap items-center justify-between"
       >
-        <Typography variant="h6" color="black">
+        <Typography variant="h6">
           Top 10 Invoices
         </Typography>
       </CardHeader>
@@ -92,7 +92,6 @@ const InvoiceTable = () => {
                 <th key={head} className="border-b border-gray-300 !p-4">
                   <div className="flex items-center">
                     <Typography
-                      color="blue-gray"
                       variant="small"
                       className="!font-bold"
                     >
@@ -111,7 +110,6 @@ const InvoiceTable = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      color="blue-gray"
                       className="font-bold"
                     >
                       {number}
@@ -120,8 +118,7 @@ const InvoiceTable = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      color="blue-gray"
-                      className="!font-normal text-gray-600"
+                      className="!font-normal"
                     >
                       {customer}
                     </Typography>
@@ -129,7 +126,7 @@ const InvoiceTable = () => {
                   <td className={classes}>
                     <Typography
                       variant="small"
-                      className="!font-normal text-gray-600"
+                      className="!font-normal"
                     >
                       {amount}
                     </Typography>

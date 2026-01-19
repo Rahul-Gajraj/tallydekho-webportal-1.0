@@ -157,7 +157,7 @@ const LoanODFilterTable = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by loan name / account no / lender"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -240,8 +240,7 @@ const LoanODFilterTable = () => {
                           >
                             <Typography
                               variant="small"
-                              color="blue-gray"
-                              className="font-normal leading-none opacity-70 pl-3"
+                              className="font-normal leading-none pl-3"
                             >
                               {head}
                             </Typography>
@@ -390,7 +389,7 @@ const LoanODFilterTable = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by OD name / account no / bank"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -450,8 +449,7 @@ const LoanODFilterTable = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>
@@ -583,7 +581,7 @@ const LoanODFilterTable = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by loan name / lender"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                     />
                   </div> */}
                   <div className="flex flex-wrap gap-2">

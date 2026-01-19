@@ -22,11 +22,7 @@ const PairingScreen = ({ isLogged }) => {
         className="md:px-24 md:py-10 py-8 border border-gray-300"
       >
         <CardHeader shadow={false} floated={false} className="text-center">
-          <Typography
-            variant="h1"
-            color="blue-gray"
-            className="mb-4 !text-3xl lg:text-4xl"
-          >
+          <Typography variant="h1" className="mb-4 !text-3xl lg:text-4xl">
             Input Your Tally Pair key
           </Typography>
           <Typography className="text-2sm text-[#77819d] mb-1.5">

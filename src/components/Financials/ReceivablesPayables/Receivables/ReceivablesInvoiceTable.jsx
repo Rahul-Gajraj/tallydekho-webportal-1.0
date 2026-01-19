@@ -88,15 +88,15 @@ const ReceivablesInvoiceTable = () => {
   const [isDrawerOpen, setOpenDrawer] = useState(false);
 
   const handleToggleDrawer = () => {
-    setOpenDrawer(prev => !prev);
-  }
+    setOpenDrawer((prev) => !prev);
+  };
 
   return (
     <>
       <Card className="mt-5">
         <CardBody>
           <div className="flex items-center gap-2 flex-wrap justify-between">
-            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[330px]">
+            <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[500px]">
               <span className="pl-3">
                 <img src="/media/custom/search-sm.svg" />
               </span>
@@ -105,36 +105,12 @@ const ReceivablesInvoiceTable = () => {
                 name="header-search-input"
                 type="text"
                 placeholder="Search by narration / voucher no / ledger"
-                className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                 // value={itemsListSearchText}
                 // onChange={(e) => setItemsListSearchText(e.target.value)}
               />
             </div>
             <div className="flex flex-wrap gap-2">
-              <div className="w-[150px]">
-                <Select
-                  className="bg-white-600"
-                  label="Period"
-                  containerProps={{
-                    style: {
-                      minWidth: "150px",
-                    },
-                  }}
-                  // value={value}
-                  // onChange={(val) => setValue(val)}
-                  color="green"
-                >
-                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
-                    All
-                  </Option>
-                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
-                    2024-2025
-                  </Option>
-                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
-                    2025-2026
-                  </Option>
-                </Select>
-              </div>
               <div className="w-[150px]">
                 <Select
                   className="bg-white-600"
@@ -162,13 +138,37 @@ const ReceivablesInvoiceTable = () => {
                   </Option>
                 </Select>
               </div>
-              <div className="w-[150px]">
+              <div className="w-[130px]">
+                <Select
+                  className="bg-white-600"
+                  label="Period"
+                  containerProps={{
+                    style: {
+                      minWidth: "130px",
+                    },
+                  }}
+                  // value={value}
+                  // onChange={(val) => setValue(val)}
+                  color="green"
+                >
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    All
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    2024-2025
+                  </Option>
+                  <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                    2025-2026
+                  </Option>
+                </Select>
+              </div>
+              <div className="w-[130px]">
                 <Select
                   className="bg-white-600"
                   label="Status"
                   containerProps={{
                     style: {
-                      minWidth: "150px",
+                      minWidth: "130px",
                     },
                   }}
                   // value={value}
@@ -189,40 +189,40 @@ const ReceivablesInvoiceTable = () => {
                   </Option>
                 </Select>
               </div>
-              <div className="w-[150px]">
+              <div className="w-[100px]">
                 <Input
                   label="Total"
                   readOnly
                   value="₹72,200"
                   containerProps={{
                     style: {
-                      minWidth: "150px",
+                      minWidth: "100px",
                     },
                   }}
                   className="pointer-events-none bg-[#f5f7f9]"
                 />
               </div>
-              <div className="w-[150px]">
+              <div className="w-[100px]">
                 <Input
                   label="Overdue"
                   readOnly
                   value="₹48,300"
                   containerProps={{
                     style: {
-                      minWidth: "150px",
+                      minWidth: "100px",
                     },
                   }}
                   className="pointer-events-none bg-[#f5f7f9]"
                 />
               </div>
-              <div className="w-[150px]">
+              <div className="w-[100px]">
                 <Input
                   label="Due 7 Days"
                   readOnly
                   value="₹36,000"
                   containerProps={{
                     style: {
-                      minWidth: "150px",
+                      minWidth: "100px",
                     },
                   }}
                   className="pointer-events-none bg-[#f5f7f9]"
@@ -240,8 +240,7 @@ const ReceivablesInvoiceTable = () => {
                   >
                     <Typography
                       variant="small"
-                      color="blue-gray"
-                      className="font-normal leading-none opacity-70 pl-3"
+                      className="font-normal leading-none pl-3"
                     >
                       {head}
                     </Typography>
@@ -260,7 +259,7 @@ const ReceivablesInvoiceTable = () => {
                   amount,
                   received,
                   balance,
-                  status
+                  status,
                 } = row;
                 const isLast = index === INVOICE_REGISTER_TABLE_ROWS.length - 1;
                 const classes = "p-4 px-0 border-b border-blue-gray-50";
@@ -312,7 +311,10 @@ const ReceivablesInvoiceTable = () => {
                         {status}
                       </Typography>
                     </td>
-                    <td className={classes} onClick={() => handleToggleDrawer()}>
+                    <td
+                      className={classes}
+                      onClick={() => handleToggleDrawer()}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 -960 960 960"
@@ -347,7 +349,11 @@ const ReceivablesInvoiceTable = () => {
           </table>
         </CardBody>
       </Card>
-      <ReceivablesDocsDrawer open={isDrawerOpen} toggleDrawer={handleToggleDrawer} data={{}} />
+      <ReceivablesDocsDrawer
+        open={isDrawerOpen}
+        toggleDrawer={handleToggleDrawer}
+        data={{}}
+      />
     </>
   );
 };

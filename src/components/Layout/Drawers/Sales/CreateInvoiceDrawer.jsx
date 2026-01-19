@@ -19,6 +19,9 @@ import {
   CardBody,
   CardFooter,
   Switch,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
 } from "@material-tailwind/react";
 import moment from "moment";
 
@@ -29,9 +32,12 @@ import {
 } from "@heroicons/react/24/outline";
 
 import { DayPicker } from "react-day-picker";
+import { Controller, useForm } from "react-hook-form";
 
 import AddCustomerDialog from "../../Dialogs/Sales/AddCustomerDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
+import Error from "../../../Error/Error";
+import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -40,22 +46,86 @@ const ITEM_TABLE_HEAD = [
   "Discount",
   "Tax",
   "Unit Price",
+  "Actions",
 ];
 
+const LOGISTIC_TABLE_HEAD = [
+  "Logistics Type",
+  "Amount",
+  "Tracking Number",
+  "Remarks",
+  "Tax On Logistics",
+  "Actions",
+];
+
+function Icon({ id, open }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className={`${
+        id === open ? "rotate-180" : ""
+      } h-5 w-5 transition-transform`}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+      />
+    </svg>
+  );
+}
+
+const defaultValues = {
+  ledgerSelection: "",
+  invoiceNumber: "",
+  invoiceDate: new Date(),
+  customerName: "",
+  referenceNumber: "",
+  items: [],
+  logistics: [],
+  paymentStatus: "",
+  days: "",
+  isOptional: false,
+  upi: "",
+};
+
+const UPIs = ["BHIM", "G Pay", "PhonePe", "Paytm"];
+
 const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    getValues,
+    reset,
+  } = useForm({
+    defaultValues,
+  });
+
   const [ledgers, setLedgers] = useState([
-    "Cash Sales",
-    "Credit Sales",
-    "Off-Books",
-    "On-Books",
+    "Purchase - Raw Materials",
+    "Purchase - Finished Goods",
+    "Expenses",
+    "Capital Purchases",
+    "Etc",
   ]);
-  const [selectedLeger, setSelectedLedger] = useState(ledgers[0]);
+
   const [customers, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
-  const [selectedCustomer, setSelectedCustomer] = useState("");
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
+
+  const [selectedPaymentStatus, setSelectPaymentStatus] = useState("");
+  const [selectedLogistic, setSelectedLogistic] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [collectPaymentNow, setCollectPaymentNow] = useState(false);
 
   const [products, setProducts] = useState([]);
+  const [logistics, setLogistics] = useState([]);
 
   //   console.log(customers);
   //   console.log(selectedCustomer);
@@ -64,6 +134,10 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
     product: false,
     logistics: false,
   });
+
+  const handleSummaryAccordionOpen = () => {
+    setIsSummaryOpen((prev) => !prev);
+  };
 
   const handleDialogsOpen = (key) => {
     setAreDialogsOpen((prev) => {
@@ -75,8 +149,42 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
     setCustomers((prev) => [...prev, newCustomer]);
   };
 
-  const addProductHandler = (productInfo) => {
-    setProducts((prev) => [...prev, productInfo]);
+  const upsertProductHandler = (productInfo) => {
+    if (productInfo.id) {
+      setProducts((prev) =>
+        prev.map((p) => {
+          return p.id == productInfo.id ? productInfo : p;
+        })
+      );
+    } else {
+      setProducts((prev) => [...prev, { ...productInfo, id: Date.now() }]);
+    }
+  };
+
+  const deleteProductHandler = (id) => {
+    setProducts(products.filter((p) => p.id != id));
+  };
+
+  const upsertLogisticsHandler = (logisticInfo) => {
+    if (logisticInfo.id) {
+      setLogistics((prev) =>
+        prev.map((v) => {
+          return v.id == logisticInfo.id ? logisticInfo : v;
+        })
+      );
+    } else {
+      setLogistics((prev) => [...prev, { ...logisticInfo, id: Date.now() }]);
+    }
+  };
+
+  const deleteLogisticHandler = (id) => {
+    setLogistics(logistics.filter((v) => v.id != id));
+  };
+
+  const onSubmitHandler = (data) => {
+    console.log(data);
+    reset();
+    toggleDrawer("salesInvoice")
   };
 
   return (
@@ -88,545 +196,682 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
         // onClose={() => toggleDrawer("salesInvoice")}
         size={750}
       >
-        <div className="relative mt-0 block">
-          <Typography variant="h4" color="blue-gray">
-            Sales Invoice
-          </Typography>
-          <IconButton
-            size="sm"
-            variant="text"
-            className="!absolute right-3.5 top-0"
-            onClick={() => toggleDrawer("salesInvoice")}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-5 w-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </IconButton>
-        </div>
-        <div className="space-y-4 pb-6 pt-5">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="sm:col-span-1 col-span-2">
-              <Select
-                label="Ledger Selection"
-                value={selectedLeger}
-                onChange={(val) => setSelectedLedger(val)}
-                color="green"
-              >
-                {ledgers.map((ledger) => (
-                  <Option
-                    key={ledger}
-                    value={ledger}
-                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                  >
-                    {ledger}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-            <div className="sm:col-span-1 col-span-2">
-              {/* <Switch
-                label={
-                  <Typography color="blue-gray" className="font-medium">
-                    Optional/Regular
-                  </Typography>
-                }
-              /> */}
-              <Input color="green" label="Invoice Number" />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="sm:col-span-1 col-span-2">
-              <Popover
-                placement="bottom"
-                open={popoverOpen}
-                handler={setPopoverOpen}
-              >
-                <PopoverHandler>
-                  <Button
-                    variant="outlined"
-                    className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px]"
-                    ripple={false}
-                  >
-                    {moment(date).format("DD MMM, yyyy")}
-                    <CalendarDaysIcon
-                      strokeWidth={2}
-                      className="w-4 h-4 text-gray-600"
-                    />
-                  </Button>
-                </PopoverHandler>
-                <PopoverContent className="z-[9999]">
-                  <DayPicker
-                    selected={date}
-                    onDayClick={(newDate) => {
-                      if (newDate) {
-                        setDate(newDate);
-                        setPopoverOpen(false);
-                      }
-                    }}
-                    showOutsideDays
-                    className="border-0"
-                    classNames={{
-                      caption:
-                        "flex justify-center py-2 mb-4 relative items-center",
-                      caption_label: "text-sm !font-medium text-gray-900",
-                      nav: "flex items-center",
-                      nav_button:
-                        "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
-                      nav_button_previous: "absolute left-1.5",
-                      nav_button_next: "absolute right-1.5",
-                      table: "w-full border-collapse",
-                      head_row: "flex !font-medium text-gray-900",
-                      head_cell: "m-0.5 w-9 !font-normal text-sm",
-                      row: "flex w-full mt-2",
-                      cell: "text-gray-600 rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
-                      day: "h-9 w-9 p-0 !font-normal",
-                      day_range_end: "day-range-end",
-                      day_selected:
-                        "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
-                      day_today: "rounded-md bg-gray-200 text-gray-900",
-                      day_outside:
-                        "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
-                      day_disabled: "text-gray-500 opacity-50",
-                      day_hidden: "invisible",
-                    }}
-                    components={{
-                      IconLeft: ({ ...props }) => (
-                        <ChevronLeftIcon
-                          {...props}
-                          className="h-4 w-4 stroke-2"
-                        />
-                      ),
-                      IconRight: ({ ...props }) => (
-                        <ChevronRightIcon
-                          {...props}
-                          className="h-4 w-4 stroke-2"
-                        />
-                      ),
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <div className="relative mt-0 flex justify-between">
+            <Typography variant="h4">Sales Invoice</Typography>
+            <Controller
+              name="isOptional"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Switch
+                    color="green"
+                    label="Optional/Regular"
+                    ripple={true}
+                    checked={field.value}
+                    onChange={(e) => {
+                      const newValue = e.target.checked;
+                      field.onChange(newValue);
                     }}
                   />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="sm:col-span-1 col-span-2">
-              <Select
-                label="Customer Selection"
-                value={selectedCustomer}
-                onChange={(val) => {
-                  setSelectedCustomer(val);
-                }}
-                color="green"
-                key={selectedCustomer}
-              >
-                {customers.map((customer) => (
-                  <Option
-                    key={customer}
-                    value={customer}
-                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                  >
-                    {customer}
-                  </Option>
-                ))}
-              </Select>
-            </div>
-            {/* <IconButton
-              color="green"
-              className="h-[40px] border-[#B0BEC5] focus:ring-0 rounded-[7px] px-4"
-              onClick={() => handleDialogsOpen("customer")}
+                );
+              }}
+            />
+            <IconButton
+              size="sm"
+              variant="text"
+              // className="!absolute right-0 top-0"
+              onClick={() => {
+                reset();
+                toggleDrawer("salesInvoice");
+              }}
             >
               <svg
-                stroke="currentColor"
-                fill="currentColor"
-                strokeWidth="0"
-                viewBox="0 0 448 512"
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-3 w-3 ml-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-5 w-5"
               >
-                <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
-            </IconButton> */}
-            {/* <div className="flex items-center w-full"> */}
-            {/* </div> */}
+            </IconButton>
           </div>
+          <div className="space-y-4 pb-6">
+            <div className="grid grid-cols-12 gap-4 mt-5">
+              <div className="col-span-6">
+                <Controller
+                  name="ledgerSelection"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="Ledger Selection"
+                        value={field.value}
+                        onChange={(val) => field.onChange(val)}
+                        color="green"
+                      >
+                        {ledgers.map((ledger) => (
+                          <Option
+                            key={ledger}
+                            value={ledger}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                          >
+                            {ledger}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.ledgerSelection}
+                  message={errors.ledgerSelection?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <Controller
+                  name="invoiceNumber"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Invoice Number"
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.invoiceNumber}
+                  message={errors.invoiceNumber?.message}
+                />
+              </div>
+              <div className="col-span-6 relative">
+                <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
+                  Invoice Date
+                </label>
+                <Controller
+                  name="invoiceDate"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Popover
+                        placement="bottom"
+                        open={popoverOpen}
+                        handler={setPopoverOpen}
+                      >
+                        <PopoverHandler>
+                          <Button
+                            variant="outlined"
+                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            ripple={false}
+                          >
+                            {moment(field.value).format("DD MMM, yyyy")}
+                            <CalendarDaysIcon
+                              strokeWidth={2}
+                              className="w-4 h-4"
+                            />
+                          </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="z-[9999]">
+                          <DayPicker
+                            selected={field.value}
+                            onDayClick={(newDate) => {
+                              if (newDate) {
+                                field.onChange(newDate);
+                                setPopoverOpen(false);
+                              }
+                            }}
+                            showOutsideDays
+                            className="border-0"
+                            classNames={{
+                              caption:
+                                "flex justify-center py-2 mb-4 relative items-center",
+                              caption_label:
+                                "text-sm !font-medium text-gray-900",
+                              nav: "flex items-center",
+                              nav_button:
+                                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                              nav_button_previous: "absolute left-1.5",
+                              nav_button_next: "absolute right-1.5",
+                              table: "w-full border-collapse",
+                              head_row: "flex !font-medium text-gray-900",
+                              head_cell: "m-0.5 w-9 !font-normal text-sm",
+                              row: "flex w-full mt-2",
+                              cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                              day: "h-9 w-9 p-0 !font-normal",
+                              day_range_end: "day-range-end",
+                              day_selected:
+                                "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                              day_today: "rounded-md bg-gray-200 text-gray-900",
+                              day_outside:
+                                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                              day_disabled: "text-gray-500 opacity-50",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => (
+                                <ChevronLeftIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                              IconRight: ({ ...props }) => (
+                                <ChevronRightIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.invoiceDate}
+                  message={errors.invoiceDate?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <Controller
+                  name="customerName"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="Customer Selection"
+                        value={field.value}
+                        onChange={(val) => {
+                          field.onChange(val);
+                        }}
+                        color="green"
+                      >
+                        {customers.map((customer) => (
+                          <Option
+                            key={customer}
+                            value={customer}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                          >
+                            {customer}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.customerName}
+                  message={errors.customerName?.message}
+                />
+              </div>
+              <div className="col-span-12 flex gap-3 items-center">
+                <Typography variant="h6">Item/Services</Typography>
+                <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
+              </div>
+              <div className="col-span-12">
+                {products.length == 0 ? (
+                  <Card
+                    className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
+                    onClick={() => handleDialogsOpen("product")}
+                  >
+                    <Typography>Add Product</Typography>
+                  </Card>
+                ) : (
+                  <>
+                    <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
+                      <table className="w-full min-w-max table-auto text-left">
+                        <thead>
+                          <tr>
+                            {ITEM_TABLE_HEAD.map((head) => (
+                              <th key={head} className="px-4 pt-4">
+                                <Typography
+                                  variant="small"
+                                  className="font-bold leading-none"
+                                >
+                                  {head}
+                                </Typography>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {products.map((item) => {
+                            const {
+                              id,
+                              warehouse,
+                              product,
+                              qty,
+                              discount,
+                              tax,
+                              unitPrice,
+                            } = item;
+                            return (
+                              <tr key={id}>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {warehouse}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {product}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {qty || 0}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {discount || 0}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {tax || 0}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {unitPrice || 0}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <div className="flex gap-3">
+                                    <img
+                                      src="/media/common/edit.svg"
+                                      alt="edit"
+                                      className="h-5 cursor-pointer"
+                                      onClick={() => {
+                                        setSelectedItem(item);
+                                        handleDialogsOpen("product");
+                                      }}
+                                    />
+                                    <img
+                                      src="/media/common/delete.svg"
+                                      alt="delete"
+                                      className="h-5 cursor-pointer"
+                                      onClick={() => deleteProductHandler(id)}
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </Card>
+                    <Button
+                      color="green"
+                      className="normal-case w-full mt-4"
+                      onClick={() => {
+                        setSelectedItem(null);
+                        handleDialogsOpen("product");
+                      }}
+                    >
+                      Add Product
+                    </Button>
+                  </>
+                )}
+              </div>
+              <div className="col-span-12 flex gap-3 items-center">
+                <Typography variant="h6">Logistics/Shipping</Typography>
+                <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
+              </div>
+              <div className="col-span-12">
+                {logistics.length == 0 ? (
+                  <Card
+                    className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
+                    onClick={() => {
+                      setSelectedLogistic(null);
+                      handleDialogsOpen("logistics");
+                    }}
+                  >
+                    <Typography>Add Logistics</Typography>
+                  </Card>
+                ) : (
+                  <>
+                    <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
+                      <table className="w-full min-w-max table-auto text-left">
+                        <thead>
+                          <tr>
+                            {LOGISTIC_TABLE_HEAD.map((head) => (
+                              <th key={head} className="px-4 pt-4">
+                                <Typography
+                                  variant="small"
+                                  className="font-bold leading-none"
+                                >
+                                  {head}
+                                </Typography>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {logistics.map((logistic) => {
+                            const {
+                              logisticsType,
+                              amount,
+                              trackingNumber,
+                              remark,
+                              taxOnLogistics,
+                              id,
+                            } = logistic;
 
-          <div className="flex gap-3 items-center">
-            <Typography variant="h6" color="blue-gray">
-              Item/Services
-            </Typography>
-            <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
-          </div>
-          <div className="">
-            {products.length == 0 ? (
-              <Card
-                className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
-                onClick={() => handleDialogsOpen("product")}
-              >
-                <Typography>Add Product</Typography>
-              </Card>
-            ) : (
-              <>
-                <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
-                  <table className="w-full min-w-max table-auto text-left">
-                    <thead>
-                      <tr>
-                        {ITEM_TABLE_HEAD.map((head) => (
-                          <th key={head} className="px-4 pt-4">
+                            return (
+                              <tr key={id}>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {logisticsType || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {amount || 0}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {trackingNumber || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {remark || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {taxOnLogistics || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <div className="flex gap-3">
+                                    <img
+                                      src="/media/common/edit.svg"
+                                      alt="edit"
+                                      className="h-5 cursor-pointer"
+                                      onClick={() => {
+                                        setSelectedLogistic(logistic);
+                                        handleDialogsOpen("logistics");
+                                      }}
+                                    />
+                                    <img
+                                      src="/media/common/delete.svg"
+                                      alt="delete"
+                                      className="h-5 cursor-pointer"
+                                      onClick={() => deleteLogisticHandler(id)}
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </Card>
+                    <Button
+                      color="green"
+                      className="normal-case w-full mt-4"
+                      onClick={() => {
+                        setSelectedLogistic(null);
+                        handleDialogsOpen("logistics");
+                      }}
+                    >
+                      Add Logistics
+                    </Button>
+                  </>
+                )}
+              </div>
+              <div className="col-span-4 pt-2">
+                <Switch
+                  label="Collect Payment Now"
+                  color="green"
+                  checked={collectPaymentNow}
+                  onChange={(e) => setCollectPaymentNow(e.target.checked)}
+                />
+              </div>
+              {collectPaymentNow && (
+                <div className="col-span-8">
+                  <Controller
+                    name="upi"
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <Select
+                          label="Select UPI"
+                          value={field.value}
+                          onChange={(val) => {
+                            field.onChange(val);
+                          }}
+                          color="green"
+                        >
+                          {UPIs.map((upi) => (
+                            <Option
+                              key={upi}
+                              value={upi}
+                              className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                            >
+                              {upi}
+                            </Option>
+                          ))}
+                        </Select>
+                      );
+                    }}
+                  />
+                </div>
+              )}
+              <div className="col-span-12">
+                <Accordion
+                  open={isSummaryOpen}
+                  className="rounded-lg border border-blue-gray-100"
+                  icon={<Icon id={1} open={isSummaryOpen} />}
+                >
+                  <AccordionHeader
+                    onClick={handleSummaryAccordionOpen}
+                    className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg overflow-auto"
+                  >
+                    Grand Total (₹125,000)
+                  </AccordionHeader>
+                  <AccordionBody className="pt-0 text-base font-normal px-4">
+                    <table className="min-w-full table-auto text-left">
+                      <tbody>
+                        <tr>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
+                            <Typography variant="small" className="font-normal">
+                              Subtotal
+                            </Typography>
+                          </td>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
                             <Typography
                               variant="small"
-                              color="blue-gray"
-                              className="font-bold leading-none"
+                              className="font-normal pl-3 float-right"
                             >
-                              {head}
+                              ₹5,000
                             </Typography>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {products.map(
-                        ({
-                          warehouse,
-                          product,
-                          qty,
-                          discount,
-                          tax,
-                          unitPrice,
-                        }) => {
-                          return (
-                            <tr key={warehouse}>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  color="blue-gray"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {warehouse}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {product}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {qty || 0}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {discount || 0}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {tax || 0}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {unitPrice || 0}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )}
-                    </tbody>
-                    <tfoot className="border-t border-gray-300">
-                      <tr>
-                        <td className="p-2 px-4">
-                          <Typography
-                            color="blue-gray"
-                            variant="small"
-                            className="font-bold"
-                          >
-                            Total
-                          </Typography>
-                        </td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4">
-                          <Typography
-                            color="blue-gray"
-                            variant="small"
-                            className="font-bold"
-                          >
-                            ₹
-                            {products.reduce((prevVal, currVal) => {
-                              const { qty, unitPrice, discount, tax } = currVal;
-                              return (
-                                prevVal +
-                                Number(qty || 0) * Number(unitPrice || 0) -
-                                Number(discount || 0) / 100 +
-                                Number(tax || 0)
-                              );
-                            }, 0)}
-                          </Typography>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </Card>
-                <Button
-                  color="green"
-                  className="normal-case w-full mt-4"
-                  onClick={() => handleDialogsOpen("product")}
-                >
-                  Add Product
-                </Button>
-              </>
-            )}
-          </div>
-          <div className="flex gap-3 items-center">
-            <Typography variant="h6" color="blue-gray">
-              Logistics/Shipping
-            </Typography>
-            <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
-          </div>
-          <div className="">
-            {products.length == 0 ? (
-              <Card
-                className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
-                onClick={() => handleDialogsOpen("product")}
-              >
-                <Typography>Add Logistics</Typography>
-              </Card>
-            ) : (
-              <>
-                <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
-                  <table className="w-full min-w-max table-auto text-left">
-                    <thead>
-                      <tr>
-                        {ITEM_TABLE_HEAD.map((head) => (
-                          <th key={head} className="px-4 pt-4">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
+                            <Typography variant="small" className="font-normal">
+                              Taxes
+                            </Typography>
+                          </td>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
                             <Typography
                               variant="small"
-                              color="blue-gray"
-                              className="font-bold leading-none"
+                              className="font-normal pl-3 float-right"
                             >
-                              {head}
+                              ₹5,000
                             </Typography>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {products.map(
-                        ({
-                          warehouse,
-                          product,
-                          qty,
-                          discount,
-                          tax,
-                          unitPrice,
-                        }) => {
-                          return (
-                            <tr key={warehouse}>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  color="blue-gray"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {warehouse}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {product}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {qty || 0}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {discount || 0}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {tax || 0}
-                                </Typography>
-                              </td>
-                              <td className="p-2 px-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-normal text-gray-600"
-                                >
-                                  {unitPrice || 0}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )}
-                    </tbody>
-                    <tfoot className="border-t border-gray-300">
-                      <tr>
-                        <td className="p-2 px-4">
-                          <Typography
-                            color="blue-gray"
-                            variant="small"
-                            className="font-bold"
-                          >
-                            Total
-                          </Typography>
-                        </td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4"></td>
-                        <td className="p-2 px-4">
-                          <Typography
-                            color="blue-gray"
-                            variant="small"
-                            className="font-bold"
-                          >
-                            ₹
-                            {products.reduce((prevVal, currVal) => {
-                              const { qty, unitPrice, discount, tax } = currVal;
-                              return (
-                                prevVal +
-                                Number(qty || 0) * Number(unitPrice || 0) -
-                                Number(discount || 0) / 100 +
-                                Number(tax || 0)
-                              );
-                            }, 0)}
-                          </Typography>
-                        </td>
-                      </tr>
-                    </tfoot>
-                  </table>
-                </Card>
-                <Button
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
+                            <Typography variant="small" className="font-normal">
+                              Discount
+                            </Typography>
+                          </td>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
+                            <Typography
+                              variant="small"
+                              className="font-normal pl-3 float-right"
+                            >
+                              ₹5,000
+                            </Typography>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
+                            <Typography variant="small" className="font-normal">
+                              Logistics
+                            </Typography>
+                          </td>
+                          <td className="p-4 px-0 border-b border-blue-gray-50">
+                            <Typography
+                              variant="small"
+                              className="font-normal pl-3 float-right"
+                            >
+                              ₹5,000
+                            </Typography>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </AccordionBody>
+                </Accordion>
+              </div>
+              <div className="col-span-12">
+                <Select
+                  label="Payment Status"
+                  value={selectedPaymentStatus}
+                  onChange={(val) => {
+                    setSelectPaymentStatus(val);
+                  }}
                   color="green"
-                  className="normal-case w-full mt-4"
-                  onClick={() => handleDialogsOpen("product")}
                 >
-                  Add Logistics
+                  <Option
+                    value="payment_received"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    Payment Received
+                  </Option>
+                  <Option
+                    value="15"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    15 Days
+                  </Option>
+                  <Option
+                    value="30"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    30 Days
+                  </Option>
+                  <Option
+                    value="custom"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    Custom
+                  </Option>
+                </Select>
+              </div>
+              {selectedPaymentStatus == "custom" && (
+                <div className="col-span-12">
+                  <Controller
+                    name="days"
+                    control={control}
+                    // rules={{
+                    //   required: "This field is required",
+                    // }}
+                    render={({ field }) => {
+                      return (
+                        <Input
+                          color="green"
+                          label="Days"
+                          {...field}
+                          onChange={(value) => {
+                            //   onChange(value);
+                            field.onChange(value);
+                          }}
+                        />
+                      );
+                    }}
+                  />
+                </div>
+              )}
+              <div className="col-span-12">
+                <Button
+                  className="w-full"
+                  color="green"
+                  type="submit"
+                  style={{ color: "white !importannt" }}
+                >
+                  Submit
                 </Button>
-              </>
-            )}
+              </div>
+            </div>
           </div>
-          {/* <Card className="shadow-none border border-[#B0BEC5] h-[300px] overflow-scroll">
-            <CardHeader color="transparent" floated={false} shadow={false}>
-              <Typography variant="h6" color="blue-gray">
-                Item/Services
-              </Typography>
-            </CardHeader>
-            <CardBody className="m-0 pt-3">
-              {products.map((product, idx) => (
-                <Card
-                  key={idx}
-                  className=" border border-[#B0BEC5] h-[220px] overflow-scroll p-4 mb-4"
-                  onClick={() => handleDialogsOpen("product")}
-                >
-                  <div className="flex flex-col gap-4">
-                    <div className="flex gap-2 items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="h-4 w-4"
-                      >
-                        <path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z"></path>
-                        <path d="M6 18h12"></path>
-                        <path d="M6 14h12"></path>
-                        <rect width="12" height="12" x="6" y="10"></rect>
-                      </svg>
-                      <Typography>{product.product}</Typography>
-                    </div>
-                    <div className="flex gap-2 items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="h-4 w-4"
-                      >
-                        <path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35Z"></path>
-                        <path d="M6 18h12"></path>
-                        <path d="M6 14h12"></path>
-                        <rect width="12" height="12" x="6" y="10"></rect>
-                      </svg>
-                      <Typography>{product.warehouse}</Typography>
-                    </div>
-                    <div className="flex justify-between">
-                      <div className="flex flex-col gap-1">
-                        <Typography>Qty</Typography>
-                        <Typography>{product.qty}</Typography>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <Typography>Discount</Typography>
-                        <Typography>{product.discount}</Typography>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <Typography>Tax</Typography>
-                        <Typography>{product.tax}</Typography>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <Typography>Unit Price</Typography>
-                        <Typography>{product.unitPrice}</Typography>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-              <Card
-                className=" border border-[#B0BEC5] h-[220px] cursor-pointer flex items-center justify-center"
-                onClick={() => handleDialogsOpen("product")}
-              >
-                <Typography>Add Product</Typography>
-              </Card>
-            </CardBody>
-          </Card> */}
-        </div>
+        </form>
         {/* <DialogFooter>
           <Button className="ml-auto" onClick={handleOpen}>
             submit
@@ -641,7 +886,14 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
       <AddProductDialog
         open={areDialogsOpen.product}
         handleOpen={handleDialogsOpen}
-        addHandler={addProductHandler}
+        upsertHandler={upsertProductHandler}
+        initialData={selectedItem}
+      />
+      <AddLogisticsDialog
+        open={areDialogsOpen.logistics}
+        handleOpen={handleDialogsOpen}
+        upsertHandler={upsertLogisticsHandler}
+        initialData={selectedLogistic}
       />
     </>
   );

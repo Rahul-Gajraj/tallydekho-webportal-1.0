@@ -20,12 +20,11 @@ function Login() {
           <CardHeader shadow={false} floated={false} className="text-center">
             <Typography
               variant="h1"
-              color="blue-gray"
               className="mb-4 !text-3xl lg:text-4xl"
             >
               One-Click Web3 Access
             </Typography>
-            <Typography className="!text-gray-600 text-[18px] font-normal md:max-w-md">
+            <Typography className="text-[18px] font-normal md:max-w-md">
               Access your Web3 accounts with just one click using our convenient
               login card.
             </Typography>
@@ -35,7 +34,7 @@ function Login() {
               <label htmlFor="email">
                 <Typography
                   variant="small"
-                  color="blue-gray"
+  
                   className="block font-medium mb-2"
                 >
                   Your Phone Number
@@ -53,8 +52,8 @@ function Login() {
                   className: "hidden",
                 }}
               />
-              <Button size="lg" color="gray" fullWidth>
-                continue
+              <Button size="lg" fullWidth>
+                Continue
               </Button>
               <a href="#google">
                 <Button

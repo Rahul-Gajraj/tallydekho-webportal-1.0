@@ -8,7 +8,10 @@ import Expenses from "@/pages/Financials/Expenses/Expenses";
 import PaymentsReceipts from "@/pages/Financials/PaymentsReceipts/PyamentsReceipts";
 import CashBank from "@/pages/Financials/CashBank/CashBank";
 import ReceivablesPayables from "@/pages/Financials/ReceivablesPayables/ReceivablesPayables";
-import LoanODs from "../../pages/Financials/LoansODs/LoansODs";
+import LoanODs from "@/pages/Financials/LoansODs/LoansODs";
+import Reports from "@/pages/Financials/Reports/Reports";
+import GST from "@/pages/Compliance/GST/GST";
+import EWayBill from "@/pages/Compliance/EWayBill/EWayBill";
 
 const PrivateRoutes = () => {
   return (
@@ -27,10 +30,10 @@ const PrivateRoutes = () => {
         path="/financials/receivables-payables"
         element={<ReceivablesPayables />}
       />
-      <Route
-        path="/financials/loans-ods"
-        element={<LoanODs />}
-      />
+      <Route path="/financials/loans-ods" element={<LoanODs />} />
+      <Route path="/financials/reports" element={<Reports />} />
+      <Route path="/compliance/gst" element={<GST />} />
+      <Route path="/compliance/e-way-bill" element={<EWayBill />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
       {/* WIll be redirected to 404 page  */}

@@ -22,7 +22,7 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
   };
 
   const LIST_ITEM_STYLES =
-    "select-none text-black hover:bg-[#EAF8F4] hover:!text-[#108F6F] menu-link data-[selected=true]:text-[#108F6F] data-[selected=true]:bg-[#EAF8F4] active:bg-[#EAF8F4] focus:bg-[#EAF8F4] focus:text-[#108F6F]";
+    "select-none hover:bg-[#EAF8F4] hover:!text-[#108F6F] menu-link data-[selected=true]:text-[#108F6F] data-[selected=true]:bg-[#EAF8F4] active:bg-[#EAF8F4] focus:bg-[#EAF8F4] focus:text-[#108F6F]";
 
   return (
     <Drawer
@@ -34,14 +34,14 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
       size={400}
       className="p-4"
       placement="right"
+      // overlayProps={{
+      //   className: "fixed inset-0",
+      // }}
     >
       <div className="mb-6 flex items-center justify-between">
-        <Typography variant="h5" color="blue-gray">
-          Settings
-        </Typography>
+        <Typography variant="h5">Settings</Typography>
         <IconButton
           variant="text"
-          color="blue-gray"
           onClick={() => {
             toggleDrawer();
           }}
@@ -68,7 +68,7 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
             selected={openItem === 1}
             data-selected={openItem === 1}
             onClick={() => handleOpenItem(1)}
-            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F] data-[selected=true]:bg-[#EAF8F4] text-black"
+            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F] data-[selected=true]:bg-[#EAF8F4]"
           >
             <ListItemPrefix>
               <svg
@@ -98,46 +98,9 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
           <AccordionBody className="py-1">
             <List className="p-0">
               <ListItem className={`px-16 ${LIST_ITEM_STYLES}`}>
-                {/* <ListItemPrefix>
-                  <svg
-                    stroke="currentColor"
-                    fill="none"
-                    strokeWidth="0"
-                    viewBox="0 0 24 24"
-                    className="h-7 w-7"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5C14.2091 5 16 6.79086 16 9ZM14 9C14 10.1046 13.1046 11 12 11C10.8954 11 10 10.1046 10 9C10 7.89543 10.8954 7 12 7C13.1046 7 14 7.89543 14 9Z"
-                      fill="currentColor"
-                    ></path>
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM3 12C3 14.0902 3.71255 16.014 4.90798 17.5417C6.55245 15.3889 9.14627 14 12.0645 14C14.9448 14 17.5092 15.3531 19.1565 17.4583C20.313 15.9443 21 14.0524 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12ZM12 21C9.84977 21 7.87565 20.2459 6.32767 18.9878C7.59352 17.1812 9.69106 16 12.0645 16C14.4084 16 16.4833 17.1521 17.7538 18.9209C16.1939 20.2191 14.1881 21 12 21Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                </ListItemPrefix> */}
                 Profile
               </ListItem>
               <ListItem className={`px-16 ${LIST_ITEM_STYLES}`}>
-                {/* <ListItemPrefix>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    viewBox="0 0 550 550"
-                    stroke="currentColor"
-                    className="h-7 w-7"
-                    strokeWidth="15"
-                    fill="none"
-                  >
-                    <path d="M304.73 467.72H175.8V16.29H424v238.4c5.55.52 10.98 1.38 16.3 2.56V14.31C440.3 6.44 433.85 0 425.99 0H173.82c-7.87 0-14.31 6.45-14.31 14.31v121.94H11.98C5.41 136.25 0 141.67 0 148.24v327.62c0 4.5 3.65 8.15 8.15 8.15l310.99-.07-2.1-2.05a133.83 133.83 0 0 1-12.31-14.17zm106.66-180.79c55.55 0 100.61 45.06 100.61 100.61s-45.06 100.61-100.61 100.61c-55.56 0-100.62-45.06-100.62-100.61s45.06-100.61 100.62-100.61zm7 42.5c4.54 0 8.12 1.32 10.73 3.92 2.57 2.59 3.88 6.16 3.88 10.74 0 4.66-2.22 8.79-6.68 12.42-4.49 3.62-9.7 5.46-15.65 5.46-4.44 0-8-1.27-10.72-3.77-2.71-2.54-4.07-5.8-4.07-9.87 0-5.14 2.21-9.56 6.62-13.32 4.42-3.71 9.7-5.58 15.89-5.58zm-29.61 91.88h5.83v-36.34h-11.03c0-15.02 27.61-5.27 47.93-10.4v46.74h7.68v12.98h-50.41v-12.98zM16.29 467.72V152.54h143.22v315.18H16.29zm332.62-198.1h-29.19l-.12.01h-.02l-.12.02h-.02l-.12.02h-.02l-.12.04h-.01l-.11.03h-.02l-.12.04h-.01l-.11.05h-.02c-1 .43-1.7 1.62-1.7 2.58v20.75c9.34-9.33 20.06-17.29 31.83-23.54zm-30.13-93.41c-1 .43-1.7 1.61-1.7 2.57v45.26c0 .97.7 2.15 1.7 2.58h.02l.11.05h.01l.12.04h.02l.11.03h.01l.12.04h.02l.12.02h.02l.12.02h.02l.12.01h.02l.12.01h53.6a2.8 2.8 0 0 0 2.79-2.8v-14.93l.03-.03v-30.3c0-1.21-.78-2.23-1.86-2.62l-.11-.04h-.02l-.11-.04h-.02l-.11-.03h-.02l-.12-.03h-.03l-.11-.02h-.17l-.12-.01h-53.62l-.12.01h-.16l-.12.02h-.02l-.12.03h-.02l-.12.03h-.01l-.11.04h-.02l-.12.04h-.01l-.11.05h-.02zm-40.87 187.04h-53.6c-1.32 0-2.79 1.46-2.79 2.79v45.26c0 1.33 1.26 2.8 2.79 2.8h53.6c1.02 0 1.93-.56 2.41-1.39-1.56-8.15-2.37-16.57-2.37-25.17 0-7.92.69-15.68 2.02-23.23-.59-.64-1.42-1.06-2.06-1.06zm0-93.63h-53.6c-1.32 0-2.79 1.46-2.79 2.79v45.26c0 1.33 1.26 2.79 2.79 2.79h53.6c1.54 0 2.79-1.25 2.79-2.79v-45.26c0-1.54-1.68-2.79-2.79-2.79zm0-93.63h-53.6c-1.32 0-2.79 1.47-2.79 2.79v45.26c0 1.33 1.26 2.8 2.79 2.8h53.6a2.8 2.8 0 0 0 2.79-2.8v-45.26c0-1.54-1.68-2.79-2.79-2.79zM120.05 321.17H55.48c-.72 0-1.36.55-1.36.99v26.53c0 .44.68.99 1.36.99h64.57c.69 0 1.37-.44 1.37-.99v-26.53c0-.54-.68-.99-1.37-.99zm267.5-269.44H212.26c-3.56 0-6.51 3-6.51 6.52v69.26c0 3.52 2.97 6.52 6.51 6.52h175.29c3.55 0 6.52-2.94 6.52-6.52V58.25c0-3.58-2.98-6.52-6.52-6.52zm-267.5 211.39H55.48c-.72 0-1.36.55-1.36.99v26.53c0 .44.68.99 1.36.99h64.57c.69 0 1.37-.45 1.37-.99v-26.53c0-.55-.68-.99-1.37-.99zm0-58.05H55.48c-.72 0-1.36.54-1.36.98v26.54c0 .43.68.98 1.36.98h64.57c.69 0 1.37-.44 1.37-.98v-26.54c0-.54-.68-.98-1.37-.98z" />
-                  </svg>
-                </ListItemPrefix> */}
                 Company Information
               </ListItem>
               <ListItem className={`px-16 ${LIST_ITEM_STYLES}`}>
@@ -152,7 +115,7 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
             selected={openItem === 2}
             data-selected={openItem === 2}
             onClick={() => handleOpenItem(2)}
-            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F] text-black"
+            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F]"
           >
             <ListItemPrefix>
               <svg
@@ -197,7 +160,7 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
             selected={openItem === 3}
             data-selected={openItem === 3}
             onClick={() => handleOpenItem(3)}
-            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F] text-black"
+            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F]"
           >
             <ListItemPrefix>
               <svg
@@ -245,7 +208,7 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
             selected={openItem === 4}
             data-selected={openItem === 4}
             onClick={() => handleOpenItem(4)}
-            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F] text-black"
+            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F]"
           >
             <ListItemPrefix>
               <svg
@@ -296,7 +259,7 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
             selected={openItem === 5}
             data-selected={openItem === 5}
             onClick={() => handleOpenItem(5)}
-            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F] text-black"
+            className="p-3 select-none hover:bg-[#EAF8F4] focus:bg-[#EAF8F4] active:bg-[#EAF8F4] hover:text-[#108F6F] focus:text-[#108F6F] active:text-[#108F6F] data-[selected=true]:text-[#108F6F]"
           >
             <ListItemPrefix>
               <svg

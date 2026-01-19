@@ -83,7 +83,7 @@ const ItemsWarehouseAvailability = ({ open, toggleDrawer, data }) => {
         size={500}
       >
         <div className="relative mt-0 flex justify-between">
-          <Typography variant="h4" color="blue-gray">
+          <Typography variant="h4">
             Warehouse Availability
           </Typography>
           <img
@@ -111,7 +111,7 @@ const ItemsWarehouseAvailability = ({ open, toggleDrawer, data }) => {
                   <ListItem
                     className={`block hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]`}
                   >
-                    <Typography variant="h6" color="black">
+                    <Typography variant="h6">
                       {name}
                     </Typography>
                     <Typography variant="small" className="font-normal">

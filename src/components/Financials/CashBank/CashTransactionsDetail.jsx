@@ -165,12 +165,12 @@ const BANK_RECONCILLATION_TABLE_HEAD = [
   {
     head: "Status",
   },
-  // {
-  //   head: "Docs",
-  // },
-  // {
-  //   head: "Actions",
-  // },
+  {
+    head: "Docs",
+  },
+  {
+    head: "Actions",
+  },
 ];
 
 const BANK_RECONCILLATION_TABLE_ROW = [
@@ -223,7 +223,7 @@ const CashTransactionsDetail = () => {
             <TabsBody>
               <TabPanel value="cash_book">
                 <div className="flex items-center gap-2 flex-wrap justify-between">
-                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[230px]">
+                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[500px]">
                     <span className="pl-3">
                       <img src="/media/custom/search-sm.svg" />
                     </span>
@@ -232,19 +232,19 @@ const CashTransactionsDetail = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by narration / voucher no / ledger"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       // value={itemsListSearchText}
                       // onChange={(e) => setItemsListSearchText(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Period"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -262,13 +262,13 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Cash Ledger"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -289,13 +289,13 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Voucher Type"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -313,53 +313,53 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
                         label="Opening"
                         readOnly
                         value="₹72,200"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
                         label="Receipts"
                         readOnly
                         value="₹48,300"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
                         label="Payments"
                         readOnly
                         value="₹36,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
                         label="Closing"
                         readOnly
                         value="₹84,500"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
@@ -377,8 +377,7 @@ const CashTransactionsDetail = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>
@@ -494,7 +493,7 @@ const CashTransactionsDetail = () => {
               </TabPanel>
               <TabPanel value="bank_register">
                 <div className="flex items-center gap-2 flex-wrap justify-between">
-                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[230px]">
+                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[500px]">
                     <span className="pl-3">
                       <img src="/media/custom/search-sm.svg" />
                     </span>
@@ -503,19 +502,19 @@ const CashTransactionsDetail = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by party / narration / bank ref no"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       // value={itemsListSearchText}
                       // onChange={(e) => setItemsListSearchText(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Period"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -533,13 +532,13 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Bank A/C"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -557,13 +556,13 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Status"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -581,40 +580,40 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
                         label="Total Debits"
                         readOnly
                         value="₹612,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
                         label="Total Credits"
                         readOnly
                         value="₹688,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[100px]">
                       <Input
-                        label="unreconciled"
+                        label="Unreconciled"
                         readOnly
                         value="36"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "100px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
@@ -625,20 +624,21 @@ const CashTransactionsDetail = () => {
                 <table className="mt-4 min-w-full table-auto text-left">
                   <thead>
                     <tr>
-                      {BANK_REGISTER_TABLE_HEAD.map(({ head, customeStyle }) => (
-                        <th
-                          key={head}
-                          className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                        >
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                      {BANK_REGISTER_TABLE_HEAD.map(
+                        ({ head, customeStyle }) => (
+                          <th
+                            key={head}
+                            className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
                           >
-                            {head}
-                          </Typography>
-                        </th>
-                      ))}
+                            <Typography
+                              variant="small"
+                              className="font-normal leading-none pl-3"
+                            >
+                              {head}
+                            </Typography>
+                          </th>
+                        )
+                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -759,7 +759,7 @@ const CashTransactionsDetail = () => {
               </TabPanel>
               <TabPanel value="bank_reoncillation">
                 <div className="flex items-center gap-2 flex-wrap justify-between">
-                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[230px]">
+                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[500px]">
                     <span className="pl-3">
                       <img src="/media/custom/search-sm.svg" />
                     </span>
@@ -768,19 +768,19 @@ const CashTransactionsDetail = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by amount / ref / narration"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       // value={itemsListSearchText}
                       // onChange={(e) => setItemsListSearchText(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Period"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -798,13 +798,13 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Bank A/C"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -822,13 +822,13 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Status"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -846,40 +846,40 @@ const CashTransactionsDetail = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[120px]">
                       <Input
                         label="Book Balance"
                         readOnly
                         value="₹1,240,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "120px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[120px]">
                       <Input
                         label="STMT Balance"
                         readOnly
                         value="₹1,227,600"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "120px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[120px]">
                       <Input
                         label="Difference"
                         readOnly
                         value="₹12,400"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "120px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
@@ -890,20 +890,21 @@ const CashTransactionsDetail = () => {
                 <table className="mt-4 min-w-full table-auto text-left">
                   <thead>
                     <tr>
-                      {BANK_RECONCILLATION_TABLE_HEAD.map(({ head, customeStyle }) => (
-                        <th
-                          key={head}
-                          className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                        >
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                      {BANK_RECONCILLATION_TABLE_HEAD.map(
+                        ({ head, customeStyle }) => (
+                          <th
+                            key={head}
+                            className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
                           >
-                            {head}
-                          </Typography>
-                        </th>
-                      ))}
+                            <Typography
+                              variant="small"
+                              className="font-normal leading-none pl-3"
+                            >
+                              {head}
+                            </Typography>
+                          </th>
+                        )
+                      )}
                     </tr>
                   </thead>
                   <tbody>

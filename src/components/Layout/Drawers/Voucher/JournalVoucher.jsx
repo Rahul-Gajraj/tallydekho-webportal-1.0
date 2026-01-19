@@ -1,0 +1,387 @@
+import React, { useState } from "react";
+import {
+  Drawer,
+  Button,
+  Typography,
+  IconButton,
+  Select,
+  Option,
+  Input,
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+  Switch,
+} from "@material-tailwind/react";
+import moment from "moment";
+
+import {
+  CalendarDaysIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
+
+import { Controller, useForm } from "react-hook-form";
+import { DayPicker } from "react-day-picker";
+
+import Error from "../../../Error/Error";
+
+const defaultValues = {
+  isOptional: false,
+  voucherNumber: "",
+  voucherDate: new Date(),
+  debitLedger: "",
+  creditLedger: "",
+  amount: "",
+  narration: "",
+};
+
+const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    getValues,
+    reset,
+  } = useForm({
+    defaultValues,
+  });
+
+  const [debitLedger, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
+
+  const [creditLedger, setReferenceInvoice] = useState([
+    "Aadhar",
+    "Pancard",
+    "Passport",
+  ]);
+
+  const [debitNotePopoverOpen, setDebitNotePopoverOpen] = useState(false);
+
+  const onSubmitHandler = (data) => {
+    console.log(data);
+    reset();
+    toggleDrawer("journalVoucher");
+  };
+
+  return (
+    <>
+      <Drawer
+        placement="right"
+        className="p-4 overflow-scroll"
+        open={open}
+        // onClose={() => toggleDrawer("journalVoucher")}
+        size={750}
+      >
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <div className="relative mt-0 flex justify-between">
+            <Typography variant="h4">Journal Voucher</Typography>
+            <Controller
+              name="isOptional"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Switch
+                    color="green"
+                    label="Optional/Regular"
+                    ripple={true}
+                    checked={field.value}
+                    onChange={(e) => {
+                      const newValue = e.target.checked;
+                      field.onChange(newValue);
+                    }}
+                  />
+                );
+              }}
+            />
+            <IconButton
+              size="sm"
+              variant="text"
+              onClick={() => toggleDrawer("journalVoucher")}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="h-5 w-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </IconButton>
+          </div>
+          <div className="space-y-4 pb-6 pt-5">
+            <div className="grid grid-cols-12 gap-5">
+              <div className="col-span-12">
+                <Controller
+                  name="voucherNumber"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        size="md"
+                        containerProps={{ className: "!min-w-full" }}
+                        label="Voucher Number"
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.voucherNumber}
+                  message={errors.voucherNumber?.message}
+                />
+              </div>
+              <div className="col-span-12 relative">
+                <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
+                  Voucher Date
+                </label>
+                <Controller
+                  name="voucherDate"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Popover
+                        placement="bottom"
+                        open={debitNotePopoverOpen}
+                        handler={setDebitNotePopoverOpen}
+                      >
+                        <PopoverHandler>
+                          <Button
+                            variant="outlined"
+                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            ripple={false}
+                          >
+                            {moment(field.value).format("DD MMM, yyyy")}
+                            <CalendarDaysIcon
+                              strokeWidth={2}
+                              className="w-4 h-4"
+                            />
+                          </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="z-[9999]">
+                          <DayPicker
+                            selected={field.value}
+                            onDayClick={(newDate) => {
+                              if (newDate) {
+                                field.onChange(newDate);
+                                setDebitNotePopoverOpen(false);
+                              }
+                            }}
+                            showOutsideDays
+                            className="border-0"
+                            classNames={{
+                              caption:
+                                "flex justify-center py-2 mb-4 relative items-center",
+                              caption_label:
+                                "text-sm !font-medium text-gray-900",
+                              nav: "flex items-center",
+                              nav_button:
+                                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                              nav_button_previous: "absolute left-1.5",
+                              nav_button_next: "absolute right-1.5",
+                              table: "w-full border-collapse",
+                              head_row: "flex !font-medium text-gray-900",
+                              head_cell: "m-0.5 w-9 !font-normal text-sm",
+                              row: "flex w-full mt-2",
+                              cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                              day: "h-9 w-9 p-0 !font-normal",
+                              day_range_end: "day-range-end",
+                              day_selected:
+                                "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                              day_today: "rounded-md bg-gray-200 text-gray-900",
+                              day_outside:
+                                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                              day_disabled: "text-gray-500 opacity-50",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => (
+                                <ChevronLeftIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                              IconRight: ({ ...props }) => (
+                                <ChevronRightIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.voucherDate}
+                  message={errors.voucherDate?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="debitLedger"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="Debit Ledger"
+                        value={field.value}
+                        onChange={(val) => {
+                          field.onChange(val);
+                        }}
+                        color="green"
+                      >
+                        {debitLedger.map((ledger) => (
+                          <Option
+                            key={ledger}
+                            value={ledger}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                          >
+                            {ledger}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.debitLedger}
+                  message={errors.debitLedger?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="creditLedger"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="To Ledger"
+                        value={field.value}
+                        onChange={(val) => {
+                          field.onChange(val);
+                        }}
+                        color="green"
+                      >
+                        {creditLedger.map((document) => (
+                          <Option
+                            key={document}
+                            value={document}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                          >
+                            {document}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.creditLedger}
+                  message={errors.creditLedger?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="amount"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        size="md"
+                        containerProps={{ className: "!min-w-full" }}
+                        label="Amount"
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.amount}
+                  message={errors.amount?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="narration"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        size="md"
+                        containerProps={{ className: "!min-w-full" }}
+                        label="Narration / Notes"
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.narration}
+                  message={errors.narration?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Button
+                  className="w-full"
+                  color="green"
+                  type="submit"
+                  style={{ color: "white !importannt" }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          </div>
+        </form>
+        {/* <DialogFooter>
+          <Button className="ml-auto" onClick={handleOpen}>
+            submit
+          </Button>
+        </DialogFooter> */}
+      </Drawer>
+    </>
+  );
+};
+
+export default JournalVoucherDrawer;

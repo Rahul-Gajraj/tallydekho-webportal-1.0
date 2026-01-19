@@ -171,7 +171,7 @@ const PaymentReceiptRegister = () => {
             <TabsBody>
               <TabPanel value="payments_register">
                 <div className="flex items-center gap-2 flex-wrap justify-between">
-                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[230px]">
+                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[370px]">
                     <span className="pl-3">
                       <img src="/media/custom/search-sm.svg" />
                     </span>
@@ -180,19 +180,19 @@ const PaymentReceiptRegister = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search party name / payment no / bank ref no"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       // value={itemsListSearchText}
                       // onChange={(e) => setItemsListSearchText(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Period"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -210,13 +210,13 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Mode"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -237,13 +237,13 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Status"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -261,13 +261,13 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Type"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -285,40 +285,40 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Input
                         label="Total Payments"
                         readOnly
                         value="₹548,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Input
                         label="Cash Payments"
                         readOnly
                         value="₹120,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Input
                         label="Bank Payments"
                         readOnly
                         value="₹428,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
@@ -336,8 +336,7 @@ const PaymentReceiptRegister = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>
@@ -453,7 +452,7 @@ const PaymentReceiptRegister = () => {
               </TabPanel>
               <TabPanel value="receipt_register">
                 <div className="flex items-center gap-2 flex-wrap justify-between">
-                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[230px]">
+                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[370px]">
                     <span className="pl-3">
                       <img src="/media/custom/search-sm.svg" />
                     </span>
@@ -462,19 +461,19 @@ const PaymentReceiptRegister = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by receipt no / bank ref no"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       // value={itemsListSearchText}
                       // onChange={(e) => setItemsListSearchText(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Period"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -492,13 +491,13 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Mode"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -516,13 +515,13 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Status"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -540,13 +539,13 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Select
                         className="bg-white-600"
                         label="Type"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         // value={value}
@@ -564,40 +563,40 @@ const PaymentReceiptRegister = () => {
                         </Option>
                       </Select>
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Input
                         label="Total Receipts"
                         readOnly
                         value="₹1,126,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Input
                         label="Cash Receipts"
                         readOnly
                         value="₹210,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
                       />
                     </div>
-                    <div className="w-[150px]">
+                    <div className="w-[130px]">
                       <Input
                         label="Bank Receipts"
                         readOnly
                         value="₹916,000"
                         containerProps={{
                           style: {
-                            minWidth: "150px",
+                            minWidth: "130px",
                           },
                         }}
                         className="pointer-events-none bg-[#f5f7f9]"
@@ -615,8 +614,7 @@ const PaymentReceiptRegister = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>

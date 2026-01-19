@@ -30,9 +30,7 @@ const KpiCard = ({ title, subtitle, price, icon }) => {
             {icon}
           </div>
         </div>
-        <Typography color="blue-gray" className="mt-1 font-bold text-2xl">
-          {price}
-        </Typography>
+        <Typography className="mt-1 font-bold text-2xl">{price}</Typography>
       </CardBody>
     </Card>
   );
@@ -391,7 +389,7 @@ const InventoryInfo = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search for item-name / SKU / barcode"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       value={itemsListSearchText}
                       onChange={(e) => setItemsListSearchText(e.target.value)}
                     />
@@ -509,8 +507,7 @@ const InventoryInfo = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>
@@ -657,7 +654,7 @@ const InventoryInfo = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by warehouse name / code"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       value={warehouseSearchText}
                       onChange={(e) => setWarehouseSearchText(e.target.value)}
                     />
@@ -751,8 +748,7 @@ const InventoryInfo = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>
@@ -875,7 +871,7 @@ const InventoryInfo = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by item / voucher number / narration"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       value={movementSearchText}
                       onChange={(e) => setMovementSearchText(e.target.value)}
                     />
@@ -968,8 +964,7 @@ const InventoryInfo = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>
@@ -1084,7 +1079,7 @@ const InventoryInfo = () => {
                       name="header-search-input"
                       type="text"
                       placeholder="Search by item / adjustment no / created by"
-                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0 text-black"
+                      className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
                       value={adjustmentsSearchText}
                       onChange={(e) => setAdjustmentsSearchText(e.target.value)}
                     />
@@ -1194,8 +1189,7 @@ const InventoryInfo = () => {
                         >
                           <Typography
                             variant="small"
-                            color="blue-gray"
-                            className="font-normal leading-none opacity-70 pl-3"
+                            className="font-normal leading-none pl-3"
                           >
                             {head}
                           </Typography>

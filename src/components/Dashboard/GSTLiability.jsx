@@ -20,9 +20,7 @@ const GSTLiability = () => {
         className="p-2 flex gap-6 flex-wrap items-center justify-between"
       >
         <div>
-          <Typography variant="h6" color="blue-gray">
-            GST Liability
-          </Typography>
+          <Typography variant="h6">GST Liability</Typography>
         </div>
       </CardHeader>
       <CardBody className="!p-2">
@@ -36,8 +34,11 @@ const GSTLiability = () => {
                 show: false,
                 // position: 'bottom'
               },
+              // fill: {
+              //   type: "gradient",
+              // },
               labels: ["CGST", "SGST", "IGST"],
-              colors: ["#93C5FD", "#67E8F9", "#C4B5FD"],
+              colors: ["#b5fdbc", "#67E8F9", "#C4B5FD"],
               // tooltip: {
               //   enabledOnSeries: [''],
               // },
@@ -49,7 +50,7 @@ const GSTLiability = () => {
         </div>
         <div className="flex gap-2 flex-wrap justify-between px-4 !mt-4 ">
           <div className="flex flex-col items-center gap-6">
-            <div className="flex items-center gap-10 text-gray-600">
+            <div className="flex items-center gap-10">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
                 <Typography variant="small" className="font-normal">
@@ -60,7 +61,7 @@ const GSTLiability = () => {
                 ₹ 3000
               </Typography>
             </div>
-            <div className="flex items-center gap-10 text-gray-600">
+            <div className="flex items-center gap-10">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
                 <Typography variant="small" className="font-normal">
@@ -71,7 +72,7 @@ const GSTLiability = () => {
                 ₹ 3000
               </Typography>
             </div>
-            <div className="flex items-center gap-10 text-gray-600">
+            <div className="flex items-center gap-10">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
                 <Typography variant="small" className="font-normal">
