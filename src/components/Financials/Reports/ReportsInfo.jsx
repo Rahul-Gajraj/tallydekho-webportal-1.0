@@ -359,22 +359,22 @@ const ReportsInfo = () => {
     {
       title: "Opening Stock",
       price: "50",
-      img: <img className="h-5 w-5" src="/nav-icons/cash.svg" />,
+      img: <img className="w-5" src="/nav-icons/cash.svg" />,
     },
     {
       title: "Closing Stock",
       price: "30",
-      img: <img className="h-5 w-5" src="/nav-icons/cash.svg" />,
+      img: <img className="w-5" src="/nav-icons/cash.svg" />,
     },
     {
       title: "Purchase",
       price: "20",
-      img: <img className="h-5 w-5" src="/media/kpi-strip/purchase.svg" />,
+      img: <img className="w-5" src="/media/icons/purchase.svg" />,
     },
     {
       title: "Sales",
       price: "30",
-      img: <img className="h-5 w-5" src="/media/kpi-strip/sales.svg" />,
+      img: <img className="w-5" src="/media/icons/sales.svg" />,
     },
   ]);
 
@@ -386,28 +386,28 @@ const ReportsInfo = () => {
             <TabsHeader>
               <Tab value="profit_loss">
                 <div className="flex items-center gap-2">
-                  <img
+                  {/* <img
                     src="/media/kpi-strip/profit_loss.svg"
                     className="h-5 w-5"
-                  />
+                  /> */}
                   Profit & Loss
                 </div>
               </Tab>
               <Tab value="balance_sheet">
                 <div className="flex items-center gap-2">
-                  <img
+                  {/* <img
                     src="/media/kpi-strip/balance_sheet.svg"
                     className="h-5 w-5"
-                  />
+                  /> */}
                   Balance Sheet
                 </div>
               </Tab>
               <Tab value="trial_balance">
                 <div className="flex items-center gap-2">
-                  <img
+                  {/* <img
                     src="/media/kpi-strip/trial_balance.svg"
                     className="h-5 w-5"
-                  />
+                  /> */}
                   Trial Balance
                 </div>
               </Tab>

@@ -70,7 +70,7 @@ const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
         className="p-4 overflow-scroll"
         open={open}
         // onClose={() => toggleDrawer("journalVoucher")}
-        size={750}
+        size={500}
       >
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="relative mt-0 flex justify-between">
@@ -127,8 +127,6 @@ const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        size="md"
-                        containerProps={{ className: "!min-w-full" }}
                         label="Voucher Number"
                         {...field}
                         onChange={(value) => {
@@ -316,8 +314,6 @@ const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        size="md"
-                        containerProps={{ className: "!min-w-full" }}
                         label="Amount"
                         {...field}
                         onChange={(value) => {
@@ -344,8 +340,6 @@ const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        size="md"
-                        containerProps={{ className: "!min-w-full" }}
                         label="Narration / Notes"
                         {...field}
                         onChange={(value) => {

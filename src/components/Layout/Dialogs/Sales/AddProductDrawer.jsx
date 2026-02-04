@@ -3,26 +3,21 @@ import { Controller, useForm } from "react-hook-form";
 
 import {
   Input,
-  Option,
-  Select,
   Button,
   Dialog,
-  Textarea,
   IconButton,
   Typography,
   DialogBody,
   DialogHeader,
   DialogFooter,
-  Checkbox,
   Menu,
   MenuHandler,
   MenuList,
   MenuItem,
   Switch,
-  Card,
-  CardBody,
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import Error from "../../../Error/Error";
 
 const defaultValues = {
@@ -31,7 +26,6 @@ const defaultValues = {
   qty: "",
   unitPrice: "",
   discount: "0",
-  isFlat: false,
   tax: "0",
 };
 
@@ -43,6 +37,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
     control,
     getValues,
     reset,
+    watch,
   } = useForm({
     defaultValues,
   });
@@ -53,17 +48,63 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
   const [selectedQtyType, setSelectedQtyType] = useState("KG");
   const [selectedCurrency, setSelectedCurrency] = useState("INR");
 
+  const [isFlatDiscount, setIsFlatDiscount] = useState(false);
+  const [isFlatTax, setIsFlatTax] = useState(false);
+
+  const qty = watch("qty");
+  const unitPrice = watch("unitPrice");
+  const discount = watch("discount");
+  const taxAmount = watch("tax");
+
   useEffect(() => {
     if (initialData) {
       reset(initialData);
       setSelectedQtyType(initialData.qtyType);
       setSelectedCurrency(initialData.currencyType);
+      setIsFlatDiscount(initialData.isFlatDiscount);
+      setIsFlatTax(initialData.isFlatTax);
+
     } else {
       setSelectedQtyType("KG");
-      setSelectedCurrency("INR")
+      setSelectedCurrency("INR");
       reset(defaultValues);
     }
   }, [initialData]);
+
+  const calculateSubtotal = () => {
+    const qtyNum = parseFloat(qty) || 0;
+    const priceNum = parseFloat(unitPrice) || 0;
+    const discountNum = parseFloat(discount) || 0;
+    const taxNum = parseFloat(taxAmount) || 0;
+
+    const baseAmount = qtyNum * priceNum;
+
+    // Calculate discount based on discount toggle (flat or percentage)
+    let discountAmount = 0;
+    if (isFlatDiscount) {
+      // Flat amount for discount
+      discountAmount = discountNum;
+    } else {
+      // Percentage for discount - apply on baseAmount
+      discountAmount = (discountNum / 100) * baseAmount;
+    }
+
+    // Calculate tax based on tax toggle (flat or percentage)
+    // Tax is calculated on baseAmount (qty * unitPrice), not on discounted amount
+    let taxAmountCalculated = 0;
+    if (isFlatTax) {
+      // Flat amount for tax
+      taxAmountCalculated = taxNum;
+    } else {
+      // Percentage for tax - apply on baseAmount (matching Summary calculation)
+      taxAmountCalculated = (taxNum / 100) * baseAmount;
+    }
+
+    // Final subtotal: baseAmount - discount + tax
+    const subtotalValue = baseAmount - discountAmount + taxAmountCalculated;
+
+    return `₹${subtotalValue.toFixed(2)}`;
+  };
 
   const onSubmit = async (data) => {
     // console.log(data);
@@ -71,6 +112,8 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
       ...data,
       qtyType: selectedQtyType,
       currencyType: selectedCurrency,
+      isFlatDiscount,
+      isFlatTax
     });
     setSelectedQtyType("KG");
     setSelectedCurrency("INR");
@@ -292,6 +335,11 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
                 <Switch
                   color="green"
                   // label="Optional/Regular"
+                  checked={isFlatDiscount}
+                  onChange={(e) => {
+                    const newValue = e.target.checked;
+                    setIsFlatDiscount(newValue);
+                  }}
                   ripple={true}
                 />
                 <Typography variant="small">Flat</Typography>
@@ -328,13 +376,18 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
                 <Switch
                   color="green"
                   // label="Optional/Regular"
+                  checked={isFlatTax}
+                  onChange={(e) => {
+                    const newValue = e.target.checked;
+                    setIsFlatTax(newValue);
+                  }}
                   ripple={true}
                 />
                 <Typography variant="small">Flat</Typography>
               </div>
             </div>
             <div className="col-span-12">
-              <Input disabled label="Subtotal" value="0.00" />
+              <Input disabled label="Subtotal" value={calculateSubtotal()} />
             </div>
           </DialogBody>
           <DialogFooter>

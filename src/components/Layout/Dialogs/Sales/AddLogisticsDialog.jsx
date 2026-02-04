@@ -147,6 +147,7 @@ const AddLogisticsDialog = ({
                         size="lg"
                         containerProps={{ className: "!min-w-full mt-2" }}
                         label="Amount"
+                        type="number"
                         {...field}
                         onChange={(value) => {
                           //   onChange(value);

@@ -3,14 +3,36 @@
 @import "tailwindcss/utilities";
 
 body {
-  transition-duration: .3s;
+  transition-duration: 0.3s;
   transition-timing-function: ease;
   /* width: 240px;
   height: 70px; */
 }
 
-p, h1, h2, h3, h4, h5, h6, input, li, label {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+li,
+label {
   color: black !important;
+}
+
+button {
+  text-transform: none !important;
+}
+
+.filter-green {
+  filter: invert(42%) sepia(85%) saturate(400%) hue-rotate(110deg);
+}
+
+.filter-gray {
+  filter: brightness(0) saturate(100%) invert(53%) sepia(14%) saturate(620%)
+    hue-rotate(185deg) brightness(92%) contrast(90%);
 }
 
 @media (min-width: 1024px) {
@@ -105,7 +127,8 @@ p, h1, h2, h3, h4, h5, h6, input, li, label {
   align-items: center !important;
 }
 
-.fc-prev-button, .fc-next-button {
+.fc-prev-button,
+.fc-next-button {
   width: 31px;
   border: none !important;
   padding-left: 0px !important;
@@ -132,7 +155,10 @@ p, h1, h2, h3, h4, h5, h6, input, li, label {
 }
 
 .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button):hover,
-.fc .fc-button-primary.fc-button-active:not(.fc-prev-button):not(.fc-next-button) {
+.fc
+  .fc-button-primary.fc-button-active:not(.fc-prev-button):not(
+    .fc-next-button
+  ) {
   background-color: #eaf8f4 !important;
   color: #379b7f !important;
 }

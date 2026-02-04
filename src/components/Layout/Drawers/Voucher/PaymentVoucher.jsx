@@ -320,8 +320,6 @@ const PaymentVoucher = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        size="md"
-                        containerProps={{ className: "!min-w-full" }}
                         label="Amount"
                         {...field}
                         onChange={(value) => {
@@ -418,8 +416,6 @@ const PaymentVoucher = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        size="md"
-                        containerProps={{ className: "!min-w-full" }}
                         label="Reference Number"
                         {...field}
                         onChange={(value) => {
@@ -446,8 +442,6 @@ const PaymentVoucher = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        size="md"
-                        containerProps={{ className: "!min-w-full" }}
                         label="Narration / Notes"
                         {...field}
                         onChange={(value) => {

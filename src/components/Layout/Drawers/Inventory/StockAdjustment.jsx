@@ -80,7 +80,7 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
       <div className="space-y-4 pb-6 pt-5">
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="grid grid-cols-12 gap-5">
-            <div className="col-span-12">
+            {/* <div className="col-span-12">
               <Card className="border border-[#B0BEC5] shadow-none cursor-pointer">
                 <CardBody className="flex justify-between !p-4">
                   <div className="flex gap-3">
@@ -95,7 +95,7 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
                   </div>
                 </CardBody>
               </Card>
-            </div>
+            </div> */}
             <div className="col-span-12">
               <Controller
                 name="warehouse"

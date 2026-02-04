@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Drawer,
   Button,
@@ -82,6 +82,81 @@ function Icon({ id, open }) {
   );
 }
 
+const SummaryAccordion = ({ dispatchItems }) => {
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+
+  const handleSummaryAccordionOpen = () => {
+    setIsSummaryOpen((prev) => !prev);
+  };
+
+  const calculations = useMemo(() => {
+    let totalItems = 0;
+    let totalQuantity = 0;
+
+    dispatchItems.forEach((item) => {
+      totalItems += 1;
+      const qty = parseFloat(item.qty?.replace(/[^\d.]/g, "") || 0);
+      totalQuantity += qty;
+    });
+
+    return {
+      totalItems,
+      totalQuantity,
+    };
+  }, [dispatchItems]);
+
+  return (
+    <Accordion
+      open={isSummaryOpen}
+      className="rounded-lg border border-blue-gray-100"
+      icon={<Icon id={1} open={isSummaryOpen} />}
+    >
+      <AccordionHeader
+        onClick={handleSummaryAccordionOpen}
+        className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg overflow-auto"
+      >
+        Summary
+      </AccordionHeader>
+      <AccordionBody className="pt-0 text-base font-normal px-4">
+        <table className="min-w-full table-auto text-left">
+          <tbody>
+            <tr>
+              <td className="p-4 px-0 border-b border-blue-gray-50">
+                <Typography variant="small" className="font-normal">
+                  Total Items
+                </Typography>
+              </td>
+              <td className="p-4 px-0 border-b border-blue-gray-50">
+                <Typography
+                  variant="small"
+                  className="font-normal pl-3 float-right"
+                >
+                  {calculations.totalItems}
+                </Typography>
+              </td>
+            </tr>
+            <tr>
+              <td className="pt-4 px-0">
+                <Typography variant="small" className="font-normal">
+                  Total Quantity
+                </Typography>
+              </td>
+              <td className="pt-4 px-0">
+                <Typography
+                  variant="small"
+                  className="font-normal pl-3 float-right"
+                >
+                  {calculations.totalQuantity}
+                </Typography>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </AccordionBody>
+    </Accordion>
+  );
+};
+
 const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
   const {
     register,
@@ -113,7 +188,6 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const [dispatchItems, setDispatachItems] = useState([]);
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
   //   console.log(customers);
   //   console.log(selectedCustomer);
@@ -140,10 +214,6 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
 
   const deleteProductHandler = (id) => {
     setDispatachItems(dispatchItems.filter((p) => p.id != id));
-  };
-
-  const handleSummaryAccordionOpen = () => {
-    setIsSummaryOpen((prev) => !prev);
   };
 
   const onSubmitHandler = async (data) => {
@@ -460,6 +530,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                     checked={showVehcileInfo}
                     onChange={(e) => setShowVehicleInfo(e.target.checked)}
                     className=""
+                    color="green"
                   />
                 </div>
                 {showVehcileInfo && (
@@ -598,7 +669,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                             const {
                               id,
                               productName,
-                              quantity,
+                              qty,
                               unitPrice,
                               notes,
                             } = item;
@@ -618,7 +689,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
-                                    {quantity || "-"}
+                                    {qty || "-"}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -626,7 +697,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
-                                    {unitPrice || 0}
+                                    ₹{unitPrice || 0}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -676,69 +747,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                 )}
               </div>
               <div className="col-span-12">
-                <Accordion
-                  open={isSummaryOpen}
-                  className="rounded-lg border border-blue-gray-100"
-                  icon={<Icon id={1} open={isSummaryOpen} />}
-                >
-                  <AccordionHeader
-                    onClick={handleSummaryAccordionOpen}
-                    className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg overflow-auto"
-                  >
-                    Summary
-                  </AccordionHeader>
-                  <AccordionBody className="pt-0 text-base font-normal px-4">
-                    <table className="min-w-full table-auto text-left">
-                      <tbody>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Total Items
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              120
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Total Quantity
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              100
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="pt-4 px-0">
-                            <Typography variant="small" className="font-normal">
-                              Dispatch Status
-                            </Typography>
-                          </td>
-                          <td className="pt-4 px-0">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              Pending
-                            </Typography>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </AccordionBody>
-                </Accordion>
+                <SummaryAccordion dispatchItems={dispatchItems} />
               </div>
               <div className="col-span-12">
                 <Button

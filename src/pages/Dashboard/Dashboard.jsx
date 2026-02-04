@@ -13,7 +13,7 @@ const kpiData = [
     price: "₹50,846.90",
     color: "#108F6F",
     bg: "#EAF8F4",
-    img: <img className="h-5 w-5" src="/media/kpi-strip/cash_in_hand.svg" />,
+    img: <img className="w-5" src="/media/icons/cash_in_hand.svg" />,
   },
   {
     title: "Bank Balance",
@@ -21,7 +21,7 @@ const kpiData = [
     price: "₹10,342",
     color: "#108F6F",
     bg: "#EAF8F4",
-    img: <img className="h-5 w-5" src="/nav-icons/bank_balance.svg" />,
+    img: <img className="w-5" src="/media/icons/bank_balance.svg" />,
   },
   {
     title: "Receivables",
@@ -29,7 +29,7 @@ const kpiData = [
     price: "₹19,720",
     color: "#E53935",
     bg: "#F8DCDC",
-    img: <img className="h-5 w-5" src="/nav-icons/receipt.svg" />,
+    img: <img className="w-5" src="/media/icons/receivables.svg" />,
   },
   {
     title: "Payables",
@@ -37,7 +37,7 @@ const kpiData = [
     price: "₹20,000",
     color: "#108F6F",
     bg: "#EAF8F4",
-    img: <img className="h-5 w-5" src="/nav-icons/payment.svg" />,
+    img: <img className="w-5" src="/media/icons/payables.svg" />,
   },
   {
     title: "Loans & ODs",
@@ -45,7 +45,7 @@ const kpiData = [
     price: "₹19,720",
     color: "#E53935",
     bg: "#F8DCDC",
-    img: <img className="h-5 w-5" src="/nav-icons/loans.svg" />,
+    img: <img className="w-5" src="/media/icons/loans_ods.svg" />,
   },
 ];
 

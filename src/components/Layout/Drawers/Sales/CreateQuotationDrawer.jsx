@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 
 import {
-  Accordion,
-  AccordionBody,
-  AccordionHeader,
   Button,
   Card,
   CardBody,
@@ -29,8 +26,9 @@ import {
 
 import { DayPicker } from "react-day-picker";
 
-import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
+import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
+import SummaryAccordion from "./SummaryAccordion";
 import Error from "../../../Error/Error";
 
 const ITEM_TABLE_HEAD = [
@@ -63,27 +61,6 @@ const defaultValues = {
   logistics: [],
   isOptional: false,
 };
-
-function Icon({ id, open }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={2}
-      stroke="currentColor"
-      className={`${
-        id === open ? "rotate-180" : ""
-      } h-5 w-5 transition-transform`}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-      />
-    </svg>
-  );
-}
 
 const PredefinedTC = [
   "Installation cost will be extra",
@@ -119,16 +96,10 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedLogistic, setSelectedLogistic] = useState(null);
 
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
-
   const handleDialogsOpen = (key) => {
     setAreDialogsOpen((prev) => {
       return { ...prev, [key]: !prev[key] };
     });
-  };
-
-  const handleSummaryAccordionOpen = () => {
-    setIsSummaryOpen((prev) => !prev);
   };
 
   const upsertProductHandler = (productInfo) => {
@@ -565,7 +536,9 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                               discount,
                               tax,
                               unitPrice,
-                              id
+                              id,
+                              isFlatDiscount,
+                              isFlatTax
                             } = item;
 
                             return (
@@ -599,7 +572,9 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
+                                    {isFlatDiscount && "₹"}
                                     {discount || 0}
+                                    {!isFlatDiscount && "%"}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -607,7 +582,9 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
+                                    {isFlatTax && "₹"}
                                     {tax || 0}
+                                    {!isFlatTax && "%"}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -615,7 +592,7 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
-                                    {unitPrice || 0}
+                                    ₹{unitPrice || 0}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -641,34 +618,6 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                             );
                           })}
                         </tbody>
-                        <tfoot className="border-t border-gray-300">
-                          <tr>
-                            <td className="p-2 px-4">
-                              <Typography variant="small" className="font-bold">
-                                Total
-                              </Typography>
-                            </td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4">
-                              <Typography variant="small" className="font-bold">
-                                ₹
-                                {items.reduce((prevVal, currVal) => {
-                                  const { qty, unitPrice, discount, tax } =
-                                    currVal;
-                                  return (
-                                    prevVal +
-                                    Number(qty || 0) * Number(unitPrice || 0) -
-                                    Number(discount || 0) / 100 +
-                                    Number(tax || 0)
-                                  );
-                                }, 0)}
-                              </Typography>
-                            </td>
-                          </tr>
-                        </tfoot>
                       </table>
                     </Card>
                     <Button
@@ -722,7 +671,7 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                               trackingNumber,
                               remark,
                               taxOnLogistics,
-                              id
+                              id,
                             } = logistic;
 
                             return (
@@ -740,7 +689,7 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
-                                    {amount || 0}
+                                    ₹{amount || 0}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -834,114 +783,7 @@ const CreateQuotationDrawer = ({ open, toggleDrawer }) => {
                 )}
               </div>
               <div className="col-span-12">
-                <Accordion
-                  open={isSummaryOpen}
-                  className="rounded-lg border border-blue-gray-100"
-                  icon={<Icon id={1} open={isSummaryOpen} />}
-                >
-                  <AccordionHeader
-                    onClick={handleSummaryAccordionOpen}
-                    className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg overflow-auto"
-                  >
-                    Grand Total (₹125,000)
-                  </AccordionHeader>
-                  <AccordionBody className="pt-0 text-base font-normal px-4">
-                    <table className="min-w-full table-auto text-left">
-                      <tbody>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Subtotal
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Discounts
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Product Tax
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Logistic Changes
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Logistics
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="pt-4 px-0">
-                            <Typography variant="small" className="font-normal">
-                              Logistics Tax
-                            </Typography>
-                          </td>
-                          <td className="pt-4 px-0">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </AccordionBody>
-                </Accordion>
+                <SummaryAccordion products={items} logistics={logistics} />
               </div>
               <div className="col-span-12">
                 <Typography>Terms & Conditions</Typography>

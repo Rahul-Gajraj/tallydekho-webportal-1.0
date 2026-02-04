@@ -7,21 +7,11 @@ import {
   Select,
   Option,
   Input,
-  Dialog,
-  DialogBody,
-  DialogHeader,
-  DialogFooter,
   Popover,
   PopoverHandler,
   PopoverContent,
   Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Switch,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
 } from "@material-tailwind/react";
 import moment from "moment";
 
@@ -36,8 +26,9 @@ import { DayPicker } from "react-day-picker";
 
 import AddCustomerDialog from "../../Dialogs/Sales/AddCustomerDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
-import Error from "../../../Error/Error";
 import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
+import SummaryAccordion from "../Sales/SummaryAccordion";
+import Error from "../../../Error/Error";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -72,27 +63,6 @@ const defaultValues = {
   days: "",
 };
 
-function Icon({ id, open }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={2}
-      stroke="currentColor"
-      className={`${
-        id === open ? "rotate-180" : ""
-      } h-5 w-5 transition-transform`}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-      />
-    </svg>
-  );
-}
-
 const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
   const {
     register,
@@ -116,8 +86,6 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
   const [selectedLogistic, setSelectedLogistic] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
-
   const [products, setProducts] = useState([]);
   const [logistics, setLogistics] = useState([]);
 
@@ -128,10 +96,6 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
     product: false,
     logistics: false,
   });
-
-  const handleSummaryAccordionOpen = () => {
-    setIsSummaryOpen((prev) => !prev);
-  };
 
   const handleDialogsOpen = (key) => {
     setAreDialogsOpen((prev) => {
@@ -605,6 +569,8 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
                               discount,
                               tax,
                               unitPrice,
+                              isFlatDiscount,
+                              isFlatTax
                             } = item;
                             return (
                               <tr key={id}>
@@ -637,7 +603,9 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
+                                    {isFlatDiscount && "₹"}
                                     {discount || 0}
+                                    {!isFlatDiscount && "%"}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -645,7 +613,9 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
+                                    {isFlatTax && "₹"}
                                     {tax || 0}
+                                    {!isFlatTax && "%"}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -653,7 +623,7 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
-                                    {unitPrice || 0}
+                                    ₹{unitPrice || 0}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -753,7 +723,7 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
                                     variant="small"
                                     className="font-normal"
                                   >
-                                    {amount || 0}
+                                    ₹{amount || 0}
                                   </Typography>
                                 </td>
                                 <td className="p-2 px-4">
@@ -819,84 +789,7 @@ const CreatePurchaseOrderDrawer = ({ open, toggleDrawer }) => {
                 )}
               </div>
               <div className="col-span-12">
-                <Accordion
-                  open={isSummaryOpen}
-                  className="rounded-lg border border-blue-gray-100"
-                  icon={<Icon id={1} open={isSummaryOpen} />}
-                >
-                  <AccordionHeader
-                    onClick={handleSummaryAccordionOpen}
-                    className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg overflow-auto"
-                  >
-                    Grand Total (₹125,000)
-                  </AccordionHeader>
-                  <AccordionBody className="pt-0 text-base font-normal px-4">
-                    <table className="min-w-full table-auto text-left">
-                      <tbody>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Subtotal
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Taxes
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography variant="small" className="font-normal">
-                              Discount
-                            </Typography>
-                          </td>
-                          <td className="p-4 px-0 border-b border-blue-gray-50">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="pt-4 px-0">
-                            <Typography variant="small" className="font-normal">
-                              Logistics
-                            </Typography>
-                          </td>
-                          <td className="pt-4 px-0">
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 float-right"
-                            >
-                              ₹5,000
-                            </Typography>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </AccordionBody>
-                </Accordion>
+                <SummaryAccordion products={products} logistics={logistics} />
               </div>
               <div className="col-span-12">
                 <Select

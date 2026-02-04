@@ -40,6 +40,10 @@ import StockAdjustment from "./Drawers/Inventory/StockAdjustment";
 import StockTransfer from "./Drawers/Inventory/StockTransfer";
 import AddItem from "./Drawers/Inventory/AddItem";
 import AddWarehouse from "./Drawers/Inventory/AddWarehouse";
+import SundryDebtors from "./Drawers/Ledgers/SundryDebtors";
+import SundryCreditors from "./Drawers/Ledgers/SundryCreditors";
+import DuitiesTaxes from "./Drawers/Ledgers/DuitiesTaxes";
+import CustomGroups from "./Drawers/Ledgers/CustomGroups";
 
 const Notification = () => {
   const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
@@ -443,25 +447,25 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
             <MenuList>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("sundryCreditors")}
               >
                 Sundry Creditors
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("sundryDebtors")}
               >
                 Sundry Debitors
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("duitiesTaxes")}
               >
                 Duities & Taxes
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
-                onClick={() => toggleDrawerHandler("salesInvoice")}
+                onClick={() => toggleDrawerHandler("customGroups")}
               >
                 Custom Groups
               </MenuItem>
@@ -493,6 +497,25 @@ const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
     addWarehouse: false,
   });
 
+  const [activeDrawer, setActiveDrawer] = useState(null); // which drawer
+  const [drawerOpen, setDrawerOpen] = useState(false); // animation state
+
+  const openDrawer = (key) => {
+    setActiveDrawer(key); // mount correct drawer
+    requestAnimationFrame(() => {
+      setDrawerOpen(true); // trigger animation
+    });
+  };
+
+  const closeDrawer = () => {
+    setDrawerOpen(false); // play close animation
+
+    // wait for animation to finish, then unmount
+    setTimeout(() => {
+      setActiveDrawer(null);
+    }, 300); // must match Drawer transition duration
+  };
+
   const toggleDrawerHandler = (key) => {
     setAreDrawersOpen((prev) => {
       return { ...prev, [key]: !prev[key] };
@@ -503,7 +526,7 @@ const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
     <>
       <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-4">
         <li>
-          <CreateFilter toggleDrawerHandler={toggleDrawerHandler} />
+          <CreateFilter toggleDrawerHandler={openDrawer} />
         </li>
         <li>
           <FYear />
@@ -569,80 +592,75 @@ const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
         </div>
       </header>
 
-      {/* Sales Drawers Start */}
-      <CreateInvoiceDrawer
-        open={areDrawersOpen.salesInvoice}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <CreateQuotationDrawer
-        open={areDrawersOpen.salesQuotation}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <CreateSalesOrderDrawer
-        open={areDrawersOpen.salesOrder}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <CreateDeliveryNoteDrawer
-        open={areDrawersOpen.salesDeliveryNote}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <CreateCreditNoteDrawer
-        open={areDrawersOpen.salesNote}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      {/* Sales Drawers End */}
-
-      {/* Purchase Drawers Start */}
-      <CreatePurchaseInvoiceDrawer
-        open={areDrawersOpen.purchaseInvoice}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <CreatePurchaseOrderDrawer
-        open={areDrawersOpen.purchaseOrder}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <PurchaseDebitNoteDrawer
-        open={areDrawersOpen.purchaseDebitNote}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      {/* Purchase Drawers End */}
-
-      {/* Voucher Drawers Start */}
-      <PaymentVoucher
-        open={areDrawersOpen.paymentVoucher}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <ReceiptVoucherDrawer
-        open={areDrawersOpen.receiptVoucher}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <ContraVoucherDrawer
-        open={areDrawersOpen.contraVoucher}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <JournalVoucherDrawer
-        open={areDrawersOpen.journalVoucher}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      {/* Voucher Drawers End */}
-
-      {/* Inventory Drawers Start */}
-      <StockAdjustment
-        open={areDrawersOpen.stockAdjustment}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <StockTransfer
-        open={areDrawersOpen.stockTransfer}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <AddItem
-        open={areDrawersOpen.addItem}
-        toggleDrawer={toggleDrawerHandler}
-      />
-      <AddWarehouse
-        open={areDrawersOpen.addWarehouse}
-        toggleDrawer={toggleDrawerHandler}
-      />
+      {activeDrawer == "salesInvoice" && (
+        <CreateInvoiceDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "salesQuotation" && (
+        <CreateQuotationDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "salesOrder" && (
+        <CreateSalesOrderDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "salesDeliveryNote" && (
+        <CreateDeliveryNoteDrawer
+          open={drawerOpen}
+          toggleDrawer={closeDrawer}
+        />
+      )}
+      {activeDrawer == "salesNote" && (
+        <CreateCreditNoteDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "purchaseInvoice" && (
+        <CreatePurchaseInvoiceDrawer
+          open={drawerOpen}
+          toggleDrawer={closeDrawer}
+        />
+      )}
+      {activeDrawer == "purchaseOrder" && (
+        <CreatePurchaseOrderDrawer
+          open={drawerOpen}
+          toggleDrawer={closeDrawer}
+        />
+      )}
+      {activeDrawer == "purchaseDebitNote" && (
+        <PurchaseDebitNoteDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "paymentVoucher" && (
+        <PaymentVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "receiptVoucher" && (
+        <ReceiptVoucherDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "contraVoucher" && (
+        <ContraVoucherDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "journalVoucher" && (
+        <JournalVoucherDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "stockAdjustment" && (
+        <StockAdjustment open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "stockTransfer" && (
+        <StockTransfer open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "addItem" && (
+        <AddItem open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "addWarehouse" && (
+        <AddWarehouse open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "sundryCreditors" && (
+        <SundryCreditors open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "sundryDebtors" && (
+        <SundryDebtors open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "duitiesTaxes" && (
+        <DuitiesTaxes open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
+      {activeDrawer == "customGroups" && (
+        <CustomGroups open={drawerOpen} toggleDrawer={closeDrawer} />
+      )}
     </>
   );
 };

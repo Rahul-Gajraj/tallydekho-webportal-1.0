@@ -76,6 +76,7 @@ const KPI_DATA = [
   },
   {
     title: "Balance Sheet",
+    icon: "balance_sheet.svg",
     children: [
       { title: "Total Assets", price: "₹177,000" },
       { title: "Total Liabilities", price: "₹157,000" },

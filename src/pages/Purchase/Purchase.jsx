@@ -13,7 +13,7 @@ const kpiData = [
     value: "+14%",
     color: "#108F6F",
     bg: "#EAF8F4",
-    img: <img src="/media/kpi-strip/today.svg" className="h-5 w-5" />,
+    img: <img src="/media/kpi-strip/today.svg" className="w-5" />,
   },
   {
     title: "MTD",
@@ -21,7 +21,7 @@ const kpiData = [
     value: "-10%",
     color: "#F23031",
     bg: "#FFEBEA",
-    img: <img src="/media/kpi-strip/mtd.svg" className="h-5 w-5" />,
+    img: <img src="/media/kpi-strip/mtd.svg" className="w-5" />,
   },
   {
     title: "YTD",
@@ -29,7 +29,7 @@ const kpiData = [
     value: "+12%",
     color: "#108F6F",
     bg: "#EAF8F4",
-    img: <img src="/media/kpi-strip/mtd.svg" className="h-5 w-5" />,
+    img: <img src="/media/kpi-strip/mtd.svg" className="w-5" />,
   },
   {
     title: "Avg Ticket",
@@ -37,17 +37,17 @@ const kpiData = [
     value: "+12%",
     color: "#108F6F",
     bg: "#EAF8F4",
-    img: <img src="/media/kpi-strip/avg_ticket.svg" className="h-5 w-5" />,
+    img: <img src="/media/kpi-strip/avg_ticket.svg" className="w-5" />,
   },
   {
     title: "Outstanding",
     price: "₹812k",
-    img: <img src="/media/kpi-strip/outstanding.svg" className="h-5 w-5" />,
+    img: <img src="/media/kpi-strip/outstanding.svg" className="w-5" />,
   },
   {
-    title: "Credit Notes",
+    title: "Debit Notes",
     price: "3",
-    img: <img src="/media/kpi-strip/credit_notes.svg" className="h-5 w-5" />,
+    img: <img src="/media/icons/debit_notes.svg" className="w-5" />,
   },
 ];
 

@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 
 import Error from "../../../Error/Error";
 
@@ -22,6 +22,7 @@ const defaultValues = {
   racks: "",
   label: "",
   narration: "",
+  racks: [{ rack: "", label: "" }],
 };
 
 const AddWarehouse = ({ open, toggleDrawer }) => {
@@ -30,10 +31,18 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
     handleSubmit,
     formState: { errors },
     control,
+    watch,
     getValues,
     reset,
   } = useForm({
     defaultValues,
+  });
+
+  const racks = watch("racks");
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "racks",
   });
 
   const onSubmitHandler = (data) => {
@@ -236,7 +245,56 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
               />
             </div>
             <div className="col-span-12">
-              <Controller
+              {fields.map((item, idx) => (
+                <div className="grid grid-cols-12 gap-3" key={item.id}>
+                  <div className="col-span-5">
+                    <Controller
+                      name={`racks.${idx}.rack`}
+                      control={control}
+                      rules={{ required: "This field is required" }}
+                      render={({ field: { value, onChange } }) => (
+                        <Input
+                          label="Referrals"
+                          value={value}
+                          variant="outlined"
+                          onChange={onChange}
+                          error={Boolean(errors?.racks?.[idx]?.rack)}
+                        />
+                      )}
+                    />
+                    {errors?.racks?.[idx]?.rack && (
+                      <Error
+                        condition={errors?.racks?.[idx]?.rack}
+                        message={errors?.racks?.[idx]?.rack.message}
+                      />
+                    )}
+                  </div>
+                  <div className="col-span-5">
+                    <Controller
+                      name={`racks.${idx}.label`}
+                      control={control}
+                      rules={{ required: "This field is required" }}
+                      render={({ field: { value, onChange } }) => (
+                        <Input
+                          label="Referrals"
+                          value={value}
+                          variant="outlined"
+                          onChange={onChange}
+                          error={Boolean(errors?.racks?.[idx]?.label)}
+                        />
+                      )}
+                    />
+                    {errors?.racks?.[idx]?.label && (
+                      <Error
+                        condition={errors?.racks?.[idx]?.label}
+                        message={errors?.racks?.[idx]?.label.message}
+                      />
+                    )}
+                  </div>
+                  <div className="col-span-2">X</div>
+                </div>
+              ))}
+              {/* <Controller
                 name="racks"
                 control={control}
                 rules={{
@@ -257,7 +315,7 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                   );
                 }}
               />
-              <Error condition={errors.racks} message={errors.racks?.message} />
+              <Error condition={errors.racks} message={errors.racks?.message} /> */}
             </div>
             <div className="col-span-12">
               <Controller
