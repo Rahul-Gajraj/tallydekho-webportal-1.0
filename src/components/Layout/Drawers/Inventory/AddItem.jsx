@@ -17,7 +17,6 @@ import {
 } from "@material-tailwind/react";
 
 import {
-  CalendarDaysIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
@@ -48,6 +47,7 @@ const AddItem = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -55,10 +55,15 @@ const AddItem = ({ open, toggleDrawer }) => {
 
   const [expiryDatePopoverOpen, setExpiryDatePopoverOpen] = useState(false);
 
+  const resetFields = () => {
+    toggleDrawer("addItem");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("addItem");
+    resetFields();
   };
 
   return (
@@ -75,7 +80,7 @@ const AddItem = ({ open, toggleDrawer }) => {
           size="sm"
           variant="text"
           className="!absolute right-0 top-0"
-          onClick={() => toggleDrawer("addItem")}
+          onClick={resetFields}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -367,9 +372,10 @@ const AddItem = ({ open, toggleDrawer }) => {
                           ripple={false}
                         >
                           {moment(field.value).format("DD MMM, yyyy")}
-                          <CalendarDaysIcon
-                            strokeWidth={2}
-                            className="w-4 h-4"
+                          <img
+                            src="/media/icons/calendar.svg"
+                            alt="calendar"
+                            className="w-5 h-5"
                           />
                         </Button>
                       </PopoverHandler>

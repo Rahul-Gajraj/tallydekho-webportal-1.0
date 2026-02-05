@@ -18,22 +18,28 @@ const EXPENSES_KPI = [
   {
     title: "Today",
     price: "₹92,000",
-    img: <img src="/media/kpi-strip/today.svg" className="h-5 w-5" />,
+    img: <img src="/media/icons/today.svg" alt="toady" className="w-5 h-5" />,
   },
   {
     title: "MTD",
     price: "₹1.27M",
-    img: <img src="/media/kpi-strip/mtd.svg" className="h-5 w-5" />,
+    img: <img src="/media/icons/mtd.svg" alt="mtd" className="w-5 h-5" />,
   },
   {
     title: "YTD",
     price: "₹7.4M",
-    img: <img src="/media/kpi-strip/mtd.svg" className="h-5 w-5" />,
+    img: <img src="/media/icons/ytd.svg" alt="ytd" className="w-5 h-5" />,
   },
   {
     title: "Cash Expenses (%)",
     price: "37%",
-    img: <img className="h-5 w-5" src="/nav-icons/payment.svg" />,
+    img: (
+      <img
+        src="/media/icons/cash_expenses.svg"
+        alt="Cash Expenses"
+        className="w-5 h-5"
+      />
+    ),
   },
 ];
 

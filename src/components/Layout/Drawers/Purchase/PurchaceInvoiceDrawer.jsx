@@ -15,11 +15,7 @@ import {
 } from "@material-tailwind/react";
 import moment from "moment";
 
-import {
-  CalendarDaysIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
@@ -68,6 +64,7 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -135,10 +132,15 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
     setLogistics(logistics.filter((v) => v.id != id));
   };
 
+  const resetFields = () => {
+    toggleDrawer("purchaseInvoice");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("purchaseInvoice");
+    resetFields();
   };
 
   return (
@@ -158,7 +160,7 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
             size="sm"
             variant="text"
             className="!absolute right-0 top-0"
-            onClick={() => toggleDrawer("purchaseInvoice")}
+            onClick={resetFields}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -298,9 +300,10 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>

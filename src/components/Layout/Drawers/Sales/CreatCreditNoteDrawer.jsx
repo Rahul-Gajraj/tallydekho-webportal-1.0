@@ -17,7 +17,6 @@ import {
 import moment from "moment";
 
 import {
-  CalendarDaysIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
@@ -67,6 +66,7 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -113,10 +113,15 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
     setProducts(products.filter((p) => p.id != id));
   };
 
+  const resetFields = () => {
+    toggleDrawer("salesNote");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("salesNote");
+    resetFields();
   };
 
   return (
@@ -153,7 +158,7 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
               size="sm"
               variant="text"
               // className="!absolute right-0 top-0"
-              onClick={() => toggleDrawer("salesNote")}
+              onClick={resetFields}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -223,9 +228,10 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>

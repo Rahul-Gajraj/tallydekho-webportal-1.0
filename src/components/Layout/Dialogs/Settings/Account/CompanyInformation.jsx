@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import {
@@ -14,6 +14,7 @@ import {
   Select,
   Option,
   Textarea,
+  Avatar,
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
@@ -49,6 +50,9 @@ const FY_MONTHS = [
   "December",
 ];
 
+const MAX_SIZE = 50 * 1024; // 50KB
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif"];
+
 const CompanyInformation = ({
   open,
   handleOpen,
@@ -67,17 +71,46 @@ const CompanyInformation = ({
     defaultValues,
   });
 
-//   useEffect(() => {
-//     if (initialData) {
-//       reset(initialData);
-//     } else {
-//       reset(defaultValues);
-//     }
-//   }, [initialData]);
+  const [avatarSrc, setAvatarSrc] = useState("");
+  const [error, setError] = useState("");
+
+  const fileInputRef = useRef(null);
+
+  //   useEffect(() => {
+  //     if (initialData) {
+  //       reset(initialData);
+  //     } else {
+  //       reset(defaultValues);
+  //     }
+  //   }, [initialData]);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setError("");
+
+    if (!file) return;
+
+    // Validate file type
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError("Only JPG, PNG, and GIF images are allowed.");
+      return;
+    }
+
+    // Validate file size
+    if (file.size > MAX_SIZE) {
+      setError("Image size must be less than 50KB.");
+      return;
+    }
+
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    console.log(previewUrl);
+    setAvatarSrc(previewUrl);
+  };
 
   const onSubmit = async (data) => {
     // console.log(data);
-    handleOpen('companyInformation');
+    handleOpen("companyInformation");
     reset();
   };
 
@@ -106,6 +139,37 @@ const CompanyInformation = ({
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogBody className="grid grid-cols-12 gap-4">
+            <div className="col-span-12 flex justify-center">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".jpg,.jpeg,.png,.gif"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              {avatarSrc.length != 0 ? (
+                <Avatar
+                  src={avatarSrc}
+                  alt="User Avatar"
+                  variant="circular"
+                  // size="xl"
+                  className="mx-auto object-top cursor-pointer border w-[60px] h-[60px]"
+                  onClick={() => fileInputRef.current.click()}
+                />
+              ) : (
+                <div
+                  className="relative w-[60px] h-[60px] rounded-full bg-[#EAF8F4] cursor-pointer flex justify-center items-center"
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  <Typography className="!text-[#108f6f]">CI</Typography>
+                  <img
+                    src="/media/icons/camera.svg"
+                    alt="camera"
+                    className="w-5 h-5 absolute bottom-0 right-0"
+                  />
+                </div>
+              )}
+            </div>
             <div className="col-span-12">
               <Controller
                 name="name"

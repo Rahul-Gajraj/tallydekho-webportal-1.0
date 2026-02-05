@@ -387,7 +387,7 @@ const ReportsInfo = () => {
               <Tab value="profit_loss">
                 <div className="flex items-center gap-2">
                   {/* <img
-                    src="/media/kpi-strip/profit_loss.svg"
+                    src="/media/icons/profit_loss.svg"
                     className="h-5 w-5"
                   /> */}
                   Profit & Loss
@@ -396,7 +396,7 @@ const ReportsInfo = () => {
               <Tab value="balance_sheet">
                 <div className="flex items-center gap-2">
                   {/* <img
-                    src="/media/kpi-strip/balance_sheet.svg"
+                    src="/media/icons/balance_sheet.svg"
                     className="h-5 w-5"
                   /> */}
                   Balance Sheet
@@ -405,7 +405,7 @@ const ReportsInfo = () => {
               <Tab value="trial_balance">
                 <div className="flex items-center gap-2">
                   {/* <img
-                    src="/media/kpi-strip/trial_balance.svg"
+                    src="/media/icons/trial_balance.svg"
                     className="h-5 w-5"
                   /> */}
                   Trial Balance

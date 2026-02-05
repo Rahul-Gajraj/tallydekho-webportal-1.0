@@ -36,6 +36,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
     watch,
   } = useForm({
@@ -106,6 +107,12 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
     return `₹${subtotalValue.toFixed(2)}`;
   };
 
+  const resetFields = () => {
+    handleOpen("product");
+    clearErrors();
+    reset();
+  };
+
   const onSubmit = async (data) => {
     // console.log(data);
     upsertHandler({
@@ -116,21 +123,13 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
       isFlatTax
     });
     setSelectedQtyType("KG");
-    setSelectedCurrency("INR");
-    handleOpen("product");
-    reset();
+    setSelectedC;urrency("INR");
+    resetFields()
   };
 
   return (
     <>
-      <Dialog
-        size="md"
-        open={open}
-        handler={() => {
-          handleOpen("product");
-        }}
-        className="p-4"
-      >
+      <Dialog size="md" open={open} handler={resetFields} className="p-4">
         <DialogHeader className="relative m-0 block">
           <Typography variant="h4">Add Product</Typography>
           <Typography className="mt-1 font-normal">
@@ -140,9 +139,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
             size="sm"
             variant="text"
             className="!absolute right-3.5 top-3.5"
-            onClick={() => {
-              handleOpen("product");
-            }}
+            onClick={resetFields}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />
           </IconButton>

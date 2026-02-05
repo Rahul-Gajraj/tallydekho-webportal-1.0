@@ -16,7 +16,6 @@ import {
 import moment from "moment";
 
 import {
-  CalendarDaysIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
@@ -72,6 +71,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -145,10 +145,15 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
     setLogistics(logistics.filter((v) => v.id != id));
   };
 
+  const resetFields = () => {
+    toggleDrawer("salesInvoice");
+    clearErrors();
+    reset();
+  }
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("salesInvoice");
+    resetFields();
   };
 
   return (
@@ -185,10 +190,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
               size="sm"
               variant="text"
               // className="!absolute right-0 top-0"
-              onClick={() => {
-                reset();
-                toggleDrawer("salesInvoice");
-              }}
+              onClick={resetFields}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -291,9 +293,10 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>

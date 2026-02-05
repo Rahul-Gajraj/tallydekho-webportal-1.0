@@ -34,15 +34,21 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
   });
 
+  const resetFields = () => {
+    toggleDrawer("stockAdjustment");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("stockAdjustment");
+    resetFields()
   };
 
   return (
@@ -59,7 +65,7 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
           size="sm"
           variant="text"
           className="!absolute right-0 top-0"
-          onClick={() => toggleDrawer("stockAdjustment")}
+          onClick={resetFields}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

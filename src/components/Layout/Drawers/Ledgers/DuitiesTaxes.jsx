@@ -40,6 +40,7 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -47,10 +48,15 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
 
   const [isCredit, setIsCredit] = useState(false);
 
+  const resetFields = () => {
+    toggleDrawer("duitiesTaxes");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("duitiesTaxes");
+    resetFields();
   };
 
   return (
@@ -69,10 +75,7 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
               size="sm"
               variant="text"
               // className="!absolute right-0 top-0"
-              onClick={() => {
-                reset();
-                toggleDrawer("duitiesTaxes");
-              }}
+              onClick={resetFields}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

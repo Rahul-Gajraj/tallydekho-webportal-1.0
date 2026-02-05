@@ -7,17 +7,10 @@ import {
   Select,
   Option,
   Input,
-  Dialog,
-  DialogBody,
-  DialogHeader,
-  DialogFooter,
   Popover,
   PopoverHandler,
   PopoverContent,
   Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Switch,
   Accordion,
   AccordionHeader,
@@ -26,11 +19,7 @@ import {
 } from "@material-tailwind/react";
 import moment from "moment";
 
-import {
-  CalendarDaysIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
@@ -164,6 +153,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -216,10 +206,15 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
     setDispatachItems(dispatchItems.filter((p) => p.id != id));
   };
 
+  const resetFields = () => {
+    toggleDrawer("salesDeliveryNote");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = async (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("salesDeliveryNote");
+    resetFields();
   };
 
   return (
@@ -252,11 +247,7 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                 );
               }}
             />
-            <IconButton
-              size="sm"
-              variant="text"
-              onClick={() => toggleDrawer("salesDeliveryNote")}
-            >
+            <IconButton size="sm" variant="text" onClick={resetFields}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -325,9 +316,10 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>
@@ -666,13 +658,8 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                         </thead>
                         <tbody>
                           {dispatchItems.map((item) => {
-                            const {
-                              id,
-                              productName,
-                              qty,
-                              unitPrice,
-                              notes,
-                            } = item;
+                            const { id, productName, qty, unitPrice, notes } =
+                              item;
 
                             return (
                               <tr key={id}>

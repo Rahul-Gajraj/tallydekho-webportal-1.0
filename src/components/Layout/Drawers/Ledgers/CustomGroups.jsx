@@ -57,6 +57,7 @@ const CustomGroups = ({ open, toggleDrawer }) => {
     control,
     getValues,
     setValue,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -66,10 +67,15 @@ const CustomGroups = ({ open, toggleDrawer }) => {
   const [isBankingDetailEnable, setIsBankingDetailEnable] = useState(false);
   const [gstinDetailType, setGSTINDetailType] = useState(GST_TYPES[1].value);
 
+  const resetFields = () => {
+    toggleDrawer("customGroups");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("customGroups");
+    resetFields();
   };
 
   return (
@@ -88,10 +94,7 @@ const CustomGroups = ({ open, toggleDrawer }) => {
               size="sm"
               variant="text"
               // className="!absolute right-0 top-0"
-              onClick={() => {
-                reset();
-                toggleDrawer("customGroups");
-              }}
+              onClick={resetFields}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

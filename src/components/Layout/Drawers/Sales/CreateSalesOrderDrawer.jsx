@@ -15,11 +15,7 @@ import {
 } from "@material-tailwind/react";
 import moment from "moment";
 
-import {
-  CalendarDaysIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
@@ -70,6 +66,7 @@ const CreateSalesOrderDrawer = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -144,10 +141,15 @@ const CreateSalesOrderDrawer = ({ open, toggleDrawer }) => {
     setLogistics(logistics.filter((v) => v.id != id));
   };
 
+  const resetFields = () => {
+    toggleDrawer("salesOrder");
+    clearErrors();
+    reset();
+  };
+
   const onSubmit = async (data) => {
     console.log(data);
-    // reset();
-    // toggleDrawer("salesQuotation")
+    resetFields();
   };
 
   return (
@@ -184,10 +186,7 @@ const CreateSalesOrderDrawer = ({ open, toggleDrawer }) => {
               size="sm"
               variant="text"
               // className="!absolute right-0 top-0"
-              onClick={() => {
-                reset();
-                toggleDrawer("salesOrder");
-              }}
+              onClick={resetFields}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -290,9 +289,10 @@ const CreateSalesOrderDrawer = ({ open, toggleDrawer }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>
@@ -416,9 +416,10 @@ const CreateSalesOrderDrawer = ({ open, toggleDrawer }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>
@@ -507,9 +508,10 @@ const CreateSalesOrderDrawer = ({ open, toggleDrawer }) => {
                             ripple={false}
                           >
                             {moment(field.value).format("DD MMM, yyyy")}
-                            <CalendarDaysIcon
-                              strokeWidth={2}
-                              className="w-4 h-4"
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
                             />
                           </Button>
                         </PopoverHandler>

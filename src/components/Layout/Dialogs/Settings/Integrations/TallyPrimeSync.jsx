@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -54,6 +54,8 @@ function Icon({ id, open }) {
   );
 }
 
+const MOBILE_OTP = ["1", "2", "3", "4"];
+
 const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
   const {
     register,
@@ -72,11 +74,33 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
+  const [mobileOtp, setMobileOtp] = useState(Array(4).fill(""));
 
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
+  const inputMobileOtpRefs = useRef([]);
+
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
+
+  const handleMobileOtpChange = (index, value) => {
+    const newOtp = [...mobileOtp];
+    newOtp[index] = value.replace(/[^0-9]/g, "");
+    // console.log(Number(newOtp[index]));
+    // console.log(typeof newOtp[index]);
+    setMobileOtp(newOtp);
+
+    if (value && index < inputMobileOtpRefs.current.length - 1) {
+      inputMobileOtpRefs.current[index + 1].focus();
+    }
+  };
+
+  function handleMobileOtpBackspace(event, index) {
+    if (event.key === "Backspace" && !event.target.value && index > 0) {
+      // console.log(inputMobileOtpRefs.current[index - 1]);
+      inputMobileOtpRefs.current[index - 1].focus();
+    }
+  }
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -183,13 +207,27 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
 
         {activeStep === 1 && (
           <div className="space-y-4">
-            <Typography>Pairing</Typography>
+            <Typography className="text-center">Pairing</Typography>
             <div className="text-center">
-              <div className="flex gap-3 justify-center">
-                <Typography>1234</Typography>
+              <div className="mb-2 flex items-center justify-center">
+                {MOBILE_OTP.map((digit, index) => (
+                  <React.Fragment key={index}>
+                    <Input
+                      type="password"
+                      maxLength={1}
+                      disabled
+                      className="!w-10 appearance-none text-center !text-3xl !bg-transparent"
+                      containerProps={{
+                        className: "!min-w-0 !w-5 !shrink-0",
+                      }}
+                      color="green"
+                      value={digit}
+                    />
+                  </React.Fragment>
+                ))}
                 <Typography
                   variant="small"
-                  className="bg-[#F6F7F8] rounded px-2 flex items-center !text-[#108f6f]"
+                  className="bg-[#F6F7F8] rounded px-2 py-1 rounded-lg flex items-center !text-[#108f6f] ml-5"
                 >
                   Reveal Code
                 </Typography>
@@ -202,10 +240,10 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
           </div>
         )}
         <div className="mt-32 flex justify-between">
-          <Button color="green" onClick={handlePrev} disabled={isFirstStep}>
+          <Button size="sm" color="green" onClick={handlePrev} disabled={isFirstStep}>
             Prev
           </Button>
-          <Button color="green" onClick={handleNext} disabled={isLastStep}>
+          <Button size="sm" color="green" onClick={handleNext} disabled={isLastStep}>
             Next
           </Button>
         </div>
@@ -217,20 +255,31 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
             <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
           </div>
         </div>
-        <div className="col-span-12 flex flex-col items-center gap-2">
-          <OTPInput
-            numInputs={4}
-            renderSeparator={<span> </span>}
-            renderInput={(props) => (
-              <input
-                {...props}
-                className="!w-[60px] h-[60px] border rounded-[5px] border-[#C4CADA] mr-5"
-                //   disabled={!isOtpSend}
+        <div className="col-span-12 flex items-center justify-center gap-2">
+          {mobileOtp.map((digit, index) => (
+            <React.Fragment key={index}>
+              <Input
+                type="text"
+                maxLength={1}
+                className="!w-10 appearance-none !border-t-blue-gray-200 text-center !text-lg placeholder:opacity-100 focus:!border-t-[#108f6f]"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+                containerProps={{
+                  className: "!min-w-0 !w-10 !shrink-0",
+                }}
+                color="green"
+                value={digit}
+                onChange={(e) => handleMobileOtpChange(index, e.target.value)}
+                onKeyDown={(e) => handleMobileOtpBackspace(e, index)}
+                inputRef={(el) => (inputMobileOtpRefs.current[index] = el)}
               />
-            )}
-          />
+            </React.Fragment>
+          ))}
+        </div>
+        <div className="col-span-12 text-center !mt-2">
           <Typography variant="small">Enter 4-digit code</Typography>
-          <Button color="green" type="submit">
+          <Button color="green" type="submit" className="mt-1" size="sm">
             Pair Now
           </Button>
         </div>
@@ -242,7 +291,7 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
           >
             <AccordionHeader
               onClick={() => setIsAccordionOpen((prev) => !prev)}
-              className={`border-b-0 transition-colors text-[16px] ${
+              className={`border-b-0 transition-colors text-[15px] ${
                 isAccordionOpen ? "text-green-500 hover:!text-green-700" : ""
               } font-normal`}
             >

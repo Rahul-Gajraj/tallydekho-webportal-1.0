@@ -171,7 +171,7 @@ const Reports = () => {
                 <div className="flex gap-2 items-center">
                   <img
                     className="h-4 w-4"
-                    src={`/media/kpi-strip/${icon}`}
+                    src={`/media/icons/${icon}`}
                     alt="expense"
                   />
                   {title}

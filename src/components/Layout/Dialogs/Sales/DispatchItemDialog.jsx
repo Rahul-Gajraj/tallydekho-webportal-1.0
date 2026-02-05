@@ -43,6 +43,7 @@ const DispatchItemDialog = ({
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -63,6 +64,12 @@ const DispatchItemDialog = ({
     }
   }, [initialData]);
 
+  const resetFields = () => {
+    handleOpen();
+    clearErrors();
+    reset();
+  };
+
   const onSubmit = async (data) => {
     console.log(data);
     upsertHandler({
@@ -72,8 +79,7 @@ const DispatchItemDialog = ({
     });
     setSelectedQtyType("KG");
     setSelectedCurrency("INR");
-    handleOpen();
-    reset();
+    resetFields();
   };
 
   return (
@@ -88,9 +94,7 @@ const DispatchItemDialog = ({
             size="sm"
             variant="text"
             className="!absolute right-3.5 top-3.5"
-            onClick={() => {
-              handleOpen();
-            }}
+            onClick={resetFields}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />
           </IconButton>
@@ -230,7 +234,10 @@ const DispatchItemDialog = ({
                   </MenuList>
                 </Menu>
               </div>
-              <Error condition={errors.unitPrice} message={errors.unitPrice?.message} />
+              <Error
+                condition={errors.unitPrice}
+                message={errors.unitPrice?.message}
+              />
             </div>
             <div className="col-span-12">
               <Controller

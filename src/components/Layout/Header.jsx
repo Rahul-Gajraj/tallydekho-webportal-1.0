@@ -578,7 +578,7 @@ const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
         <div className="container-fixed flex justify-between lg:gap-4 items-center pl-5">
           <div className="flex rounded-md ring-1 focus-within:ring-2 ring-inset ring-gray-300 w-full max-w-[500px] h-[40px] bg-[#F5F7F9] items-center focus-within:ring-[#108F6F]">
             <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-              <img className="" src="/media/custom/search-sm.svg" />
+              <img className="" src="/media/icons/search.svg" alt="search" />
             </span>
             <input
               id="header-search-input"

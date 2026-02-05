@@ -56,6 +56,7 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -66,10 +67,15 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
   const [gstinDetailType, setGSTINDetailType] = useState(GST_TYPES[1].value);
   const [isCredit, setIsCredit] = useState(false);
 
+  const resetFields = () => {
+    toggleDrawer("sundryDebtors");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("sundryDebtors");
+    resetFields();
   };
 
   return (
@@ -88,10 +94,7 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
               size="sm"
               variant="text"
               // className="!absolute right-0 top-0"
-              onClick={() => {
-                reset();
-                toggleDrawer("sundryDebtors");
-              }}
+              onClick={resetFields}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -257,162 +260,162 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
               </div>
               {/* {isMailingDetailEnable && (
                 <> */}
-                  <div className="col-span-12">
-                    <Controller
-                      name="mailingName"
-                      control={control}
-                      rules={{
-                        required: isMailingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="Mailing Name"
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                      disabled={!isMailingDetailEnable}
-                    />
-                    <Error
-                      condition={errors.mailingName}
-                      message={errors.mailingName?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="address"
-                      control={control}
-                      rules={{
-                        required: isMailingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Textarea
-                            color="green"
-                            label="Address"
-                            rows={2}
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                      disabled={!isMailingDetailEnable}
-                    />
-                    <Error
-                      condition={errors.address}
-                      message={errors.address?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="state"
-                      control={control}
-                      rules={{
-                        required: isMailingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Select
-                            label="State"
-                            value={field.value}
-                            onChange={(val) => {
-                              field.onChange(val);
-                            }}
-                            color="green"
-                            disabled={!isMailingDetailEnable}
+              <div className="col-span-12">
+                <Controller
+                  name="mailingName"
+                  control={control}
+                  rules={{
+                    required: isMailingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Mailing Name"
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                  disabled={!isMailingDetailEnable}
+                />
+                <Error
+                  condition={errors.mailingName}
+                  message={errors.mailingName?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="address"
+                  control={control}
+                  rules={{
+                    required: isMailingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Textarea
+                        color="green"
+                        label="Address"
+                        rows={2}
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                  disabled={!isMailingDetailEnable}
+                />
+                <Error
+                  condition={errors.address}
+                  message={errors.address?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="state"
+                  control={control}
+                  rules={{
+                    required: isMailingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="State"
+                        value={field.value}
+                        onChange={(val) => {
+                          field.onChange(val);
+                        }}
+                        color="green"
+                        disabled={!isMailingDetailEnable}
+                      >
+                        {STATES.map((state) => (
+                          <Option
+                            key={state}
+                            value={state}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
                           >
-                            {STATES.map((state) => (
-                              <Option
-                                key={state}
-                                value={state}
-                                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                              >
-                                {state}
-                              </Option>
-                            ))}
-                          </Select>
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.state}
-                      message={errors.state?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="country"
-                      control={control}
-                      rules={{
-                        required: isMailingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="Country"
-                            {...field}
-                            disabled={!isMailingDetailEnable}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.country}
-                      message={errors.country?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="pincode"
-                      control={control}
-                      rules={{
-                        required: isMailingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="Pincode"
-                            disabled={!isMailingDetailEnable}
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.pincode}
-                      message={errors.pincode?.message}
-                    />
-                  </div>
-                {/* </>
+                            {state}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.state}
+                  message={errors.state?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="country"
+                  control={control}
+                  rules={{
+                    required: isMailingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Country"
+                        {...field}
+                        disabled={!isMailingDetailEnable}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.country}
+                  message={errors.country?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="pincode"
+                  control={control}
+                  rules={{
+                    required: isMailingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Pincode"
+                        disabled={!isMailingDetailEnable}
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.pincode}
+                  message={errors.pincode?.message}
+                />
+              </div>
+              {/* </>
               )} */}
               <div className="col-span-12">
                 <label className="inline-flex items-center gap-3 flex-row-reverse cursor-pointer">
@@ -435,123 +438,123 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
               </div>
               {/* {isBankingDetailEnable && (
                 <> */}
-                  <div className="col-span-12">
-                    <Controller
-                      name="beneficiaryName"
-                      control={control}
-                      rules={{
-                        required: isBankingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="Beneficiary Name"
-                            disabled={!isBankingDetailEnable}
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.beneficiaryName}
-                      message={errors.beneficiaryName?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="bankName"
-                      control={control}
-                      rules={{
-                        required: isBankingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="Bank Name"
-                            disabled={!isBankingDetailEnable}
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.bankName}
-                      message={errors.bankName?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="ifscCode"
-                      control={control}
-                      rules={{
-                        required: isBankingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="IFSC Code"
-                            disabled={!isBankingDetailEnable}
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.ifscCode}
-                      message={errors.ifscCode?.message}
-                    />
-                  </div>
-                  <div className="col-span-12">
-                    <Controller
-                      name="accountNumber"
-                      control={control}
-                      rules={{
-                        required: isBankingDetailEnable
-                          ? "This field is required"
-                          : false,
-                      }}
-                      render={({ field }) => {
-                        return (
-                          <Input
-                            color="green"
-                            label="Account Name"
-                            disabled={!isBankingDetailEnable}
-                            {...field}
-                            onChange={(value) => {
-                              //   onChange(value);
-                              field.onChange(value);
-                            }}
-                          />
-                        );
-                      }}
-                    />
-                    <Error
-                      condition={errors.accountNumber}
-                      message={errors.accountNumber?.message}
-                    />
-                  </div>
-                {/* </>
+              <div className="col-span-12">
+                <Controller
+                  name="beneficiaryName"
+                  control={control}
+                  rules={{
+                    required: isBankingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Beneficiary Name"
+                        disabled={!isBankingDetailEnable}
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.beneficiaryName}
+                  message={errors.beneficiaryName?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="bankName"
+                  control={control}
+                  rules={{
+                    required: isBankingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Bank Name"
+                        disabled={!isBankingDetailEnable}
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.bankName}
+                  message={errors.bankName?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="ifscCode"
+                  control={control}
+                  rules={{
+                    required: isBankingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="IFSC Code"
+                        disabled={!isBankingDetailEnable}
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.ifscCode}
+                  message={errors.ifscCode?.message}
+                />
+              </div>
+              <div className="col-span-12">
+                <Controller
+                  name="accountNumber"
+                  control={control}
+                  rules={{
+                    required: isBankingDetailEnable
+                      ? "This field is required"
+                      : false,
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Input
+                        color="green"
+                        label="Account Name"
+                        disabled={!isBankingDetailEnable}
+                        {...field}
+                        onChange={(value) => {
+                          //   onChange(value);
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.accountNumber}
+                  message={errors.accountNumber?.message}
+                />
+              </div>
+              {/* </>
               )} */}
               <div className="col-span-12">
                 <Select

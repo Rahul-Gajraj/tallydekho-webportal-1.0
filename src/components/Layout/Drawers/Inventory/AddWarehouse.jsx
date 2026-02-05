@@ -33,22 +33,27 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
     control,
     watch,
     getValues,
+    setError,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
   });
-
-  const racks = watch("racks");
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "racks",
   });
 
+  const resetFields = () => {
+    toggleDrawer("addWarehouse");
+    clearErrors();
+    reset();
+  };
+
   const onSubmitHandler = (data) => {
     console.log(data);
-    reset();
-    toggleDrawer("addWarehouse");
+    resetFields();
   };
 
   return (
@@ -65,7 +70,7 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
           size="sm"
           variant="text"
           className="!absolute right-0 top-0"
-          onClick={() => toggleDrawer("addWarehouse")}
+          onClick={resetFields}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -246,7 +251,12 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
             </div>
             <div className="col-span-12">
               {fields.map((item, idx) => (
-                <div className="grid grid-cols-12 gap-3" key={item.id}>
+                <div
+                  className={`grid grid-cols-11 gap-5 ${
+                    idx == 0 ? "mt-0" : "mt-5"
+                  }`}
+                  key={item.id}
+                >
                   <div className="col-span-5">
                     <Controller
                       name={`racks.${idx}.rack`}
@@ -254,11 +264,11 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                       rules={{ required: "This field is required" }}
                       render={({ field: { value, onChange } }) => (
                         <Input
-                          label="Referrals"
+                          label="Rack"
                           value={value}
-                          variant="outlined"
                           onChange={onChange}
                           error={Boolean(errors?.racks?.[idx]?.rack)}
+                          color="green"
                         />
                       )}
                     />
@@ -276,11 +286,11 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                       rules={{ required: "This field is required" }}
                       render={({ field: { value, onChange } }) => (
                         <Input
-                          label="Referrals"
+                          label="Label"
                           value={value}
-                          variant="outlined"
                           onChange={onChange}
                           error={Boolean(errors?.racks?.[idx]?.label)}
+                          color="green"
                         />
                       )}
                     />
@@ -291,7 +301,46 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                       />
                     )}
                   </div>
-                  <div className="col-span-2">X</div>
+                  <div className="col-span-1">
+                    {idx == fields.length - 1 ? (
+                      <img
+                        src="/media/icons/add.svg"
+                        alt="add"
+                        className="cursor-pointer mt-2"
+                        onClick={() => {
+                          const rackValue = getValues(`racks.${idx}.rack`);
+                          const labelValue = getValues(`racks.${idx}.label`);
+                          if (rackValue.length == 0) {
+                            setError(`racks.${idx}.rack`, {
+                              message: "This field is required",
+                            });
+                            return;
+                          } else {
+                            setError(`racks.${idx}.rack`, null);
+                          }
+                          if (labelValue.length == 0) {
+                            setError(`racks.${idx}.label`, {
+                              message: "This field is required",
+                            });
+                            return;
+                          } else {
+                            setError(`racks.${idx}.label`, null);
+                          }
+
+                          append({ rack: "", label: "" });
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src="/media/icons/close.svg"
+                        alt="close"
+                        className="cursor-pointer mt-2"
+                        onClick={() => {
+                          remove(idx);
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               ))}
               {/* <Controller

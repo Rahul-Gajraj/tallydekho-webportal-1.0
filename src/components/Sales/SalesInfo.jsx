@@ -25,7 +25,6 @@ import "react-day-picker/style.css";
 
 import {
   MagnifyingGlassIcon,
-  CalendarDaysIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
@@ -226,11 +225,15 @@ const SalesInfo = () => {
                     isDateRangeOpen ? "border-[#108f6f]" : "border-[#b0bec5]"
                   } hover:border-[2px] ${
                     isDateRangeOpen ? "!border-[2px]" : "broder-px"
-                  } hover:border-[#108f6f] shadow-none`}
+                  } hover:border-[#108f6f] shadow-none h-[40px]`}
                 >
                   {moment(date.from).format("DD MMM, yyyy")} -{" "}
                   {moment(date.to).format("DD MMM, yyyy")}
-                  <CalendarDaysIcon strokeWidth={2} className="w-4 h-4" />
+                  <img
+                    src="/media/icons/calendar.svg"
+                    alt="calendar"
+                    className="w-5 h-5"
+                  />
                 </Button>
               </PopoverHandler>
               <PopoverContent className="z-20">

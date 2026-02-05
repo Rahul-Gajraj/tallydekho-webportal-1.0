@@ -43,6 +43,7 @@ const AddLogisticsDialog = ({
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
@@ -62,23 +63,21 @@ const AddLogisticsDialog = ({
     }
   }, [initialData]);
 
+  const resetFields = () => {
+    handleOpen("logistics");
+    clearErrors();
+    reset();
+  };
+
   const onSubmit = async (data) => {
     // console.log(data);
     upsertHandler(data);
-    handleOpen("logistics");
-    reset();
+    resetFields();
   };
 
   return (
     <>
-      <Dialog
-        size="md"
-        open={open}
-        handler={() => {
-          handleOpen("logistics");
-        }}
-        className="p-4"
-      >
+      <Dialog size="md" open={open} handler={resetFields} className="p-4">
         <DialogHeader className="relative m-0 block">
           <Typography variant="h4">Add Logistics</Typography>
           <Typography className="mt-1 font-normal">
@@ -88,9 +87,7 @@ const AddLogisticsDialog = ({
             size="sm"
             variant="text"
             className="!absolute right-3.5 top-3.5"
-            onClick={() => {
-              handleOpen("logistics");
-            }}
+            onClick={resetFields}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />
           </IconButton>

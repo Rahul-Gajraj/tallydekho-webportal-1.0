@@ -36,16 +36,22 @@ const AddCustomerDialog = ({ open, handleOpen, addHandler }) => {
     formState: { errors },
     control,
     getValues,
+    clearErrors,
     reset,
   } = useForm({
     defaultValues,
   });
 
+  const resetFields = () => {
+    handleOpen("customer");
+    clearErrors();
+    reset();
+  };
+
   const onSubmit = async (data) => {
     // console.log(data);
     addHandler(data ? data.name : "");
-    handleOpen("customer");
-    reset();
+    resetFields();
   };
 
   return (
@@ -67,9 +73,7 @@ const AddCustomerDialog = ({ open, handleOpen, addHandler }) => {
             size="sm"
             variant="text"
             className="!absolute right-3.5 top-3.5"
-            onClick={() => {
-              handleOpen("customer");
-            }}
+            onClick={resetFields}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />
           </IconButton>
