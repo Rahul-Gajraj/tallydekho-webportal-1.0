@@ -13,7 +13,7 @@ const GSTLiability = () => {
   const [] = useState();
 
   return (
-    <Card className="shadow-sm border border-gray-200 !rounded-lg">
+    <Card className="shadow-sm border border-gray-200 !rounded-lg h-full">
       <CardHeader
         floated={false}
         shadow={false}
@@ -31,8 +31,12 @@ const GSTLiability = () => {
                 enabled: false,
               },
               legend: {
-                show: false,
-                // position: 'bottom'
+                // show: false,
+                position: "bottom",
+                itemMargin: {
+                  vertical: 10,
+                  horizontal: 10,
+                },
               },
               // fill: {
               //   type: "gradient",
@@ -46,9 +50,10 @@ const GSTLiability = () => {
             series={[3000, 4000, 3000]}
             type="donut"
             width="300"
+            height={340}
           />
         </div>
-        <div className="flex gap-2 flex-wrap justify-between px-4 !mt-4 ">
+        {/* <div className="flex gap-2 flex-wrap justify-between px-4 !mt-4 ">
           <div className="flex flex-col items-center gap-6">
             <div className="flex items-center gap-10">
               <div className="flex items-center gap-2">
@@ -84,7 +89,7 @@ const GSTLiability = () => {
               </Typography>
             </div>
           </div>
-        </div>
+        </div> */}
       </CardBody>
     </Card>
   );

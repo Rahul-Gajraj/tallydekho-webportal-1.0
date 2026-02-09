@@ -48,7 +48,7 @@ const LOAN_SUMMARY_TABLE_ROWS = [
     nextEMI: "10 Jul - ₹2,10,000",
   },
   {
-    loan: "Machinery Lone",
+    loan: "Machinery Loan",
     lender: "SBI",
     type: "Team",
     outstanding: "₹82 L",

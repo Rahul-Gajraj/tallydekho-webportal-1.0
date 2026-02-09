@@ -29,9 +29,9 @@ const ExpenseBreakdownGraph = () => {
               dataLabels: {
                 enabled: false,
               },
-              fill: {
-                type: "gradient",
-              },
+              // fill: {
+              //   type: "gradient",
+              // },
               legend: {
                 // show: false,
                 position: "bottom",

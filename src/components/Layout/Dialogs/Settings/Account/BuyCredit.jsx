@@ -49,26 +49,25 @@ const BuyCredit = ({ open, handleOpen }) => {
     control,
     getValues,
     reset,
+    clearErrors,
     watch,
   } = useForm({
     defaultValues,
   });
 
+  const resetFields = () => {
+    handleOpen("payment");
+    clearErrors();
+    reset();
+  };
+
   const onSubmit = async (data) => {
-    console.log(data);
-    // handleOpen("payment");
-    // reset();
+    // console.log(data);
+    resetFields();
   };
 
   return (
-    <Dialog
-      size="md"
-      open={open}
-      handler={() => {
-        handleOpen();
-      }}
-      className="p-4"
-    >
+    <Dialog size="md" open={open} handler={resetFields} className="p-4">
       <DialogHeader className="relative m-0 block">
         <Typography variant="h4">Buy Credit</Typography>
         <Typography>Add credit to your account</Typography>
@@ -76,9 +75,7 @@ const BuyCredit = ({ open, handleOpen }) => {
           size="sm"
           variant="text"
           className="!absolute right-3.5 top-3.5"
-          onClick={() => {
-            handleOpen("payment");
-          }}
+          onClick={resetFields}
         >
           <XMarkIcon className="h-4 w-4 stroke-2" />
         </IconButton>

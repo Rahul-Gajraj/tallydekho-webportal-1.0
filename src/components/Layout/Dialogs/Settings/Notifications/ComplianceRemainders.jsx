@@ -9,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   IconButton,
-  Input,
   Typography,
 } from "@material-tailwind/react";
 
@@ -17,32 +16,39 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import Error from "../../../../Error/Error";
 import IntegerInput from "../../../../common/CustomInput/IntegerInput";
+import CustomMultiSelect from "../../../../CustomSelect/CustomMultiSelect";
 
 const defaultValues = {
   gstr1: 3,
   gstr3b: 3,
   autoPause: true,
-  gstPush: true,
-  gstEmail: false,
-  gstWhatsapp: false,
-  gstSms: false,
+  // gstPush: true,
+  // gstEmail: false,
+  // gstWhatsapp: false,
+  // gstSms: false,
   inr: 3,
-  eInvoicePush: true,
-  eInvoiceEmail: false,
-  eInvoiceWhatsapp: false,
-  eInvoiceSms: false,
+  // eInvoicePush: true,
+  // eInvoiceEmail: false,
+  // eInvoiceWhatsapp: false,
+  // eInvoiceSms: false,
   expiryReminder: 4,
-  eWayBillPush: true,
-  eWayBillEmail: false,
-  eWayBillWhatsapp: false,
-  eWayBillSms: false,
+  // eWayBillPush: true,
+  // eWayBillEmail: false,
+  // eWayBillWhatsapp: false,
+  // eWayBillSms: false,
   tdsPayment: 3,
   vatReturn: 3,
-  taxPush: true,
-  taxEmail: false,
-  taxWhatsapp: false,
-  taxSms: false,
+  // taxPush: true,
+  // taxEmail: false,
+  // taxWhatsapp: false,
+  // taxSms: false,
+  gstChannels: [],
+  eInvoiceChannels: [],
+  eWayBillChannels: [],
+  otherTaxesChannels: [],
 };
+
+const OPTIONS = ["Push", "Email", "SMS", "WhatsApp"];
 
 const ComplianceRemainders = ({
   open,
@@ -55,6 +61,7 @@ const ComplianceRemainders = ({
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
     getValues,
     reset,
     watch,
@@ -136,7 +143,7 @@ const ComplianceRemainders = ({
               }}
             />
           </div>
-          <div className="col-span-12 -mb-7">
+          {/* <div className="col-span-12 -mb-7">
             <Typography className="text-[14px]">GST Channel</Typography>
           </div>
           <div className="col-span-3">
@@ -230,8 +237,26 @@ const ComplianceRemainders = ({
                 );
               }}
             />
+          </div> */}
+          <div className="col-span-7">
+            <Typography className="text-[14px]">GST Channel</Typography>
+            <Controller
+              name="gstChannels"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <CustomMultiSelect
+                    OPTIONS={OPTIONS}
+                    placeholder="Select GST Channels"
+                    selectedValues={field.value}
+                    setValues={setValue}
+                    name="gstChannels"
+                  />
+                );
+              }}
+            />
           </div>
-          <div className="col-span-12">
+          <div className="col-span-5">
             <IntegerInput
               name="inr"
               control={control}
@@ -244,7 +269,25 @@ const ComplianceRemainders = ({
             </div>
             <Error condition={errors.inr} message={errors.inr?.message} />
           </div>
-          <div className="col-span-12 -mb-7">
+          <div className="col-span-7">
+            <Typography className="text-[14px]">E-Invoice Channel</Typography>
+            <Controller
+              name="eInvoiceChannels"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <CustomMultiSelect
+                    OPTIONS={OPTIONS}
+                    placeholder="Select E-Invoice Channels"
+                    selectedValues={field.value}
+                    setValues={setValue}
+                    name="eInvoiceChannels"
+                  />
+                );
+              }}
+            />
+          </div>
+          {/* <div className="col-span-12 -mb-7">
             <Typography className="text-[14px]">E-Invoice Channel</Typography>
           </div>
           <div className="col-span-3">
@@ -338,8 +381,8 @@ const ComplianceRemainders = ({
                 );
               }}
             />
-          </div>
-          <div className="col-span-12">
+          </div> */}
+          <div className="col-span-5">
             <IntegerInput
               name="expiryReminder"
               control={control}
@@ -355,7 +398,7 @@ const ComplianceRemainders = ({
               message={errors.expiryReminder?.message}
             />
           </div>
-          <div className="col-span-12 -mb-7">
+          {/* <div className="col-span-12 -mb-7">
             <Typography className="text-[14px]">E-Way Bill Channel</Typography>
           </div>
           <div className="col-span-3">
@@ -449,8 +492,26 @@ const ComplianceRemainders = ({
                 );
               }}
             />
+          </div> */}
+          <div className="col-span-7">
+            <Typography className="text-[14px]">E-Way Bill Channel</Typography>
+            <Controller
+              name="eWayBillChannels"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <CustomMultiSelect
+                    OPTIONS={OPTIONS}
+                    placeholder="Select E-Way Bill Channels"
+                    selectedValues={field.value}
+                    setValues={setValue}
+                    name="eWayBillChannels"
+                  />
+                );
+              }}
+            />
           </div>
-          <div className="col-span-6">
+          <div className="col-span-5">
             <IntegerInput
               name="tdsPayment"
               control={control}
@@ -466,7 +527,25 @@ const ComplianceRemainders = ({
               message={errors.tdsPayment?.message}
             />
           </div>
-          <div className="col-span-6">
+          <div className="col-span-7">
+            <Typography className="text-[14px]">Other Taxes Channel</Typography>
+            <Controller
+              name="otherTaxesChannels"
+              control={control}
+              render={({ field }) => {
+                return (
+                  <CustomMultiSelect
+                    OPTIONS={OPTIONS}
+                    placeholder="Select Other Taxes Channels"
+                    selectedValues={field.value}
+                    setValues={setValue}
+                    name="otherTaxesChannels"
+                  />
+                );
+              }}
+            />
+          </div>
+          <div className="col-span-5">
             <IntegerInput
               name="vatReturn"
               control={control}
@@ -482,7 +561,8 @@ const ComplianceRemainders = ({
               message={errors.vatReturn?.message}
             />
           </div>
-          <div className="col-span-12 -mb-7">
+
+          {/* <div className="col-span-12 -mb-7">
             <Typography className="text-[14px]">Other Taxes Channel</Typography>
           </div>
           <div className="col-span-3">
@@ -576,7 +656,7 @@ const ComplianceRemainders = ({
                 );
               }}
             />
-          </div>
+          </div> */}
         </DialogBody>
         <DialogFooter className="pt-0">
           <Button
