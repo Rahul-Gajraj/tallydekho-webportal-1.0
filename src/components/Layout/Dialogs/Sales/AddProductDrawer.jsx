@@ -123,7 +123,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
       isFlatTax
     });
     setSelectedQtyType("KG");
-    setSelectedC;urrency("INR");
+    setSelectedCurrency("INR");
     resetFields()
   };
 

@@ -53,6 +53,7 @@ const KPI_DATA = [
   },
   {
     title: "Profit",
+    icon: 'profit.svg',
     children: [
       // {
       //   title: "Net Profit / Net Loss",
@@ -170,7 +171,7 @@ const Reports = () => {
               <CardHeader shadow={false} floated={false}>
                 <div className="flex gap-2 items-center">
                   <img
-                    className="h-4 w-4"
+                    className="h-5 w-5"
                     src={`/media/icons/${icon}`}
                     alt="expense"
                   />

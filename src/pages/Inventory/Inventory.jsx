@@ -46,7 +46,7 @@ const kpiData = [
     img: (
       <img
         className="h-5"
-        src="/media/kpi-strip/out_of_stock.svg"
+        src="/media/icons/out_of_stock.svg"
         alt="out_of_stock"
       />
     ),
@@ -57,7 +57,7 @@ const kpiData = [
     img: (
       <img
         className="h-5"
-        src="/media/kpi-strip/total_warehouses.svg"
+        src="/media/icons/warehouse.svg"
         alt="total_warehouses"
       />
     ),

@@ -223,7 +223,7 @@ const CashTransactionsDetail = () => {
             <TabsBody>
               <TabPanel value="cash_book">
                 <div className="flex items-center gap-2 flex-wrap justify-between">
-                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[500px]">
+                  <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[430px]">
                     <span className="pl-3">
                       <img src="/media/custom/search-sm.svg" />
                     </span>
