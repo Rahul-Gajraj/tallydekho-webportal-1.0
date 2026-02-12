@@ -14,10 +14,7 @@ import {
 } from "@material-tailwind/react";
 import moment from "moment";
 
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
@@ -86,40 +83,42 @@ const PaymentVoucher = ({ open, toggleDrawer }) => {
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="relative mt-0 flex justify-between">
             <Typography variant="h4">Payment Voucher</Typography>
-            <Controller
-              name="isOptional"
-              control={control}
-              render={({ field }) => {
-                return (
-                  <Switch
-                    color="green"
-                    label="Optional/Regular"
-                    ripple={true}
-                    checked={field.value}
-                    onChange={(e) => {
-                      const newValue = e.target.checked;
-                      field.onChange(newValue);
-                    }}
+            <div className="flex gap-3">
+              <Controller
+                name="isOptional"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <Switch
+                      color="green"
+                      label="Regular"
+                      ripple={true}
+                      checked={field.value}
+                      onChange={(e) => {
+                        const newValue = e.target.checked;
+                        field.onChange(newValue);
+                      }}
+                    />
+                  );
+                }}
+              />
+              <IconButton size="sm" variant="text" onClick={resetFields}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
                   />
-                );
-              }}
-            />
-            <IconButton size="sm" variant="text" onClick={resetFields}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="h-5 w-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </IconButton>
+                </svg>
+              </IconButton>
+            </div>
           </div>
           <div className="space-y-4 pb-6 pt-5">
             <div className="grid grid-cols-12 gap-5">

@@ -46,6 +46,7 @@ const EWayBill = ({ open, handleOpen, upsertHandler, initialData }) => {
     getValues,
     reset,
     watch,
+    clearErrors,
   } = useForm({
     defaultValues,
   });
@@ -58,10 +59,15 @@ const EWayBill = ({ open, handleOpen, upsertHandler, initialData }) => {
   //     }
   //   }, [initialData]);
 
-  const onSubmit = async (data) => {
-    // console.log(data);
+  const resetFields = () => {
+    clearErrors();
     handleOpen("eWayBill");
     reset();
+  };
+
+  const onSubmit = async (data) => {
+    // console.log(data);
+    resetFields();
   };
 
   return (
@@ -70,7 +76,7 @@ const EWayBill = ({ open, handleOpen, upsertHandler, initialData }) => {
         size="md"
         open={open}
         handler={() => {
-          handleOpen("eWayBill");
+          resetFields();
         }}
         className="p-4"
       >
@@ -81,7 +87,7 @@ const EWayBill = ({ open, handleOpen, upsertHandler, initialData }) => {
             variant="text"
             className="!absolute right-3.5 top-3.5"
             onClick={() => {
-              handleOpen("eWayBill");
+              resetFields();
             }}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />

@@ -299,6 +299,7 @@ const PaymentRemainders = ({
     getValues,
     reset,
     watch,
+    clearErrors
   } = useForm({
     defaultValues: {
       reminders: REMINDERS,
@@ -313,10 +314,15 @@ const PaymentRemainders = ({
     name: "reminders",
   });
 
+  const resetFields = () => {
+    clearErrors();
+    handleOpen("payment");
+    reset();
+  };
+
   const onSubmit = async (data) => {
-    console.log(data);
-    // handleOpen("payment");
-    // reset();
+    // console.log(data);
+    resetFields();
   };
 
   return (
@@ -324,7 +330,7 @@ const PaymentRemainders = ({
       size="md"
       open={open}
       handler={() => {
-        handleOpen("payment");
+        resetFields();
       }}
       className="p-4"
     >
@@ -335,7 +341,7 @@ const PaymentRemainders = ({
           variant="text"
           className="!absolute right-3.5 top-3.5"
           onClick={() => {
-            handleOpen("payment");
+            resetFields();
           }}
         >
           <XMarkIcon className="h-4 w-4 stroke-2" />

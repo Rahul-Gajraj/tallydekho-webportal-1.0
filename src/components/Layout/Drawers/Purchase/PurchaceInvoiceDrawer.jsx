@@ -189,7 +189,7 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                     return (
                       <Switch
                         color="green"
-                        label="Optional/Regular"
+                        label="Regular"
                         ripple={true}
                         checked={field.value}
                         onChange={(e) => {

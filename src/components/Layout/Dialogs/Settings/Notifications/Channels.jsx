@@ -15,6 +15,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
+
 import BuyCredit from "../Account/BuyCredit";
 import CustomTime from "../../../../common/CustomTime";
 import Error from "../../../../Error/Error";
@@ -40,6 +41,7 @@ const Channels = ({ open, handleOpen, upsertHandler, initialData }) => {
     getValues,
     reset,
     watch,
+    clearErrors
   } = useForm({
     defaultValues,
   });
@@ -50,10 +52,15 @@ const Channels = ({ open, handleOpen, upsertHandler, initialData }) => {
     setIsCreditDialogOpen((prev) => !prev);
   };
 
-  const onSubmit = async (data) => {
-    // console.log(data);
+  const resetFields = () => {
+    clearErrors();
     handleOpen("channels");
     reset();
+  };
+
+  const onSubmit = async (data) => {
+    // console.log(data);
+    resetFields();
   };
 
   return (
@@ -62,7 +69,7 @@ const Channels = ({ open, handleOpen, upsertHandler, initialData }) => {
         size="md"
         open={open}
         // handler={() => {
-        //   handleOpen("channels");
+        //   resetFields();
         // }}
         className="p-4"
       >
@@ -73,7 +80,7 @@ const Channels = ({ open, handleOpen, upsertHandler, initialData }) => {
             variant="text"
             className="!absolute right-3.5 top-3.5"
             onClick={() => {
-              handleOpen("channels");
+              resetFields();
             }}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />

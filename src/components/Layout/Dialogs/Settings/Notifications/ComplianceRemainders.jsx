@@ -65,14 +65,20 @@ const ComplianceRemainders = ({
     getValues,
     reset,
     watch,
+    clearErrors
   } = useForm({
     defaultValues,
   });
 
-  const onSubmit = async (data) => {
-    // console.log(data);
+  const resetFields = () => {
+    clearErrors();
     handleOpen("compliance");
     reset();
+  };
+
+  const onSubmit = async (data) => {
+    // console.log(data);
+    resetFields();
   };
 
   return (
@@ -80,7 +86,7 @@ const ComplianceRemainders = ({
       size="md"
       open={open}
       handler={() => {
-        handleOpen("compliance");
+        resetFields();
       }}
       className="p-2"
     >
@@ -93,7 +99,7 @@ const ComplianceRemainders = ({
           variant="text"
           className="!absolute right-3.5 top-3.5"
           onClick={() => {
-            handleOpen("compliance");
+            resetFields();
           }}
         >
           <XMarkIcon className="h-4 w-4 stroke-2" />

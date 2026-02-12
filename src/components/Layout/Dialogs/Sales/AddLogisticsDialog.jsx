@@ -143,6 +143,8 @@ const AddLogisticsDialog = ({
                         color="green"
                         size="lg"
                         containerProps={{ className: "!min-w-full mt-2" }}
+                        className="appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        inputMode="numeric"
                         label="Amount"
                         type="number"
                         {...field}

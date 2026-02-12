@@ -67,6 +67,7 @@ const CompanyInformation = ({
     getValues,
     reset,
     watch,
+    clearErrors,
   } = useForm({
     defaultValues,
   });
@@ -108,10 +109,15 @@ const CompanyInformation = ({
     setAvatarSrc(previewUrl);
   };
 
-  const onSubmit = async (data) => {
-    // console.log(data);
+  const resetFields = () => {
+    clearErrors();
     handleOpen("companyInformation");
     reset();
+  };
+
+  const onSubmit = async (data) => {
+    // console.log(data);
+    resetFields();
   };
 
   return (
@@ -120,7 +126,7 @@ const CompanyInformation = ({
         size="md"
         open={open}
         handler={() => {
-          handleOpen("companyInformation");
+          resetFields();
         }}
         className="p-4"
       >
@@ -131,14 +137,14 @@ const CompanyInformation = ({
             variant="text"
             className="!absolute right-3.5 top-3.5"
             onClick={() => {
-              handleOpen("companyInformation");
+              resetFields();
             }}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />
           </IconButton>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogBody className="grid grid-cols-12 gap-4">
+          <DialogBody className="grid grid-cols-12 gap-4 max-h-[40rem] overflow-scroll">
             <div className="col-span-12 flex justify-center">
               <input
                 ref={fileInputRef}

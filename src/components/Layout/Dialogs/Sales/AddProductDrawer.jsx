@@ -210,6 +210,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
                     <Input
                       type="number"
                       className="appearance-none rounded-r-none  placeholder:text-blue-gray-300  placeholder:opacity-100  [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      inputMode="numeric"
                       label="QTY. & Unit"
                       containerProps={{
                         className: "min-w-0",
@@ -261,6 +262,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
                     <Input
                       type="number"
                       className="appearance-none rounded-r-none placeholder:text-blue-gray-300  placeholder:opacity-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      inputMode="numeric"
                       label="Unit Price"
                       containerProps={{
                         className: "min-w-0",

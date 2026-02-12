@@ -140,6 +140,7 @@ const DispatchItemDialog = ({
                       <Input
                         type="number"
                         className="appearance-none rounded-r-none  placeholder:text-blue-gray-300  placeholder:opacity-100  [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        inputMode="numeric"
                         label="QTY. & Unit"
                         containerProps={{
                           className: "min-w-0",
@@ -187,13 +188,14 @@ const DispatchItemDialog = ({
                   name="unitPrice"
                   control={control}
                   rules={{
-                    required: "This field is required",
+                    required: "This field is required", 
                   }}
                   render={({ field }) => {
                     return (
                       <Input
                         type="number"
                         className="appearance-none rounded-r-none placeholder:text-blue-gray-300  placeholder:opacity-100 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        inputMode="numeric"
                         label="Unit Price"
                         containerProps={{
                           className: "min-w-0",
