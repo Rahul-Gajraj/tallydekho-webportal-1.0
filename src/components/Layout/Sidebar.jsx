@@ -98,15 +98,24 @@ const Sidebar = ({ isPinned, setIsPinned }) => {
 
         <PerfectScrollbar>
           <div className="mt-4 flex flex-col gap-4 px-2">
-            {NAVIGATION(isActive).map((item, idx) => {
-              const active = isActive(item.path);
+            {(() => {
+              try {
+                const navigationItems = NAVIGATION(isActive);
+                if (!navigationItems || !Array.isArray(navigationItems)) {
+                  console.error("NAVIGATION returned invalid data");
+                  return null;
+                }
+                return navigationItems.map((item, idx) => {
+                  if (!item) return null;
+                  
+                  try {
+                    const active = item.path ? isActive(item.path) : false;
+                    const hasChildren = !!item.children && Array.isArray(item.children);
+                    const isChildActive =
+                      hasChildren && isAnyChildActive(item.children);
 
-              const hasChildren = !!item.children;
-              const isChildActive =
-                hasChildren && isAnyChildActive(item.children);
-
-              return (
-                <div key={idx}>
+                    return (
+                      <div key={idx}>
                   {!hasChildren ? (
                     <NavLink
                       key={idx}
@@ -180,7 +189,9 @@ const Sidebar = ({ isPinned, setIsPinned }) => {
 
                       {isOpen && (
                         <AccordionBody className="py-1 px-2">
-                          {item.children.map((child, cIdx) => (
+                          {item.children && item.children.map((child, cIdx) => {
+                            if (!child) return null;
+                            return (
                             <NavLink
                               key={cIdx}
                               to={child.path}
@@ -214,14 +225,24 @@ const Sidebar = ({ isPinned, setIsPinned }) => {
                                 </Typography>
                               </div>
                             </NavLink>
-                          ))}
+                            );
+                          })}
                         </AccordionBody>
                       )}
                     </Accordion>
                   )}
-                </div>
-              );
-            })}
+                      </div>
+                    );
+                  } catch (error) {
+                    console.error("Error rendering navigation item:", error);
+                    return null;
+                  }
+                });
+              } catch (error) {
+                console.error("Error in navigation:", error);
+                return null;
+              }
+            })()}
           </div>
         </PerfectScrollbar>
       </Drawer>

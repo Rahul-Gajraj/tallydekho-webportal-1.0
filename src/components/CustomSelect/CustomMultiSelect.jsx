@@ -123,28 +123,6 @@ const CustomMultiSelect = ({
           </Card>
         </PopoverContent>
       </Popover>
-      {/* {openMenu && (
-        <Card className="absolute z-[1] mt-1 w-full max-h-60 overflow-auto">
-          <List>
-            {OPTIONS.map((option) => (
-              <ListItem
-                key={option}
-                onClick={() => toggleOption(option)}
-                ripple={false}
-                className="flex items-center gap-2 hover:bg-[#EAF8F4] focus:bg-[#EAF8F4]"
-              >
-                <input
-                  type="checkbox"
-                  checked={selected.includes(option)}
-                  readOnly
-                  className="pointer-events-none accent-[#108f6f]"
-                />
-                {option}
-              </ListItem>
-            ))}
-          </List>
-        </Card>
-      )} */}
     </>
     //</div>
   );

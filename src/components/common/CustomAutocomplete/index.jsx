@@ -30,8 +30,8 @@ const CustomAutocomplete = ({
     const handleClickOutside = (e) => {
       if (!containerRef.current?.contains(e.target)) {
         if (!selected) {
-        // setInputValue("");
-        // setValue(name, "");
+          // setInputValue("");
+          // setValue(name, "");
         }
         setOpen(false);
       }
@@ -46,17 +46,27 @@ const CustomAutocomplete = ({
       control={control}
       rules={rules}
       render={({ field }) => {
+        const safeOptions = Array.isArray(options) ? options : [];
+
         const filteredOptions = inputValue
-          ? options.filter((opt) =>
-              opt.toLowerCase().includes(inputValue.toLowerCase())
-            )
-          : options;
+          ? safeOptions.filter((opt) => {
+              if (!opt) return false;
+              try {
+                const optStr = String(opt).toLowerCase();
+                const inputStr = String(inputValue).toLowerCase();
+                return optStr.includes(inputStr);
+              } catch (error) {
+                console.error("Error filtering option:", error);
+                return false;
+              }
+            })
+          : safeOptions;
 
         return (
           <div ref={containerRef} className="relative w-full">
             <Input
               label={label}
-              value={inputValue}
+              value={inputValue || ""}
               color="green"
               onFocus={() => {
                 setOpen(true);
@@ -64,8 +74,12 @@ const CustomAutocomplete = ({
                 setSelected(false);
               }}
               onChange={(e) => {
-                setInputValue(e.target.value);
-                setSelected(false);
+                try {
+                  setInputValue(e.target.value || "");
+                  setSelected(false);
+                } catch (error) {
+                  console.error("Error updating input value:", error);
+                }
               }}
             />
 
@@ -73,11 +87,17 @@ const CustomAutocomplete = ({
               <IconButton
                 size="sm"
                 variant="text"
-                className="!absolute right-2 top-2 text-blue-gray-400"
+                className="!absolute right-2 top-1 text-blue-gray-400"
                 onClick={() => {
-                  setInputValue("");
-                  setValue(name, "");
-                  setSelected(false);
+                  try {
+                    setInputValue("");
+                    if (setValue) {
+                      setValue(name, "", { shouldDirty: true });
+                    }
+                    setSelected(false);
+                  } catch (error) {
+                    console.error("Error clearing value:", error);
+                  }
                 }}
               >
                 <XMarkIcon className="h-4 w-4" />
@@ -87,22 +107,34 @@ const CustomAutocomplete = ({
             {open && (
               <Card className="absolute z-50 mt-1 w-full max-h-60 overflow-auto">
                 <List>
-                  {filteredOptions.length ? (
-                    filteredOptions.map((item) => (
-                      <ListItem
-                        key={item}
-                        onClick={() => {
-                          setValue(name, item, { shouldDirty: true });
-                          setInputValue(item);
-                          setSelected(true);
-                          setOpen(false);
-                        }}
-                      >
-                        {item}
-                      </ListItem>
-                    ))
+                  {filteredOptions.length > 0 ? (
+                    filteredOptions.map((item, index) => {
+                      const itemKey =
+                        item && typeof item === "string"
+                          ? item
+                          : `option-${index}`;
+                      return (
+                        <ListItem
+                          key={itemKey}
+                          onClick={() => {
+                            try {
+                              if (setValue) {
+                                setValue(name, item, { shouldDirty: true });
+                              }
+                              setInputValue(String(item || ""));
+                              setSelected(true);
+                              setOpen(false);
+                            } catch (error) {
+                              console.error("Error selecting option:", error);
+                            }
+                          }}
+                        >
+                          {String(item || "")}
+                        </ListItem>
+                      );
+                    })
                   ) : (
-                    <ListItem disabled>No results</ListItem>
+                    <ListItem disabled>No results found</ListItem>
                   )}
                 </List>
               </Card>

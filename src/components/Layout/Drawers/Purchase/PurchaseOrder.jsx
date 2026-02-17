@@ -25,6 +25,7 @@ import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 import SummaryAccordion from "../Sales/SummaryAccordion";
 import Error from "@/components/Error/Error";
+import { validateDateNotFuture, validateEndDateAfterStart } from "@/utils/validation";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -230,6 +231,7 @@ const PurchaseOrder = ({ open, toggleDrawer }) => {
                   control={control}
                   rules={{
                     required: "This field is required",
+                    validate: validateDateNotFuture,
                   }}
                   render={({ field }) => {
                     return (
@@ -322,6 +324,10 @@ const PurchaseOrder = ({ open, toggleDrawer }) => {
                   control={control}
                   rules={{
                     required: "This field is required",
+                    validate: (value) => {
+                      const poDate = getValues("poDate");
+                      return validateEndDateAfterStart(value, poDate);
+                    },
                   }}
                   render={({ field }) => {
                     return (

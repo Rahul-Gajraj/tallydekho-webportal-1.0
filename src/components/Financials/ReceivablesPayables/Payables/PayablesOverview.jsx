@@ -15,7 +15,7 @@ import {
   TabsHeader,
   Typography,
 } from "@material-tailwind/react";
-import KPIStrip from "@/components//common/KPIStrip";
+import KPIStrip from "@/components/common/KPIStrip";
 
 const RECEIVABLES_KPI = [
   {

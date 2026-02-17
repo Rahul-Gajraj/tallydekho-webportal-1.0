@@ -468,23 +468,36 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
 };
 
 const Header = ({ toggleDrawer, isPinned }) => {
-  const [activeDrawer, setActiveDrawer] = useState(null); // which drawer
-  const [drawerOpen, setDrawerOpen] = useState(false); // animation state
+  const [activeDrawer, setActiveDrawer] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const openDrawer = (key) => {
-    setActiveDrawer(key); // mount correct drawer
-    requestAnimationFrame(() => {
-      setDrawerOpen(true); // trigger animation
-    });
+    if (!key) {
+      console.error("openDrawer called with invalid key");
+      return;
+    }
+    try {
+      setActiveDrawer(key);
+      requestAnimationFrame(() => {
+        setDrawerOpen(true);
+      });
+    } catch (error) {
+      console.error("Error opening drawer:", error);
+    }
   };
 
   const closeDrawer = () => {
-    setDrawerOpen(false); // play close animation
+    try {
+      setDrawerOpen(false);
 
-    // wait for animation to finish, then unmount
-    setTimeout(() => {
+      setTimeout(() => {
+        setActiveDrawer(null);
+      }, 300);
+    } catch (error) {
+      console.error("Error closing drawer:", error);
       setActiveDrawer(null);
-    }, 300); // must match Drawer transition duration
+      setDrawerOpen(false);
+    }
   };
 
   const navList = (
@@ -557,64 +570,64 @@ const Header = ({ toggleDrawer, isPinned }) => {
         </div>
       </header>
 
-      {activeDrawer == "salesInvoice" && (
+      {activeDrawer === "salesInvoice" && (
         <SalesInvoice open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "salesQuotation" && (
+      {activeDrawer === "salesQuotation" && (
         <SalesQuotation open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "salesOrder" && (
+      {activeDrawer === "salesOrder" && (
         <SalesOrder open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "salesDeliveryNote" && (
+      {activeDrawer === "salesDeliveryNote" && (
         <DeliveryNote open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "salesNote" && (
+      {activeDrawer === "salesNote" && (
         <CreditNote open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "purchaseInvoice" && (
+      {activeDrawer === "purchaseInvoice" && (
         <PurchaseInvoice open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "purchaseOrder" && (
+      {activeDrawer === "purchaseOrder" && (
         <PurchaseOrder open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "purchaseDebitNote" && (
+      {activeDrawer === "purchaseDebitNote" && (
         <DebitNote open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "paymentVoucher" && (
+      {activeDrawer === "paymentVoucher" && (
         <PaymentVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "receiptVoucher" && (
+      {activeDrawer === "receiptVoucher" && (
         <ReceiptVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "contraVoucher" && (
+      {activeDrawer === "contraVoucher" && (
         <ContraVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "journalVoucher" && (
+      {activeDrawer === "journalVoucher" && (
         <JournalVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "stockAdjustment" && (
+      {activeDrawer === "stockAdjustment" && (
         <StockAdjustment open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "stockTransfer" && (
+      {activeDrawer === "stockTransfer" && (
         <StockTransfer open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "addItem" && (
+      {activeDrawer === "addItem" && (
         <AddItem open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "addWarehouse" && (
+      {activeDrawer === "addWarehouse" && (
         <AddWarehouse open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "sundryCreditors" && (
+      {activeDrawer === "sundryCreditors" && (
         <SundryCreditors open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "sundryDebtors" && (
+      {activeDrawer === "sundryDebtors" && (
         <SundryDebtors open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "duitiesTaxes" && (
+      {activeDrawer === "duitiesTaxes" && (
         <DuitiesTaxes open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
-      {activeDrawer == "customGroups" && (
+      {activeDrawer === "customGroups" && (
         <CustomGroups open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
     </>

@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 
 import Error from "@/components/Error/Error";
+import { validateDateInFuture } from "@/utils/validation";
 
 const defaultValues = {
   group: "",
@@ -39,7 +40,8 @@ const defaultValues = {
 };
 
 const AddItem = ({ open, toggleDrawer }) => {
-  const { preference } = useSelector((state) => state.preferences);
+  const preferencesState = useSelector((state) => state?.preferences);
+  const preference = preferencesState?.preference || {};
   const timezone = preference?.timezone ?? "Asia/Kolkata";
 
   const {
@@ -357,6 +359,7 @@ const AddItem = ({ open, toggleDrawer }) => {
                 control={control}
                 rules={{
                   required: "This field is required",
+                  validate: validateDateInFuture,
                 }}
                 render={({ field }) => {
                   return (

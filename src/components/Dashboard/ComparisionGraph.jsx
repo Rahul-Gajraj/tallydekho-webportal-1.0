@@ -1,8 +1,6 @@
 import React, { useMemo } from "react";
-// import dynamic from "next/dynamic";
 import Chart from "react-apexcharts";
 
-// @material-tailwind/react
 import {
   Chip,
   Card,
@@ -12,15 +10,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-// charts import
-// const Chart = dynamic(() => import("react-apexcharts"), {
-//   ssr: false,
-// });
-
-// deepmerge
 import merge from "deepmerge";
-
-// line chart
 
 const AreaChart = ({ height = 350, series, colors, options }) => {
   const chartOptions = useMemo(

@@ -26,6 +26,7 @@ import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 
 import Error from "@/components/Error/Error";
 import SummaryAccordion from "./SummaryAccordion";
+import { validateDateNotFuture, validateEndDateAfterStart } from "@/utils/validation";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -275,6 +276,7 @@ const SalesOrder = ({ open, toggleDrawer }) => {
                   control={control}
                   rules={{
                     required: "This field is required",
+                    validate: validateDateNotFuture,
                   }}
                   render={({ field }) => {
                     return (
@@ -402,6 +404,10 @@ const SalesOrder = ({ open, toggleDrawer }) => {
                   control={control}
                   rules={{
                     required: "This field is required",
+                    validate: (value) => {
+                      const orderDate = getValues("orderDate");
+                      return validateEndDateAfterStart(value, orderDate);
+                    },
                   }}
                   render={({ field }) => {
                     return (
@@ -494,6 +500,10 @@ const SalesOrder = ({ open, toggleDrawer }) => {
                   control={control}
                   rules={{
                     required: "This field is required",
+                    validate: (value) => {
+                      const orderDate = getValues("orderDate");
+                      return validateEndDateAfterStart(value, orderDate);
+                    },
                   }}
                   render={({ field }) => {
                     return (

@@ -19,6 +19,13 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import Error from "@/components/Error/Error";
+import {
+  validateGSTIN,
+  validatePAN,
+  validateEmail,
+  validatePhone,
+  validateWebsite,
+} from "@/utils/validation";
 
 const defaultValues = {
   name: "",
@@ -77,6 +84,18 @@ const CompanyInformation = ({
 
   const fileInputRef = useRef(null);
 
+  useEffect(() => {
+    return () => {
+      if (avatarSrc && avatarSrc.startsWith("blob:")) {
+        try {
+          URL.revokeObjectURL(avatarSrc);
+        } catch (error) {
+          console.error("Error revoking object URL:", error);
+        }
+      }
+    };
+  }, [avatarSrc]);
+
   //   useEffect(() => {
   //     if (initialData) {
   //       reset(initialData);
@@ -91,21 +110,36 @@ const CompanyInformation = ({
 
     if (!file) return;
 
-    // Validate file type
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setError("Only JPG, PNG, and GIF images are allowed.");
-      return;
-    }
+    try {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setError("Only JPG, PNG, and GIF images are allowed.");
+        return;
+      }
 
-    // Validate file size
-    if (file.size > MAX_SIZE) {
-      setError("Image size must be less than 50KB.");
-      return;
-    }
+      if (file.size > MAX_SIZE) {
+        setError("Image size must be less than 50KB.");
+        return;
+      }
 
-    // Create preview URL
-    const previewUrl = URL.createObjectURL(file);
-    setAvatarSrc(previewUrl);
+      if (avatarSrc && avatarSrc.startsWith("blob:")) {
+        try {
+          URL.revokeObjectURL(avatarSrc);
+        } catch (revokeError) {
+          console.error("Error revoking previous object URL:", revokeError);
+        }
+      }
+
+      try {
+        const previewUrl = URL.createObjectURL(file);
+        setAvatarSrc(previewUrl);
+      } catch (urlError) {
+        console.error("Error creating object URL:", urlError);
+        setError("Failed to load image. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error handling file upload:", error);
+      setError("An error occurred while processing the file. Please try again.");
+    }
   };
 
   const resetFields = () => {
@@ -143,7 +177,7 @@ const CompanyInformation = ({
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogBody className="grid grid-cols-12 gap-4 max-h-[40rem] overflow-scroll">
-            <div className="col-span-12 flex justify-center">
+            <div className="col-span-12 flex flex-col items-center gap-2">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -151,19 +185,30 @@ const CompanyInformation = ({
                 className="hidden"
                 onChange={handleFileChange}
               />
-              {avatarSrc.length != 0 ? (
+              {avatarSrc && avatarSrc.length !== 0 ? (
                 <Avatar
                   src={avatarSrc}
                   alt="User Avatar"
                   variant="circular"
-                  // size="xl"
                   className="mx-auto object-top cursor-pointer border w-[60px] h-[60px]"
-                  onClick={() => fileInputRef.current.click()}
+                  onClick={() => {
+                    if (fileInputRef.current) {
+                      fileInputRef.current.click();
+                    }
+                  }}
+                  onError={() => {
+                    setError("Failed to load image. Please try again.");
+                    setAvatarSrc("");
+                  }}
                 />
               ) : (
                 <div
                   className="relative w-[60px] h-[60px] rounded-full bg-[#EAF8F4] cursor-pointer flex justify-center items-center"
-                  onClick={() => fileInputRef.current.click()}
+                  onClick={() => {
+                    if (fileInputRef.current) {
+                      fileInputRef.current.click();
+                    }
+                  }}
                 >
                   <Typography className="!text-[#108f6f]">CI</Typography>
                   <img
@@ -172,6 +217,9 @@ const CompanyInformation = ({
                     className="w-5 h-5 absolute bottom-0 right-0"
                   />
                 </div>
+              )}
+              {error && (
+                <Error condition={true} message={error} />
               )}
             </div>
             <div className="col-span-12">
@@ -222,17 +270,21 @@ const CompanyInformation = ({
                 control={control}
                 rules={{
                   required: "This field is required",
+                  validate: validateGSTIN,
                 }}
                 render={({ field }) => {
                   return (
                     <Input
                       color="green"
                       label="GSTIN"
-                      {...field}
-                      onChange={(value) => {
-                        //   onChange(value);
-                        field.onChange(value);
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value || "";
+                        const upperValue = value.toUpperCase();
+                        field.onChange(upperValue);
                       }}
+                      onBlur={field.onBlur}
+                      maxLength={15}
                     />
                   );
                 }}
@@ -315,17 +367,21 @@ const CompanyInformation = ({
                 control={control}
                 rules={{
                   required: "This field is required",
+                  validate: validatePAN,
                 }}
                 render={({ field }) => {
                   return (
                     <Input
                       color="green"
-                      label="Pan"
-                      {...field}
-                      onChange={(value) => {
-                        //   onChange(value);
-                        field.onChange(value);
+                      label="PAN"
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value || "";
+                        const upperValue = value.toUpperCase();
+                        field.onChange(upperValue);
                       }}
+                      onBlur={field.onBlur}
+                      maxLength={10}
                     />
                   );
                 }}
@@ -339,17 +395,22 @@ const CompanyInformation = ({
                 control={control}
                 rules={{
                   required: "This field is required",
+                  validate: validatePhone,
                 }}
                 render={({ field }) => {
                   return (
                     <Input
                       color="green"
                       label="Phone"
-                      {...field}
-                      onChange={(value) => {
-                        //   onChange(value);
-                        field.onChange(value);
+                      type="tel"
+                      value={field.value || ""}
+                      onChange={(e) => {
+                        const value = e.target.value || "";
+                        const cleanedValue = value.replace(/[^\d+]/g, "");
+                        field.onChange(cleanedValue);
                       }}
+                      onBlur={field.onBlur}
+                      maxLength={13}
                     />
                   );
                 }}
@@ -362,15 +423,16 @@ const CompanyInformation = ({
                 control={control}
                 rules={{
                   required: "This field is required",
+                  validate: validateEmail,
                 }}
                 render={({ field }) => {
                   return (
                     <Input
                       color="green"
                       label="Email"
+                      type="email"
                       {...field}
                       onChange={(value) => {
-                        //   onChange(value);
                         field.onChange(value);
                       }}
                     />
@@ -385,17 +447,19 @@ const CompanyInformation = ({
                 control={control}
                 rules={{
                   required: "This field is required",
+                  validate: validateWebsite,
                 }}
                 render={({ field }) => {
                   return (
                     <Input
                       color="green"
                       label="Website"
+                      type="url"
                       {...field}
                       onChange={(value) => {
-                        //   onChange(value);
                         field.onChange(value);
                       }}
+                      placeholder="example.com"
                     />
                   );
                 }}

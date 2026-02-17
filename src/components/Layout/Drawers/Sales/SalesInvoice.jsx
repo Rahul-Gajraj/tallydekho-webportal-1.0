@@ -25,6 +25,7 @@ import AddCustomerDialog from "../../Dialogs/Sales/AddCustomerDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 import SummaryAccordion from "./SummaryAccordion";
 import Error from "@/components/Error/Error";
+import { validateDateNotFuture } from "@/utils/validation";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -275,6 +276,7 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                   control={control}
                   rules={{
                     required: "This field is required",
+                    validate: validateDateNotFuture,
                   }}
                   render={({ field }) => {
                     return (
@@ -398,7 +400,7 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {products.length == 0 ? (
+                {!products || !Array.isArray(products) || products.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("product")}
@@ -411,7 +413,7 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                       <table className="w-full min-w-max table-auto text-left">
                         <thead>
                           <tr>
-                            {ITEM_TABLE_HEAD.map((head) => (
+                            {ITEM_TABLE_HEAD && ITEM_TABLE_HEAD.map((head) => (
                               <th key={head} className="px-4 pt-4">
                                 <Typography
                                   variant="small"
@@ -424,93 +426,116 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                           </tr>
                         </thead>
                         <tbody>
-                          {products.map((item) => {
-                            const {
-                              id,
-                              warehouse,
-                              product,
-                              qty,
-                              discount,
-                              tax,
-                              unitPrice,
-                              isFlatDiscount,
-                              isFlatTax,
-                            } = item;
-                            return (
-                              <tr key={id}>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {warehouse}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {product}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {qty || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {isFlatDiscount && "₹"}
-                                    {discount || 0}
-                                    {!isFlatDiscount && "%"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {isFlatTax && "₹"}
-                                    {tax || 0}
-                                    {!isFlatTax && "%"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    ₹{unitPrice || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <div className="flex gap-3">
-                                    <img
-                                      src="/media/common/edit.svg"
-                                      alt="edit"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => {
-                                        setSelectedItem(item);
-                                        handleDialogsOpen("product");
-                                      }}
-                                    />
-                                    <img
-                                      src="/media/common/delete.svg"
-                                      alt="delete"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => deleteProductHandler(id)}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            );
+                          {products.map((item, index) => {
+                            if (!item) return null; // Skip null/undefined items
+                            
+                            try {
+                              const {
+                                id,
+                                warehouse,
+                                product,
+                                qty,
+                                discount,
+                                tax,
+                                unitPrice,
+                                isFlatDiscount,
+                                isFlatTax,
+                              } = item || {};
+                              
+                              // Use index as fallback key if id is missing
+                              const itemKey = id || `item-${index}`;
+                              
+                              // Safely parse numeric values
+                              const safeQty = qty !== null && qty !== undefined ? (Number(qty) || 0) : 0;
+                              const safeDiscount = discount !== null && discount !== undefined ? (Number(discount) || 0) : 0;
+                              const safeTax = tax !== null && tax !== undefined ? (Number(tax) || 0) : 0;
+                              const safeUnitPrice = unitPrice !== null && unitPrice !== undefined ? (Number(unitPrice) || 0) : 0;
+                              
+                              return (
+                                <tr key={itemKey}>
+                                  <td className="p-2 px-4">
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal"
+                                    >
+                                      {warehouse || "-"}
+                                    </Typography>
+                                  </td>
+                                  <td className="p-2 px-4">
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal"
+                                    >
+                                      {product || "-"}
+                                    </Typography>
+                                  </td>
+                                  <td className="p-2 px-4">
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal"
+                                    >
+                                      {safeQty}
+                                    </Typography>
+                                  </td>
+                                  <td className="p-2 px-4">
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal"
+                                    >
+                                      {isFlatDiscount && "₹"}
+                                      {safeDiscount}
+                                      {!isFlatDiscount && "%"}
+                                    </Typography>
+                                  </td>
+                                  <td className="p-2 px-4">
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal"
+                                    >
+                                      {isFlatTax && "₹"}
+                                      {safeTax}
+                                      {!isFlatTax && "%"}
+                                    </Typography>
+                                  </td>
+                                  <td className="p-2 px-4">
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal"
+                                    >
+                                      ₹{safeUnitPrice}
+                                    </Typography>
+                                  </td>
+                                  <td className="p-2 px-4">
+                                    <div className="flex gap-3">
+                                      <img
+                                        src="/media/common/edit.svg"
+                                        alt="edit"
+                                        className="h-5 cursor-pointer"
+                                        onClick={() => {
+                                          if (item) {
+                                            setSelectedItem(item);
+                                            handleDialogsOpen("product");
+                                          }
+                                        }}
+                                      />
+                                      <img
+                                        src="/media/common/delete.svg"
+                                        alt="delete"
+                                        className="h-5 cursor-pointer"
+                                        onClick={() => {
+                                          if (id && deleteProductHandler) {
+                                            deleteProductHandler(id);
+                                          }
+                                        }}
+                                      />
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            } catch (error) {
+                              console.error("Error rendering product item:", error);
+                              return null;
+                            }
                           })}
                         </tbody>
                       </table>

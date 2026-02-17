@@ -13,13 +13,13 @@ import PublicRoutes from "./components/Routes/PublicRoutes";
 import CustomToast from "./components/Toast";
 import SettingDrawer from "./components/Layout/Drawers/SettingDrawer";
 import Sidebar from "./components/Layout/Sidebar";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 
 function App() {
   const [isSettingDrawerOpen, setIsSettingDrawerOpen] = useState(false);
 
   const [isPinned, setIsPinned] = useState(false);
 
-  // SECURITY: Do not ship with true. Use real auth (token/session) and set from there.
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   const navigate = useNavigate();
@@ -39,25 +39,33 @@ function App() {
       <>
         <div className="flex h-screen bg-[#F9FAFC]">
           <CustomToast />
-          <Sidebar isPinned={isPinned} setIsPinned={setIsPinned} />
+          <ErrorBoundary fallbackMessage="Sidebar failed to load">
+            <Sidebar isPinned={isPinned} setIsPinned={setIsPinned} />
+          </ErrorBoundary>
           <div
             className="wrapper flex flex-col wrapper-custom transition-[padding-left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] w-full"
             style={{
               paddingLeft: isPinned ? "251px" : "61px",
             }}
           >
-            <Header toggleDrawer={toggleSettingDrawer} isPinned={isPinned} />
+            <ErrorBoundary fallbackMessage="Header failed to load">
+              <Header toggleDrawer={toggleSettingDrawer} isPinned={isPinned} />
+            </ErrorBoundary>
             <main className="overflow-auto" id="content" role="content">
               <div className="container-fixed" id="content_container">
-                <PrivateRoutes />
+                <ErrorBoundary fallbackMessage="Page failed to load">
+                  <PrivateRoutes />
+                </ErrorBoundary>
               </div>
             </main>
           </div>
         </div>
-        <SettingDrawer
-          open={isSettingDrawerOpen}
-          toggleDrawer={toggleSettingDrawer}
-        />
+        <ErrorBoundary fallbackMessage="Settings drawer failed to load">
+          <SettingDrawer
+            open={isSettingDrawerOpen}
+            toggleDrawer={toggleSettingDrawer}
+          />
+        </ErrorBoundary>
       </>
     );
   }
@@ -65,7 +73,9 @@ function App() {
   return (
     <>
       <CustomToast />
-      <PublicRoutes isLogged={setIsLoggedIn} />
+      <ErrorBoundary fallbackMessage="Public routes failed to load">
+        <PublicRoutes isLogged={setIsLoggedIn} />
+      </ErrorBoundary>
     </>
   );
 }
