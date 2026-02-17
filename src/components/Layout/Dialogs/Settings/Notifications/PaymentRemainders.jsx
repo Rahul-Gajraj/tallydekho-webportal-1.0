@@ -20,9 +20,9 @@ import {
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../../Error/Error";
-import IntegerInput from "../../../../common/CustomInput/IntegerInput";
-import CustomTime from "../../../../common/CustomTime";
+import Error from "@/components/Error/Error";
+import IntegerInput from "@/components/common/CustomInput/IntegerInput";
+import CustomTime from "@/components/common/CustomTime";
 
 const REMINDERS = [
   {
@@ -299,7 +299,7 @@ const PaymentRemainders = ({
     getValues,
     reset,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm({
     defaultValues: {
       reminders: REMINDERS,
@@ -321,7 +321,6 @@ const PaymentRemainders = ({
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     resetFields();
   };
 
@@ -405,7 +404,6 @@ const PaymentRemainders = ({
               <Button
                 className="w-full"
                 color="green"
-                style={{ color: "white !importannt" }}
                 onClick={() =>
                   append({
                     name: "",
@@ -428,12 +426,7 @@ const PaymentRemainders = ({
           )}
         </DialogBody>
         <DialogFooter>
-          <Button
-            className="ml-auto"
-            color="green"
-            type="submit"
-            style={{ color: "white !importannt" }}
-          >
+          <Button className="ml-auto" color="green" type="submit">
             Save
           </Button>
         </DialogFooter>

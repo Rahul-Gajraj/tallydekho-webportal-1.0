@@ -26,7 +26,7 @@ import { DayPicker } from "react-day-picker";
 
 import DispatchItemDialog from "../../Dialogs/Sales/DispatchItemDialog";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const ITEM_TABLE_HEAD = [
   "Product Name",
@@ -146,7 +146,7 @@ const SummaryAccordion = ({ dispatchItems }) => {
   );
 };
 
-const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
+const DeliveryNote = ({ open, toggleDrawer }) => {
   const {
     register,
     handleSubmit,
@@ -179,8 +179,6 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
 
   const [dispatchItems, setDispatachItems] = useState([]);
 
-  //   console.log(customers);
-  //   console.log(selectedCustomer);
   const [isDispatchItemDialogOpen, setIsDispatchDialogOpen] = useState(false);
 
   const handleDialogOpen = () => {
@@ -213,7 +211,6 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = async (data) => {
-    console.log(data);
     resetFields();
   };
 
@@ -739,23 +736,13 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
                 <SummaryAccordion dispatchItems={dispatchItems} />
               </div>
               <div className="col-span-12">
-                <Button
-                  className="w-full"
-                  color="green"
-                  type="submit"
-                  style={{ color: "white !importannt" }}
-                >
+                <Button className="w-full" color="green" type="submit">
                   Submit
                 </Button>
               </div>
             </div>
           </div>
         </form>
-        {/* <DialogFooter>
-          <Button className="ml-auto" onClick={handleOpen}>
-            submit
-          </Button>
-        </DialogFooter> */}
       </Drawer>
       <DispatchItemDialog
         open={isDispatchItemDialogOpen}
@@ -767,4 +754,4 @@ const CreateDeliveryNoteDrawer = ({ open, toggleDrawer }) => {
   );
 };
 
-export default CreateDeliveryNoteDrawer;
+export default DeliveryNote;

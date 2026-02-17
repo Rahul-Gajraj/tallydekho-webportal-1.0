@@ -1098,10 +1098,6 @@ const InventoryInfo = () => {
                     />
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {/* {console.log({
-                      stockAdjustmentStatus,
-                      "typeof:": typeof stockAdjustmentStatus,
-                    })} */}
                     <div className="w-[150px]">
                       <Select
                         className="bg-white-600"
@@ -1117,7 +1113,6 @@ const InventoryInfo = () => {
                             : stockAdjustmentStatus
                         }
                         onChange={(val) => {
-                          // console.log({ val, "typeof val": typeof val });
                           setStockAdjustmentStatus(val);
                         }}
                         color="green"

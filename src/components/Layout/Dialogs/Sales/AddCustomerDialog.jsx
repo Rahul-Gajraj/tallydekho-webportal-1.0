@@ -17,7 +17,7 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   name: "",
@@ -49,7 +49,6 @@ const AddCustomerDialog = ({ open, handleOpen, addHandler }) => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     addHandler(data ? data.name : "");
     resetFields();
   };

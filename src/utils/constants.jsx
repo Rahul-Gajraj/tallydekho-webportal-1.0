@@ -1,4 +1,4 @@
-const navigation = (isActive) => {
+export const NAVIGATION = (isActive) => {
   return [
     {
       title: "Dashboard",
@@ -125,5 +125,3 @@ const navigation = (isActive) => {
     // },
   ];
 };
-
-export default navigation;

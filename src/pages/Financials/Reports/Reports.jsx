@@ -8,12 +8,12 @@ import {
 } from "@material-tailwind/react";
 
 import KPIStrip from "@/components/common/KPIStrip";
-import ProfitTrendGraph from "../../../components/Financials/Reports/ProfitTrendGraph";
-import ExpenseBreakdownGraph from "../../../components/Financials/Reports/ExpenseBreakdownGraph";
-import IncomeBreakdownGraph from "../../../components/Financials/Reports/IncomeBreakdownGraph";
-import AssetsLiabilitiesGraph from "../../../components/Financials/Reports/AssetsLiabilitiesGraph";
-import SalesPurchaseTrendGraph from "../../../components/Financials/Reports/SalesPurchaseTrendGraph";
-import ReportsInfo from "../../../components/Financials/Reports/ReportsInfo";
+import ProfitTrendGraph from "@/components/Financials/Reports/ProfitTrendGraph";
+import ExpenseBreakdownGraph from "@/components/Financials/Reports/ExpenseBreakdownGraph";
+import IncomeBreakdownGraph from "@/components/Financials/Reports/IncomeBreakdownGraph";
+import AssetsLiabilitiesGraph from "@/components/Financials/Reports/AssetsLiabilitiesGraph";
+import SalesPurchaseTrendGraph from "@/components/Financials/Reports/SalesPurchaseTrendGraph";
+import ReportsInfo from "@/components/Financials/Reports/ReportsInfo";
 
 const KPI_DATA = [
   {

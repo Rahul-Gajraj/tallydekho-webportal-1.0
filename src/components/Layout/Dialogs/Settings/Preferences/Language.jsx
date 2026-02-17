@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 import moment from "moment-timezone";
 
@@ -19,49 +20,50 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../../Error/Error";
+import Error from "@/components/Error/Error";
+import { updatePreference } from "@/store/preferenceSlice";
 
 const defaultValues = {
-  language: "",
-  country: "",
-  timezone: "",
-  day: "",
+  language: "english",
+  country: "india",
+  timezone: "Asia/Kolkata",
+  firstDayOfWeek: "monday",
 };
 
 const LANGUAGES = [
-  "English",
-  "Hindi",
-  "Gujarati",
-  "Marathi",
-  "Bengali",
-  "Tamil",
-  "Telugu",
-  "Kannada",
-  "Malayalam",
-  "Punjabi",
+  { label: "English", value: "english" },
+  { label: "Hindi", value: "hindi" },
+  { label: "Gujarati", value: "gujarati" },
+  { label: "Marathi", value: "marathi" },
+  { label: "Bengali", value: "bengali" },
+  { label: "Tamil", value: "tamil" },
+  { label: "Telgu", value: "telgu" },
+  { label: "Kannada", value: "kannada" },
+  { label: "Malayalam", value: "malayalam" },
+  { label: "Punjabi", value: "punjabi" },
 ];
 
 const COUNTRIES = [
-  "India",
-  "United States",
-  "United Kingdom",
-  "Canada",
-  "Australia",
-  "Germmany",
-  "France",
-  "Japan",
-  "China",
-  "Brazil",
+  { label: "India", value: "india" },
+  { label: "United States", value: "united_states" },
+  { label: "United Kingdom", value: "united_kingdom" },
+  { label: "Canada", value: "canada" },
+  { label: "Australia", value: "australia" },
+  { label: "Germany", value: "germany" },
+  { label: "France", value: "france" },
+  { label: "Japan", value: "japan" },
+  { label: "China", value: "china" },
+  { label: "Brazil", value: "brazil" },
 ];
 
 const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thrusday",
-  "Friday",
-  "Saturday",
-  "Sunday",
+  { label: "Monday", value: "monday" },
+  { label: "Tuesday", value: "tuesday" },
+  { label: "Wednesday", value: "wednesday" },
+  { label: "Thrusday", value: "thrusday" },
+  { label: "Friday", value: "friday" },
+  { label: "Saturday", value: "staurday" },
+  { label: "Sunday", value: "sunday" },
 ];
 
 const generateTimezoneOptions = () => {
@@ -78,6 +80,8 @@ const generateTimezoneOptions = () => {
 const TIME_ZONES = generateTimezoneOptions();
 
 const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
+  const { preference } = useSelector((state) => state.preferences);
+
   const {
     register,
     handleSubmit,
@@ -88,8 +92,10 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
     watch,
     clearErrors,
   } = useForm({
-    defaultValues,
+    defaultValues: preference,
   });
+
+  const dispatch = useDispatch();
 
   //   useEffect(() => {
   //     if (initialData) {
@@ -102,11 +108,11 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
   const resetFields = () => {
     clearErrors();
     handleOpen("language");
-    reset();
+    // reset();
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
+    dispatch(updatePreference(data));
     resetFields();
   };
 
@@ -117,6 +123,7 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
         open={open}
         handler={() => {
           resetFields();
+          reset();
         }}
         className="p-4"
       >
@@ -128,6 +135,7 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
             className="!absolute right-3.5 top-3.5"
             onClick={() => {
               resetFields();
+              reset();
             }}
           >
             <XMarkIcon className="h-4 w-4 stroke-2" />
@@ -152,13 +160,13 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
                       }}
                       color="green"
                     >
-                      {LANGUAGES.map((language) => (
+                      {LANGUAGES.map(({ label, value }) => (
                         <Option
-                          key={language}
-                          value={language}
+                          key={value}
+                          value={value}
                           className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
                         >
-                          {language}
+                          {label}
                         </Option>
                       ))}
                     </Select>
@@ -187,13 +195,13 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
                       }}
                       color="green"
                     >
-                      {COUNTRIES.map((country) => (
+                      {COUNTRIES.map(({ label, value }) => (
                         <Option
-                          key={country}
-                          value={country}
+                          key={value}
+                          value={value}
                           className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
                         >
-                          {country}
+                          {label}
                         </Option>
                       ))}
                     </Select>
@@ -242,7 +250,7 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
             </div>
             <div className="col-span-12">
               <Controller
-                name="day"
+                name="firstDayOfWeek"
                 control={control}
                 rules={{
                   required: "This field is required",
@@ -257,29 +265,27 @@ const Language = ({ open, handleOpen, upsertHandler, initialData }) => {
                       }}
                       color="green"
                     >
-                      {DAYS.map((day) => (
+                      {DAYS.map(({ label, value }) => (
                         <Option
-                          key={day}
-                          value={day}
+                          key={value}
+                          value={value}
                           className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
                         >
-                          {day}
+                          {label}
                         </Option>
                       ))}
                     </Select>
                   );
                 }}
               />
-              <Error condition={errors.day} message={errors.day?.message} />
+              <Error
+                condition={errors.firstDayOfWeek}
+                message={errors.firstDayOfWeek?.message}
+              />
             </div>
           </DialogBody>
           <DialogFooter>
-            <Button
-              className="ml-auto"
-              color="green"
-              type="submit"
-              style={{ color: "white !importannt" }}
-            >
+            <Button className="ml-auto" color="green" type="submit">
               Save
             </Button>
           </DialogFooter>

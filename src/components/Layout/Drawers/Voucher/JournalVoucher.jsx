@@ -19,7 +19,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   isOptional: false,
@@ -31,7 +31,7 @@ const defaultValues = {
   narration: "",
 };
 
-const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
+const JournalVoucher = ({ open, toggleDrawer }) => {
   const {
     register,
     handleSubmit,
@@ -61,7 +61,6 @@ const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    console.log(data);
     resetFields();
   };
 
@@ -357,26 +356,16 @@ const JournalVoucherDrawer = ({ open, toggleDrawer }) => {
                 />
               </div>
               <div className="col-span-12">
-                <Button
-                  className="w-full"
-                  color="green"
-                  type="submit"
-                  style={{ color: "white !importannt" }}
-                >
+                <Button className="w-full" color="green" type="submit">
                   Submit
                 </Button>
               </div>
             </div>
           </div>
         </form>
-        {/* <DialogFooter>
-          <Button className="ml-auto" onClick={handleOpen}>
-            submit
-          </Button>
-        </DialogFooter> */}
       </Drawer>
     </>
   );
 };
 
-export default JournalVoucherDrawer;
+export default JournalVoucher;

@@ -14,9 +14,9 @@ import {
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../../Error/Error";
-import IntegerInput from "../../../../common/CustomInput/IntegerInput";
-import CustomMultiSelect from "../../../../CustomSelect/CustomMultiSelect";
+import Error from "@/components/Error/Error";
+import IntegerInput from "@/components/common/CustomInput/IntegerInput";
+import CustomMultiSelect from "@/components/CustomSelect/CustomMultiSelect";
 
 const defaultValues = {
   gstr1: 3,
@@ -65,7 +65,7 @@ const ComplianceRemainders = ({
     getValues,
     reset,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm({
     defaultValues,
   });
@@ -77,7 +77,6 @@ const ComplianceRemainders = ({
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     resetFields();
   };
 
@@ -665,12 +664,7 @@ const ComplianceRemainders = ({
           </div> */}
         </DialogBody>
         <DialogFooter className="pt-0">
-          <Button
-            className="ml-auto"
-            color="green"
-            type="submit"
-            style={{ color: "white !importannt" }}
-          >
+          <Button className="ml-auto" color="green" type="submit">
             Save
           </Button>
         </DialogFooter>

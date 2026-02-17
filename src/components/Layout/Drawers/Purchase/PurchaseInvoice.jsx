@@ -12,7 +12,6 @@ import {
   PopoverContent,
   Card,
   Switch,
-  Textarea,
 } from "@material-tailwind/react";
 import moment from "moment";
 
@@ -23,8 +22,9 @@ import { DayPicker } from "react-day-picker";
 
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 
-import Error from "../../../Error/Error";
-import SummaryAccordion from "./SummaryAccordion";
+import Error from "@/components/Error/Error";
+import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
+import SummaryAccordion from "../Sales/SummaryAccordion";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -33,30 +33,31 @@ const ITEM_TABLE_HEAD = [
   "Discount",
   "Tax",
   "Unit Price",
+];
+
+const LOGISTIC_TABLE_HEAD = [
+  "Logistics Type",
+  "Amount",
+  "Tracking Number",
+  "Remarks",
+  "Tax On Logistics",
   "Actions",
 ];
 
 const defaultValues = {
   isOptional: false,
-  noteNumber: "",
-  creditNoteDate: new Date(),
+  ledgerSelection: "",
+  invoiceNumber: "",
+  invoiceDate: new Date(),
   customerName: "",
-  referenceInvoice: "",
-  narration: "",
-
-  dispatchMethod: "",
-  trackingNumber: "",
-  name: "",
-  phoneNumber: "",
-  vehicleNumber: "",
-
-  dueDate: new Date(),
-  validityPeriod: new Date(),
+  referenceNumber: "",
   items: [],
   logistics: [],
+  paymentStatus: "",
+  days: "",
 };
 
-const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
+const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
   const {
     register,
     handleSubmit,
@@ -69,23 +70,28 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
     defaultValues,
   });
 
-  const [customers, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
-
-  const [referenceInvoice, setReferenceInvoice] = useState([
-    "Aadhar",
-    "Pancard",
-    "Passport",
+  const [ledgers, setLedgers] = useState([
+    "Cash Sales",
+    "Credit Sales",
+    "Off-Books",
+    "On-Books",
   ]);
 
-  const [debitNotePopoverOpen, setDebitNotePopoverOpen] = useState(false);
+  const [customers, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
 
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [orderPopoverOpen, setOrderPopoverOpen] = useState(false);
+
   const [products, setProducts] = useState([]);
+  const [logistics, setLogistics] = useState([]);
 
-  //   console.log(customers);
-  //   console.log(selectedCustomer);
+  const [selectedPaymentStatus, setSelectPaymentStatus] = useState("");
+  const [selectedLogistic, setSelectedLogistic] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
+
   const [areDialogsOpen, setAreDialogsOpen] = useState({
+    customer: false,
     product: false,
+    logistics: false,
   });
 
   const handleDialogsOpen = (key) => {
@@ -110,14 +116,29 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
     setProducts(products.filter((p) => p.id != id));
   };
 
+  const upsertLogisticsHandler = (logisticInfo) => {
+    if (logisticInfo.id) {
+      setLogistics((prev) =>
+        prev.map((v) => {
+          return v.id == logisticInfo.id ? logisticInfo : v;
+        })
+      );
+    } else {
+      setLogistics((prev) => [...prev, { ...logisticInfo, id: Date.now() }]);
+    }
+  };
+
+  const deleteLogisticHandler = (id) => {
+    setLogistics(logistics.filter((v) => v.id != id));
+  };
+
   const resetFields = () => {
-    toggleDrawer("salesNote");
+    toggleDrawer("purchaseInvoice");
     clearErrors();
     reset();
   };
 
   const onSubmitHandler = (data) => {
-    console.log(data);
     resetFields();
   };
 
@@ -127,59 +148,110 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
         placement="right"
         className="p-4 overflow-scroll"
         open={open}
-        // onClose={() => toggleDrawer("salesNote")}
+        // onClose={() => toggleDrawer("purchaseInvoice")}
         size={750}
       >
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
-          <div className="relative mt-0 flex justify-between">
-            <Typography variant="h4">Credit Note</Typography>
-            <div className="flex gap-3">
-              <Controller
-                name="isOptional"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <Switch
-                      color="green"
-                      label="Regular"
-                      ripple={true}
-                      checked={field.value}
-                      onChange={(e) => {
-                        const newValue = e.target.checked;
-                        field.onChange(newValue);
-                      }}
-                    />
-                  );
-                }}
+        <div className="relative mt-0 block">
+          <Typography variant="h4">
+            Purchase Invoice
+          </Typography>
+          <IconButton
+            size="sm"
+            variant="text"
+            className="!absolute right-0 top-0"
+            onClick={resetFields}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-5 w-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
               />
-              <IconButton
-                size="sm"
-                variant="text"
-                // className="!absolute right-0 top-0"
-                onClick={resetFields}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </IconButton>
-            </div>
-          </div>
-          <div className="space-y-4 pb-6 pt-5">
-            <div className="grid grid-cols-12 gap-4">
+            </svg>
+          </IconButton>
+        </div>
+        <div className="space-y-4 pb-6 pt-5">
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
+            <div className="grid grid-cols-12 gap-5">
+              <div className="col-span-4">
+                <Controller
+                  name="isOptional"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <Switch
+                        color="green"
+                        label="Regular"
+                        ripple={true}
+                        checked={field.value}
+                        onChange={(e) => {
+                          const newValue = e.target.checked;
+                          field.onChange(newValue);
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </div>
+              <div className="col-span-4 flex items-center gap-1">
+                <img
+                  src="/media/common/upload.svg"
+                  alt="upload"
+                  className="h-5 cursor-pointer"
+                />
+                <Typography>Upload Barcode</Typography>
+              </div>
+              <div className="col-span-4 flex items-center gap-1">
+                <img
+                  src="/media/common/upload_file.svg"
+                  alt="upload_file"
+                  className="h-5 cursor-pointer"
+                />
+                <Typography>Upload Invoice</Typography>
+              </div>
               <div className="col-span-6">
                 <Controller
-                  name="noteNumber"
+                  name="ledgerSelection"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="Ledger Selection"
+                        value={field.value}
+                        onChange={(val) => field.onChange(val)}
+                        color="green"
+                      >
+                        {ledgers.map((ledger) => (
+                          <Option
+                            key={ledger}
+                            value={ledger}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                          >
+                            {ledger}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.ledgerSelection}
+                  message={errors.ledgerSelection?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <Controller
+                  name="invoiceNumber"
                   control={control}
                   rules={{
                     required: "This field is required",
@@ -188,7 +260,7 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        label="Note Number"
+                        label="Invoice Number"
                         {...field}
                         onChange={(value) => {
                           //   onChange(value);
@@ -199,16 +271,16 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                   }}
                 />
                 <Error
-                  condition={errors.noteNumber}
-                  message={errors.noteNumber?.message}
+                  condition={errors.invoiceNumber}
+                  message={errors.invoiceNumber?.message}
                 />
               </div>
               <div className="col-span-6 relative">
                 <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
-                  Credit Note Date
+                  Invoice Date
                 </label>
                 <Controller
-                  name="creditNoteDate"
+                  name="invoiceDate"
                   control={control}
                   rules={{
                     required: "This field is required",
@@ -217,8 +289,8 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Popover
                         placement="bottom"
-                        open={debitNotePopoverOpen}
-                        handler={setDebitNotePopoverOpen}
+                        open={orderPopoverOpen}
+                        handler={setOrderPopoverOpen}
                       >
                         <PopoverHandler>
                           <Button
@@ -240,7 +312,7 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                             onDayClick={(newDate) => {
                               if (newDate) {
                                 field.onChange(newDate);
-                                setDebitNotePopoverOpen(false);
+                                setOrderPopoverOpen(false);
                               }
                             }}
                             showOutsideDays
@@ -291,8 +363,8 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                   }}
                 />
                 <Error
-                  condition={errors.creditNoteDate}
-                  message={errors.creditNoteDate?.message}
+                  condition={errors.invoiceDate}
+                  message={errors.invoiceDate?.message}
                 />
               </div>
               <div className="col-span-6">
@@ -330,68 +402,34 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                   message={errors.customerName?.message}
                 />
               </div>
-              <div className="col-span-6">
+              <div className="col-span-12">
                 <Controller
-                  name="referenceInvoice"
+                  name="referenceNumber"
                   control={control}
                   rules={{
                     required: "This field is required",
                   }}
                   render={({ field }) => {
                     return (
-                      <Select
-                        label="Reference Invoice"
-                        value={field.value}
-                        onChange={(val) => {
-                          field.onChange(val);
-                        }}
+                      <Input
                         color="green"
-                      >
-                        {referenceInvoice.map((document) => (
-                          <Option
-                            key={document}
-                            value={document}
-                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                          >
-                            {document}
-                          </Option>
-                        ))}
-                      </Select>
-                    );
-                  }}
-                />
-                <Error
-                  condition={errors.referenceInvoice}
-                  message={errors.referenceInvoice?.message}
-                />
-              </div>
-              <div className="col-span-12">
-                <Controller
-                  name="narration"
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <Textarea
-                        color="green"
-                        label="Narration"
+                        label="Reference Number"
                         {...field}
                         onChange={(value) => {
                           //   onChange(value);
                           field.onChange(value);
                         }}
-                        //   required
-                        rows={2}
-                        //   shrink={true}
-                        //   placeholder="Enter Notes"
                       />
                     );
                   }}
                 />
+                <Error
+                  condition={errors.referenceNumber}
+                  message={errors.referenceNumber?.message}
+                />
               </div>
               <div className="col-span-12 flex gap-3 items-center">
-                <Typography className="w-[120px]" variant="h6">
-                  Return Items
-                </Typography>
+                <Typography variant="h6">Stocks/Product</Typography>
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
@@ -400,7 +438,7 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("product")}
                   >
-                    <Typography>Add Return Items</Typography>
+                    <Typography>Add Product</Typography>
                   </Card>
                 ) : (
                   <>
@@ -515,34 +553,220 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
                     <Button
                       color="green"
                       className="normal-case w-full mt-4"
-                      onClick={() => handleDialogsOpen("product")}
+                      onClick={() => {
+                        setSelectedItem(null);
+                        handleDialogsOpen("product");
+                      }}
                     >
-                      Add Return Items
+                      Add Product
+                    </Button>
+                  </>
+                )}
+              </div>
+              <div className="col-span-12 flex gap-3 items-center">
+                <Typography variant="h6">Logistics/Shipping</Typography>
+                <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
+              </div>
+              <div className="col-span-12">
+                {logistics.length == 0 ? (
+                  <Card
+                    className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
+                    onClick={() => {
+                      setSelectedLogistic(null);
+                      handleDialogsOpen("logistics");
+                    }}
+                  >
+                    <Typography>Add Logistics</Typography>
+                  </Card>
+                ) : (
+                  <>
+                    <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
+                      <table className="w-full min-w-max table-auto text-left">
+                        <thead>
+                          <tr>
+                            {LOGISTIC_TABLE_HEAD.map((head) => (
+                              <th key={head} className="px-4 pt-4">
+                                <Typography
+                                  variant="small"
+                                  className="font-bold leading-none"
+                                >
+                                  {head}
+                                </Typography>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {logistics.map((logistic) => {
+                            const {
+                              logisticsType,
+                              amount,
+                              trackingNumber,
+                              remark,
+                              taxOnLogistics,
+                              id,
+                            } = logistic;
+
+                            return (
+                              <tr key={id}>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {logisticsType || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    ₹{amount || 0}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {trackingNumber || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {remark || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal"
+                                  >
+                                    {taxOnLogistics || "-"}
+                                  </Typography>
+                                </td>
+                                <td className="p-2 px-4">
+                                  <div className="flex gap-3">
+                                    <img
+                                      src="/media/common/edit.svg"
+                                      alt="edit"
+                                      className="h-5 cursor-pointer"
+                                      onClick={() => {
+                                        setSelectedLogistic(logistic);
+                                        handleDialogsOpen("logistics");
+                                      }}
+                                    />
+                                    <img
+                                      src="/media/common/delete.svg"
+                                      alt="delete"
+                                      className="h-5 cursor-pointer"
+                                      onClick={() => deleteLogisticHandler(id)}
+                                    />
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </Card>
+                    <Button
+                      color="green"
+                      className="normal-case w-full mt-4"
+                      onClick={() => {
+                        setSelectedLogistic(null);
+                        handleDialogsOpen("logistics");
+                      }}
+                    >
+                      Add Logistics
                     </Button>
                   </>
                 )}
               </div>
               <div className="col-span-12">
-                <SummaryAccordion products={products} />
+                <SummaryAccordion products={products} logistics={logistics} />
               </div>
               <div className="col-span-12">
-                <Button
-                  className="w-full"
+                <Select
+                  label="Payment Status"
+                  value={selectedPaymentStatus}
+                  onChange={(val) => {
+                    setSelectPaymentStatus(val);
+                  }}
                   color="green"
-                  type="submit"
-                  style={{ color: "white !importannt" }}
                 >
+                  <Option
+                    value="payment_received"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    Payment Received
+                  </Option>
+                  <Option
+                    value="15"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    15 Days
+                  </Option>
+                  <Option
+                    value="30"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    30 Days
+                  </Option>
+                  <Option
+                    value="custom"
+                    className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                  >
+                    Custom
+                  </Option>
+                </Select>
+                {/* <Error
+                condition={errors.customerName}
+                message={errors.customerName?.message}
+              /> */}
+              </div>
+              {selectedPaymentStatus == "custom" && (
+                <div className="col-span-12">
+                  <Controller
+                    name="days"
+                    control={control}
+                    // rules={{
+                    //   required: "This field is required",
+                    // }}
+                    render={({ field }) => {
+                      return (
+                        <Input
+                          color="green"
+                          size="md"
+                          containerProps={{ className: "!min-w-full" }}
+                          label="Days"
+                          {...field}
+                          onChange={(value) => {
+                            //   onChange(value);
+                            field.onChange(value);
+                          }}
+                        />
+                      );
+                    }}
+                  />
+                  {/* <Error
+                condition={errors.days}
+                message={errors.days?.message}
+              /> */}
+                </div>
+              )}
+              <div className="col-span-12">
+                <Button className="w-full" color="green" type="submit">
                   Submit
                 </Button>
               </div>
             </div>
-          </div>
-        </form>
-        {/* <DialogFooter>
-          <Button className="ml-auto" onClick={handleOpen}>
-            submit
-          </Button>
-        </DialogFooter> */}
+          </form>
+        </div>
       </Drawer>
       <AddProductDialog
         open={areDialogsOpen.product}
@@ -550,8 +774,14 @@ const CreateCreditNoteDrawer = ({ open, toggleDrawer }) => {
         upsertHandler={upsertProductHandler}
         initialData={selectedItem}
       />
+      <AddLogisticsDialog
+        open={areDialogsOpen.logistics}
+        handleOpen={handleDialogsOpen}
+        upsertHandler={upsertLogisticsHandler}
+        initialData={selectedLogistic}
+      />
     </>
   );
 };
 
-export default CreateCreditNoteDrawer;
+export default PurchaseInvoice;

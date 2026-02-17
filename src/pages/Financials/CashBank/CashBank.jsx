@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import CashTransactionsDetail from "../../../components/Financials/CashBank/CashTransactionsDetail";
+import CashTransactionsDetail from "@/components/Financials/CashBank/CashTransactionsDetail";
 import KPIStrip from "@/components/common/KPIStrip";
 
 const CASH_BANK_KPI = [

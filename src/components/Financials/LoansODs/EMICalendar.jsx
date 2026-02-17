@@ -155,12 +155,10 @@ const EMICalendar = ({ setSelectedEvent }) => {
   };
 
   const handleDayClick = (dateStr) => {
-    // console.log({ dateStr });
     const eventsForDay = EVENTS.filter((ev) => ev.date === dateStr);
 
     if (eventsForDay.length > 0) {
       setSelectedEvent({ date: eventsForDay[0].date, emis: eventsForDay });
-      // console.log(eventsForDay);
     } else {
       setSelectedEvent(null);
       // toast.error('No events on this date')

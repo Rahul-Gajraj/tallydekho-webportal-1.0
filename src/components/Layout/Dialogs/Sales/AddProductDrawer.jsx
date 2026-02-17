@@ -18,7 +18,7 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   warehouse: "",
@@ -114,7 +114,6 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     upsertHandler({
       ...data,
       qtyType: selectedQtyType,
@@ -394,7 +393,6 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
               className="ml-auto"
               color="green"
               type="submit"
-              style={{ color: "white !importannt" }}
             >
               {initialData ? "Update" : "Add"}
             </Button>

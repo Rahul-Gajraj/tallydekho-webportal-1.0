@@ -11,7 +11,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 
 import { Controller } from "react-hook-form";
 
-const CustomAutocomoplete = ({
+const CustomAutocomplete = ({
   name,
   control,
   rules = {},
@@ -28,10 +28,6 @@ const CustomAutocomoplete = ({
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-    //   console.log({
-    //     containerRef: containerRef.current.value,
-    //     targer: e.target.value,
-    //   });
       if (!containerRef.current?.contains(e.target)) {
         if (!selected) {
         // setInputValue("");
@@ -118,4 +114,4 @@ const CustomAutocomoplete = ({
   );
 };
 
-export default CustomAutocomoplete;
+export default CustomAutocomplete;

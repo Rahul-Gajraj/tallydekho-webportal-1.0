@@ -18,7 +18,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-import Error from "../../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const ACCOUNTS = [
   {
@@ -202,7 +202,7 @@ const BankFeeds = ({ open, handleOpen, upsertHandler, initialData }) => {
     getValues,
     reset,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm({
     defaultValues: {
       accounts: ACCOUNTS,
@@ -221,7 +221,6 @@ const BankFeeds = ({ open, handleOpen, upsertHandler, initialData }) => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     resetFields();
   };
 
@@ -268,7 +267,6 @@ const BankFeeds = ({ open, handleOpen, upsertHandler, initialData }) => {
             <Button
               className="w-full"
               color="green"
-              style={{ color: "white !importannt" }}
               onClick={() =>
                 append({
                   accountNumber: "",
@@ -283,12 +281,7 @@ const BankFeeds = ({ open, handleOpen, upsertHandler, initialData }) => {
           </div>
         </DialogBody>
         <DialogFooter>
-          <Button
-            className="ml-auto"
-            color="green"
-            type="submit"
-            style={{ color: "white !importannt" }}
-          >
+          <Button className="ml-auto" color="green" type="submit">
             Save
           </Button>
         </DialogFooter>

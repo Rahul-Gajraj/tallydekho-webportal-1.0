@@ -1,47 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  Navbar,
   Typography,
   Button,
   IconButton,
-  Input,
   Menu,
   MenuHandler,
-  ListItem,
   MenuList,
   MenuItem,
-  Avatar,
-  Drawer,
-  ListItemPrefix,
-  List,
-  Divider,
   Select,
   Option,
 } from "@material-tailwind/react";
-import {
-  BellIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronUpIcon } from "@heroicons/react/24/solid";
 
-import CreateInvoiceDrawer from "./Drawers/Sales/CreateInvoiceDrawer";
-import CreateQuotationDrawer from "./Drawers/Sales/CreateQuotationDrawer";
-import CreateSalesOrderDrawer from "./Drawers/Sales/CreateSalesOrderDrawer";
-import CreateDeliveryNoteDrawer from "./Drawers/Sales/CreatedeliveryNoteDrawer";
-import CreateCreditNoteDrawer from "./Drawers/Sales/CreatCreditNoteDrawer";
-import CreatePurchaseInvoiceDrawer from "./Drawers/Purchase/PurchaceInvoiceDrawer";
-import CreatePurchaseOrderDrawer from "./Drawers/Purchase/PurchaseOrderDrawer";
-import PurchaseDebitNoteDrawer from "./Drawers/Purchase/PurchaseDebitNoteDrawer";
+import SalesInvoice from "./Drawers/Sales/SalesInvoice";
+import SalesQuotation from "./Drawers/Sales/SalesQuotation";
+import SalesOrder from "./Drawers/Sales/SalesOrder";
+import DeliveryNote from "./Drawers/Sales/DeliveryNote";
+import CreditNote from "./Drawers/Sales/CreditNote";
+
+import PurchaseInvoice from "./Drawers/Purchase/PurchaseInvoice";
+import PurchaseOrder from "./Drawers/Purchase/PurchaseOrder";
+import DebitNote from "./Drawers/Purchase/DebitNote";
+
 import PaymentVoucher from "./Drawers/Voucher/PaymentVoucher";
-import ReceiptVoucherDrawer from "./Drawers/Voucher/ReceiptVoucherDrawer";
-import ContraVoucherDrawer from "./Drawers/Voucher/ContraVoucher";
-import JournalVoucherDrawer from "./Drawers/Voucher/JournalVoucher";
+import ReceiptVoucher from "./Drawers/Voucher/ReceiptVoucher";
+import ContraVoucher from "./Drawers/Voucher/ContraVoucher";
+import JournalVoucher from "./Drawers/Voucher/JournalVoucher";
+
 import StockAdjustment from "./Drawers/Inventory/StockAdjustment";
 import StockTransfer from "./Drawers/Inventory/StockTransfer";
-import AddItem from "./Drawers/Inventory/AddItem";
 import AddWarehouse from "./Drawers/Inventory/AddWarehouse";
-import SundryDebtors from "./Drawers/Ledgers/SundryDebtors";
+import AddItem from "./Drawers/Inventory/AddItem";
+
 import SundryCreditors from "./Drawers/Ledgers/SundryCreditors";
+import SundryDebtors from "./Drawers/Ledgers/SundryDebtors";
 import DuitiesTaxes from "./Drawers/Ledgers/DuitiesTaxes";
 import CustomGroups from "./Drawers/Ledgers/CustomGroups";
 
@@ -148,8 +140,6 @@ const FYear = () => {
 };
 
 const Profile = ({ toggleDrawer }) => {
-  // const [open, setOpen] = useState(false);
-
   return (
     <>
       <Menu>
@@ -461,7 +451,7 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
                 onClick={() => toggleDrawerHandler("duitiesTaxes")}
               >
-                Duities & Taxes
+                Duties & Taxes
               </MenuItem>
               <MenuItem
                 className="hover:!bg-[#EAF8F4] active:!bg-[#EAF8F4] hover:!text-[#108F6F] active:!text-[#108F6F]"
@@ -477,26 +467,7 @@ const CreateFilter = ({ toggleDrawerHandler }) => {
   );
 };
 
-const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
-  const [areDrawersOpen, setAreDrawersOpen] = useState({
-    salesInvoice: false,
-    salesQuotation: false,
-    salesOrder: false,
-    salesDeliveryNote: false,
-    salesNote: false,
-    purchaseInvoice: false,
-    purchaseOrder: false,
-    purchaseDebitNote: false,
-    paymentVoucher: false,
-    receiptVoucher: false,
-    contraVoucher: false,
-    journalVoucher: false,
-    stockAdjustment: false,
-    stockTransfer: false,
-    addItem: false,
-    addWarehouse: false,
-  });
-
+const Header = ({ toggleDrawer, isPinned }) => {
   const [activeDrawer, setActiveDrawer] = useState(null); // which drawer
   const [drawerOpen, setDrawerOpen] = useState(false); // animation state
 
@@ -514,12 +485,6 @@ const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
     setTimeout(() => {
       setActiveDrawer(null);
     }, 300); // must match Drawer transition duration
-  };
-
-  const toggleDrawerHandler = (key) => {
-    setAreDrawersOpen((prev) => {
-      return { ...prev, [key]: !prev[key] };
-    });
   };
 
   const navList = (
@@ -593,49 +558,40 @@ const Header = ({ toggleDrawer, toggleSideDrawer, isPinned }) => {
       </header>
 
       {activeDrawer == "salesInvoice" && (
-        <CreateInvoiceDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <SalesInvoice open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "salesQuotation" && (
-        <CreateQuotationDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <SalesQuotation open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "salesOrder" && (
-        <CreateSalesOrderDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <SalesOrder open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "salesDeliveryNote" && (
-        <CreateDeliveryNoteDrawer
-          open={drawerOpen}
-          toggleDrawer={closeDrawer}
-        />
+        <DeliveryNote open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "salesNote" && (
-        <CreateCreditNoteDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <CreditNote open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "purchaseInvoice" && (
-        <CreatePurchaseInvoiceDrawer
-          open={drawerOpen}
-          toggleDrawer={closeDrawer}
-        />
+        <PurchaseInvoice open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "purchaseOrder" && (
-        <CreatePurchaseOrderDrawer
-          open={drawerOpen}
-          toggleDrawer={closeDrawer}
-        />
+        <PurchaseOrder open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "purchaseDebitNote" && (
-        <PurchaseDebitNoteDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <DebitNote open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "paymentVoucher" && (
         <PaymentVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "receiptVoucher" && (
-        <ReceiptVoucherDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <ReceiptVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "contraVoucher" && (
-        <ContraVoucherDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <ContraVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "journalVoucher" && (
-        <JournalVoucherDrawer open={drawerOpen} toggleDrawer={closeDrawer} />
+        <JournalVoucher open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer == "stockAdjustment" && (
         <StockAdjustment open={drawerOpen} toggleDrawer={closeDrawer} />

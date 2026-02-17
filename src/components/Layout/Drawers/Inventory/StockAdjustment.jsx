@@ -15,7 +15,7 @@ import {
 
 import { Controller, useForm } from "react-hook-form";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   warehouse: "Deltamas Logistics Center",
@@ -47,8 +47,7 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    console.log(data);
-    resetFields()
+    resetFields();
   };
 
   return (
@@ -294,12 +293,7 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
               />
             </div>
             <div className="col-span-12">
-              <Button
-                className="w-full"
-                color="green"
-                type="submit"
-                style={{ color: "white !importannt" }}
-              >
+              <Button className="w-full" color="green" type="submit">
                 Submit
               </Button>
             </div>

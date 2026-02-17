@@ -13,10 +13,9 @@ import {
   Switch,
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import OTPInput from "react-otp-input";
-
-import Error from "../../../../Error/Error";
 import toast from "react-hot-toast";
+
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   fullName: "",
@@ -35,6 +34,7 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
     getValues,
     reset,
     watch,
+    clearErrors
   } = useForm({
     defaultValues,
   });
@@ -88,8 +88,6 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
   const handleMobileOtpChange = (index, value) => {
     const newOtp = [...mobileOtp];
     newOtp[index] = value.replace(/[^0-9]/g, "");
-    // console.log(Number(newOtp[index]));
-    // console.log(typeof newOtp[index]);
     setMobileOtp(newOtp);
 
     if (value && index < inputMobileOtpRefs.current.length - 1) {
@@ -99,7 +97,6 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
 
   function handleMobileOtpBackspace(event, index) {
     if (event.key === "Backspace" && !event.target.value && index > 0) {
-      // console.log(inputMobileOtpRefs.current[index - 1]);
       inputMobileOtpRefs.current[index - 1].focus();
     }
   }
@@ -107,8 +104,6 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
   const handleEmailOtpChange = (index, value) => {
     const newOtp = [...emailOtp];
     newOtp[index] = value.replace(/[^0-9]/g, "");
-    // console.log(Number(newOtp[index]));
-    // console.log(typeof newOtp[index]);
     setEmailOtp(newOtp);
 
     if (value && index < inputEmailOtpRefs.current.length - 1) {
@@ -118,7 +113,6 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
 
   function handleEmaileOtpBackspace(event, index) {
     if (event.key === "Backspace" && !event.target.value && index > 0) {
-      // console.log(inputEmailOtpRefs.current[index - 1]);
       inputEmailOtpRefs.current[index - 1].focus();
     }
   }
@@ -135,30 +129,34 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
     intervalMobileRef.current = [];
     intervalEmaileRef.current = [];
     handleOpen("profile");
+    clearErrors();
     reset();
   };
 
   const onSubmit = async (data) => {
-    let isOtpFieldFilled = true;
+    let isMobileOtpFieldFilled = true;
+    let isEmailOtpFieldFilled = true;
 
     mobileOtp.forEach((otp) => {
-      if(otp.length == 0) {
-        isOtpFieldFilled = false;
-      }
-    })
-
-    emailOtp.forEach((otp) => {
       if (otp.length == 0) {
-        isOtpFieldFilled = false;
+        isMobileOtpFieldFilled = false;
       }
     });
 
-    if(!isOtpFieldFilled) {
-      console.log('All fields are required');
+    emailOtp.forEach((otp) => {
+      if (otp.length == 0) {
+        isEmailOtpFieldFilled = false;
+      }
+    });
+
+    if (
+      (!isMobileOtpFieldFilled && isMobileOtpSend) ||
+      (!isEmailOtpFieldFilled && isEmailOtpSend)
+    ) {
+      toast.error("All fields are required");
       return;
     }
 
-    console.log(data);
     resetFields();
   };
 
@@ -331,92 +329,6 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
               </div>
             )}
 
-            {/* <div className="col-span-12">
-              <Controller
-                name="mobileOtp"
-                control={control}
-                rules={{
-                  required: "This field is required",
-                }}
-                render={({ field }) => {
-                  return (
-                    <OTPInput
-                      //   value={otp}
-                      //   onChange={setOtp}
-                      {...field}
-                      numInputs={4}
-                      renderSeparator={<span> </span>}
-                      renderInput={(props) => (
-                        <input
-                          {...props}
-                          className="!w-[35px] h-[35px] border rounded-[5px] border-[#C4CADA] mr-5"
-                          //   disabled={!isOtpSend}
-                        />
-                      )}
-                    />
-                  );
-                }}
-              />
-              <Typography className="text-[12px]">
-                Enter otp send to your mobile number
-              </Typography>
-            </div> */}
-
-            {/* <div className="col-span-12 mt-2">
-              <Controller
-                name="email"
-                control={control}
-                rules={{
-                  required: "This field is required",
-                }}
-                render={({ field }) => {
-                  return (
-                    <Input
-                      color="green"
-                      label="Email"
-                      {...field}
-                      onChange={(value) => {
-                        //   onChange(value);
-                        field.onChange(value);
-                      }}
-                    />
-                  );
-                }}
-              />
-              <Error condition={errors.email} message={errors.email?.message} />
-            </div> */}
-
-            {/* <div className="col-span-12">
-              <Controller
-                name="emailOtp"
-                control={control}
-                rules={{
-                  required: "This field is required",
-                }}
-                render={({ field }) => {
-                  return (
-                    <OTPInput
-                      //   value={otp}
-                      //   onChange={setOtp}
-                      {...field}
-                      numInputs={4}
-                      renderSeparator={<span> </span>}
-                      renderInput={(props) => (
-                        <input
-                          {...props}
-                          className="!w-[35px] h-[35px] border rounded-[5px] border-[#C4CADA] mr-5"
-                          //   disabled={!isOtpSend}
-                        />
-                      )}
-                    />
-                  );
-                }}
-              />
-              <Typography className="text-[12px]">
-                Enter otp send to your email address
-              </Typography>
-            </div> */}
-
             <div className="col-span-12">
               <Typography className="text-[12px]">Email</Typography>
               <Controller
@@ -540,12 +452,7 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
             )}
           </DialogBody>
           <DialogFooter>
-            <Button
-              className="ml-auto"
-              color="green"
-              type="submit"
-              style={{ color: "white !importannt" }}
-            >
+            <Button className="ml-auto" color="green" type="submit">
               Save
             </Button>
           </DialogFooter>

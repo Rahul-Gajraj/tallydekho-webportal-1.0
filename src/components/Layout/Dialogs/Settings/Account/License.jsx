@@ -14,6 +14,7 @@ import {
 } from "@material-tailwind/react";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import BuyCredit from "./BuyCredit";
 
 const defaultValues = {
@@ -71,7 +72,6 @@ const License = ({ open, handleOpen, upsertHandler, initialData }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     // handleOpen("license");
     // reset();
   };

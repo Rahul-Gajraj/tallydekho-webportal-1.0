@@ -17,14 +17,15 @@ import moment from "moment";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
-import { DayPicker } from "react-day-picker";
 import { Controller, useForm } from "react-hook-form";
+import { DayPicker } from "react-day-picker";
 
-import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 import AddCustomerDialog from "../../Dialogs/Sales/AddCustomerDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
+import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
+
+import Error from "@/components/Error/Error";
 import SummaryAccordion from "./SummaryAccordion";
-import Error from "../../../Error/Error";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -47,21 +48,18 @@ const LOGISTIC_TABLE_HEAD = [
 
 const defaultValues = {
   ledgerSelection: "",
-  invoiceNumber: "",
-  invoiceDate: new Date(),
+  orderNumber: "",
+  orderDate: new Date(),
   customerName: "",
-  referenceNumber: "",
+  dueDate: new Date(),
+  validityPeriod: new Date(),
   items: [],
   logistics: [],
-  paymentStatus: "",
-  days: "",
   isOptional: false,
-  upi: "",
+  days: "",
 };
 
-const UPIs = ["BHIM", "G Pay", "PhonePe", "Paytm"];
-
-const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
+const SalesOrder = ({ open, toggleDrawer }) => {
   const {
     register,
     handleSubmit,
@@ -75,20 +73,22 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
   });
 
   const [ledgers, setLedgers] = useState([
-    "Purchase - Raw Materials",
-    "Purchase - Finished Goods",
-    "Expenses",
-    "Capital Purchases",
-    "Etc",
+    "Cash Sales",
+    "Credit Sales",
+    "Off-Books",
+    "On-Books",
   ]);
 
   const [customers, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
-  const [popoverOpen, setPopoverOpen] = useState(false);
+
+  const [orderPopoverOpen, setOrderPopoverOpen] = useState(false);
+  const [dueDatePopoverOpen, setDueDatePopoverOpen] = useState(false);
+  const [validityPeriodPopoverOpen, setValidityPeriodPopoverOpen] =
+    useState(false);
 
   const [selectedPaymentStatus, setSelectPaymentStatus] = useState("");
   const [selectedLogistic, setSelectedLogistic] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [collectPaymentNow, setCollectPaymentNow] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const [products, setProducts] = useState([]);
   const [logistics, setLogistics] = useState([]);
@@ -110,7 +110,6 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
   };
 
   const upsertProductHandler = (productInfo) => {
-    console.log(productInfo);
     if (productInfo.id) {
       setProducts((prev) =>
         prev.map((p) => {
@@ -143,13 +142,12 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
   };
 
   const resetFields = () => {
-    toggleDrawer("salesInvoice");
+    toggleDrawer("salesOrder");
     clearErrors();
     reset();
   };
 
-  const onSubmitHandler = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
     resetFields();
   };
 
@@ -159,12 +157,12 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
         placement="right"
         className="p-4 overflow-scroll"
         open={open}
-        // onClose={() => toggleDrawer("salesInvoice")}
+        // onClose={() => toggleDrawer("salesOrder")}
         size={750}
       >
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <form id="sign_in_form" onSubmit={handleSubmit(onSubmit)}>
           <div className="relative mt-0 flex justify-between">
-            <Typography variant="h4">Sales Invoice</Typography>
+            <Typography variant="h4">Sales Orders</Typography>
             <div className="flex gap-3">
               <Controller
                 name="isOptional"
@@ -207,8 +205,8 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
               </IconButton>
             </div>
           </div>
-          <div className="space-y-4 pb-6">
-            <div className="grid grid-cols-12 gap-4 mt-5">
+          <div className="space-y-4 pb-6 pt-5">
+            <div className="grid grid-cols-12 gap-4">
               <div className="col-span-6">
                 <Controller
                   name="ledgerSelection"
@@ -244,7 +242,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
               </div>
               <div className="col-span-6">
                 <Controller
-                  name="invoiceNumber"
+                  name="orderNumber"
                   control={control}
                   rules={{
                     required: "This field is required",
@@ -253,7 +251,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Input
                         color="green"
-                        label="Invoice Number"
+                        label="Order Number"
                         {...field}
                         onChange={(value) => {
                           //   onChange(value);
@@ -264,16 +262,16 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                   }}
                 />
                 <Error
-                  condition={errors.invoiceNumber}
-                  message={errors.invoiceNumber?.message}
+                  condition={errors.orderNumber}
+                  message={errors.orderNumber?.message}
                 />
               </div>
               <div className="col-span-6 relative">
                 <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
-                  Invoice Date
+                  Order Date
                 </label>
                 <Controller
-                  name="invoiceDate"
+                  name="orderDate"
                   control={control}
                   rules={{
                     required: "This field is required",
@@ -282,8 +280,8 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                     return (
                       <Popover
                         placement="bottom"
-                        open={popoverOpen}
-                        handler={setPopoverOpen}
+                        open={orderPopoverOpen}
+                        handler={setOrderPopoverOpen}
                       >
                         <PopoverHandler>
                           <Button
@@ -305,7 +303,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                             onDayClick={(newDate) => {
                               if (newDate) {
                                 field.onChange(newDate);
-                                setPopoverOpen(false);
+                                setOrderPopoverOpen(false);
                               }
                             }}
                             showOutsideDays
@@ -356,8 +354,8 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                   }}
                 />
                 <Error
-                  condition={errors.invoiceDate}
-                  message={errors.invoiceDate?.message}
+                  condition={errors.orderDate}
+                  message={errors.orderDate?.message}
                 />
               </div>
               <div className="col-span-6">
@@ -395,6 +393,190 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                   message={errors.customerName?.message}
                 />
               </div>
+              <div className="col-span-6 relative">
+                <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
+                  Due Date
+                </label>
+                <Controller
+                  name="dueDate"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Popover
+                        placement="bottom"
+                        open={dueDatePopoverOpen}
+                        handler={setDueDatePopoverOpen}
+                      >
+                        <PopoverHandler>
+                          <Button
+                            variant="outlined"
+                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            ripple={false}
+                          >
+                            {moment(field.value).format("DD MMM, yyyy")}
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
+                            />
+                          </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="z-[9999]">
+                          <DayPicker
+                            selected={field.value}
+                            onDayClick={(newDate) => {
+                              if (newDate) {
+                                field.onChange(newDate);
+                                setDueDatePopoverOpen(false);
+                              }
+                            }}
+                            showOutsideDays
+                            className="border-0"
+                            classNames={{
+                              caption:
+                                "flex justify-center py-2 mb-4 relative items-center",
+                              caption_label:
+                                "text-sm !font-medium text-gray-900",
+                              nav: "flex items-center",
+                              nav_button:
+                                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                              nav_button_previous: "absolute left-1.5",
+                              nav_button_next: "absolute right-1.5",
+                              table: "w-full border-collapse",
+                              head_row: "flex !font-medium text-gray-900",
+                              head_cell: "m-0.5 w-9 !font-normal text-sm",
+                              row: "flex w-full mt-2",
+                              cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                              day: "h-9 w-9 p-0 !font-normal",
+                              day_range_end: "day-range-end",
+                              day_selected:
+                                "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                              day_today: "rounded-md bg-gray-200 text-gray-900",
+                              day_outside:
+                                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                              day_disabled: "text-gray-500 opacity-50",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => (
+                                <ChevronLeftIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                              IconRight: ({ ...props }) => (
+                                <ChevronRightIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.validityPeriod}
+                  message={errors.validityPeriod?.message}
+                />
+              </div>
+              <div className="col-span-6 relative">
+                <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
+                  Validity Peroid
+                </label>
+                <Controller
+                  name="validityPeriod"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Popover
+                        placement="bottom"
+                        open={validityPeriodPopoverOpen}
+                        handler={setValidityPeriodPopoverOpen}
+                      >
+                        <PopoverHandler>
+                          <Button
+                            variant="outlined"
+                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            ripple={false}
+                          >
+                            {moment(field.value).format("DD MMM, yyyy")}
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
+                            />
+                          </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="z-[9999]">
+                          <DayPicker
+                            selected={field.value}
+                            onDayClick={(newDate) => {
+                              if (newDate) {
+                                field.onChange(newDate);
+                                setValidityPeriodPopoverOpen(false);
+                              }
+                            }}
+                            showOutsideDays
+                            className="border-0"
+                            classNames={{
+                              caption:
+                                "flex justify-center py-2 mb-4 relative items-center",
+                              caption_label:
+                                "text-sm !font-medium text-gray-900",
+                              nav: "flex items-center",
+                              nav_button:
+                                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                              nav_button_previous: "absolute left-1.5",
+                              nav_button_next: "absolute right-1.5",
+                              table: "w-full border-collapse",
+                              head_row: "flex !font-medium text-gray-900",
+                              head_cell: "m-0.5 w-9 !font-normal text-sm",
+                              row: "flex w-full mt-2",
+                              cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                              day: "h-9 w-9 p-0 !font-normal",
+                              day_range_end: "day-range-end",
+                              day_selected:
+                                "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                              day_today: "rounded-md bg-gray-200 text-gray-900",
+                              day_outside:
+                                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                              day_disabled: "text-gray-500 opacity-50",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => (
+                                <ChevronLeftIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                              IconRight: ({ ...props }) => (
+                                <ChevronRightIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.validityPeriod}
+                  message={errors.validityPeriod?.message}
+                />
+              </div>
               <div className="col-span-12 flex gap-3 items-center">
                 <Typography variant="h6">Item/Services</Typography>
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
@@ -428,16 +610,17 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                         <tbody>
                           {products.map((item) => {
                             const {
-                              id,
                               warehouse,
                               product,
                               qty,
                               discount,
                               tax,
                               unitPrice,
+                              id,
                               isFlatDiscount,
                               isFlatTax,
                             } = item;
+
                             return (
                               <tr key={id}>
                                 <td className="p-2 px-4">
@@ -499,7 +682,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                                       alt="edit"
                                       className="h-5 cursor-pointer"
                                       onClick={() => {
-                                        setSelectedItem(item);
+                                        setSelectedProduct(item);
                                         handleDialogsOpen("product");
                                       }}
                                     />
@@ -521,7 +704,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                       color="green"
                       className="normal-case w-full mt-4"
                       onClick={() => {
-                        setSelectedItem(null);
+                        setSelectedProduct(null);
                         handleDialogsOpen("product");
                       }}
                     >
@@ -654,44 +837,6 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                   </>
                 )}
               </div>
-              <div className="col-span-4 pt-2">
-                <Switch
-                  label="Collect Payment Now"
-                  color="green"
-                  checked={collectPaymentNow}
-                  onChange={(e) => setCollectPaymentNow(e.target.checked)}
-                />
-              </div>
-              {collectPaymentNow && (
-                <div className="col-span-8">
-                  <Controller
-                    name="upi"
-                    control={control}
-                    render={({ field }) => {
-                      return (
-                        <Select
-                          label="Select UPI"
-                          value={field.value}
-                          onChange={(val) => {
-                            field.onChange(val);
-                          }}
-                          color="green"
-                        >
-                          {UPIs.map((upi) => (
-                            <Option
-                              key={upi}
-                              value={upi}
-                              className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                            >
-                              {upi}
-                            </Option>
-                          ))}
-                        </Select>
-                      );
-                    }}
-                  />
-                </div>
-              )}
               <div className="col-span-12">
                 <SummaryAccordion products={products} logistics={logistics} />
               </div>
@@ -755,23 +900,13 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
                 </div>
               )}
               <div className="col-span-12">
-                <Button
-                  className="w-full"
-                  color="green"
-                  type="submit"
-                  style={{ color: "white !importannt" }}
-                >
+                <Button className="w-full" color="green" type="submit">
                   Submit
                 </Button>
               </div>
             </div>
           </div>
         </form>
-        {/* <DialogFooter>
-          <Button className="ml-auto" onClick={handleOpen}>
-            submit
-          </Button>
-        </DialogFooter> */}
       </Drawer>
       <AddCustomerDialog
         open={areDialogsOpen.customer}
@@ -782,7 +917,7 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
         open={areDialogsOpen.product}
         handleOpen={handleDialogsOpen}
         upsertHandler={upsertProductHandler}
-        initialData={selectedItem}
+        initialData={selectedProduct}
       />
       <AddLogisticsDialog
         open={areDialogsOpen.logistics}
@@ -794,4 +929,4 @@ const CreateInvoiceDrawer = ({ open, toggleDrawer }) => {
   );
 };
 
-export default CreateInvoiceDrawer;
+export default SalesOrder;

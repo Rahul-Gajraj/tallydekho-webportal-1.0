@@ -21,7 +21,7 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   logisticsType: "",
@@ -70,7 +70,6 @@ const AddLogisticsDialog = ({
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     upsertHandler(data);
     resetFields();
   };
@@ -261,7 +260,6 @@ const AddLogisticsDialog = ({
               className="ml-auto"
               color="green"
               type="submit"
-              style={{ color: "white !importannt" }}
             >
               {initialData ? "Update" : "Add"}
             </Button>

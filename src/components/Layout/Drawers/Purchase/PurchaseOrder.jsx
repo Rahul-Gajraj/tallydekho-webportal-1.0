@@ -20,11 +20,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
 
+import AddCustomerDialog from "../../Dialogs/Sales/AddCustomerDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
-
-import Error from "../../../Error/Error";
 import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 import SummaryAccordion from "../Sales/SummaryAccordion";
+import Error from "@/components/Error/Error";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -33,6 +33,7 @@ const ITEM_TABLE_HEAD = [
   "Discount",
   "Tax",
   "Unit Price",
+  "Actions",
 ];
 
 const LOGISTIC_TABLE_HEAD = [
@@ -47,17 +48,18 @@ const LOGISTIC_TABLE_HEAD = [
 const defaultValues = {
   isOptional: false,
   ledgerSelection: "",
-  invoiceNumber: "",
-  invoiceDate: new Date(),
+  poNumber: "",
+  poDate: new Date(),
+  dueDate: new Date(),
+  expectedDeliveryDate: new Date(),
   customerName: "",
-  referenceNumber: "",
   items: [],
   logistics: [],
   paymentStatus: "",
   days: "",
 };
 
-const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
+const PurchaseOrder = ({ open, toggleDrawer }) => {
   const {
     register,
     handleSubmit,
@@ -70,23 +72,19 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
     defaultValues,
   });
 
-  const [ledgers, setLedgers] = useState([
-    "Cash Sales",
-    "Credit Sales",
-    "Off-Books",
-    "On-Books",
-  ]);
-
   const [customers, setCustomers] = useState(["Yash", "Shirish", "Manish"]);
 
   const [orderPopoverOpen, setOrderPopoverOpen] = useState(false);
-
-  const [products, setProducts] = useState([]);
-  const [logistics, setLogistics] = useState([]);
+  const [dueDatePopoverOpen, setDueDatePopoverOpen] = useState(false);
+  const [validityPeriodPopoverOpen, setValidityPeriodPopoverOpen] =
+    useState(false);
 
   const [selectedPaymentStatus, setSelectPaymentStatus] = useState("");
   const [selectedLogistic, setSelectedLogistic] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  const [products, setProducts] = useState([]);
+  const [logistics, setLogistics] = useState([]);
 
   const [areDialogsOpen, setAreDialogsOpen] = useState({
     customer: false,
@@ -98,6 +96,10 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
     setAreDialogsOpen((prev) => {
       return { ...prev, [key]: !prev[key] };
     });
+  };
+
+  const addCustomerHandler = (newCustomer) => {
+    setCustomers((prev) => [...prev, newCustomer]);
   };
 
   const upsertProductHandler = (productInfo) => {
@@ -133,13 +135,12 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
   };
 
   const resetFields = () => {
-    toggleDrawer("purchaseInvoice");
+    toggleDrawer("purchaseOrder");
     clearErrors();
     reset();
   };
 
   const onSubmitHandler = (data) => {
-    console.log(data);
     resetFields();
   };
 
@@ -149,110 +150,54 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
         placement="right"
         className="p-4 overflow-scroll"
         open={open}
-        // onClose={() => toggleDrawer("purchaseInvoice")}
+        // onClose={() => toggleDrawer("purchaseOrder")}
         size={750}
       >
-        <div className="relative mt-0 block">
-          <Typography variant="h4">
-            {data ? "Edit" : "Create"} Purchase Invoice
-          </Typography>
-          <IconButton
-            size="sm"
-            variant="text"
-            className="!absolute right-0 top-0"
-            onClick={resetFields}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-5 w-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <div className="relative mt-0 flex justify-between">
+            <Typography variant="h4">Purchase Order</Typography>
+            <div className="flex gap-3">
+              <Controller
+                name="isOptional"
+                control={control}
+                render={({ field }) => {
+                  return (
+                    <Switch
+                      color="green"
+                      label="Regular"
+                      ripple={true}
+                      checked={field.value}
+                      onChange={(e) => {
+                        const newValue = e.target.checked;
+                        field.onChange(newValue);
+                      }}
+                    />
+                  );
+                }}
               />
-            </svg>
-          </IconButton>
-        </div>
-        <div className="space-y-4 pb-6 pt-5">
-          <form onSubmit={handleSubmit(onSubmitHandler)}>
-            <div className="grid grid-cols-12 gap-5">
-              <div className="col-span-4">
+              <IconButton size="sm" variant="text" onClick={resetFields}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </IconButton>
+            </div>
+          </div>
+          <div className="space-y-4 pb-6 pt-5">
+            <div className="grid grid-cols-12 gap-6">
+              <div className="col-span-12">
                 <Controller
-                  name="isOptional"
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <Switch
-                        color="green"
-                        label="Regular"
-                        ripple={true}
-                        checked={field.value}
-                        onChange={(e) => {
-                          const newValue = e.target.checked;
-                          field.onChange(newValue);
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </div>
-              <div className="col-span-4 flex items-center gap-1">
-                <img
-                  src="/media/common/upload.svg"
-                  alt="upload"
-                  className="h-5 cursor-pointer"
-                />
-                <Typography>Upload Barcode</Typography>
-              </div>
-              <div className="col-span-4 flex items-center gap-1">
-                <img
-                  src="/media/common/upload_file.svg"
-                  alt="upload_file"
-                  className="h-5 cursor-pointer"
-                />
-                <Typography>Upload Invoice</Typography>
-              </div>
-              <div className="col-span-6">
-                <Controller
-                  name="ledgerSelection"
-                  control={control}
-                  rules={{
-                    required: "This field is required",
-                  }}
-                  render={({ field }) => {
-                    return (
-                      <Select
-                        label="Ledger Selection"
-                        value={field.value}
-                        onChange={(val) => field.onChange(val)}
-                        color="green"
-                      >
-                        {ledgers.map((ledger) => (
-                          <Option
-                            key={ledger}
-                            value={ledger}
-                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                          >
-                            {ledger}
-                          </Option>
-                        ))}
-                      </Select>
-                    );
-                  }}
-                />
-                <Error
-                  condition={errors.ledgerSelection}
-                  message={errors.ledgerSelection?.message}
-                />
-              </div>
-              <div className="col-span-6">
-                <Controller
-                  name="invoiceNumber"
+                  name="poNumber"
                   control={control}
                   rules={{
                     required: "This field is required",
@@ -261,7 +206,7 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                     return (
                       <Input
                         color="green"
-                        label="Invoice Number"
+                        label="PO Number"
                         {...field}
                         onChange={(value) => {
                           //   onChange(value);
@@ -272,16 +217,232 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                   }}
                 />
                 <Error
-                  condition={errors.invoiceNumber}
-                  message={errors.invoiceNumber?.message}
+                  condition={errors.poNumber}
+                  message={errors.poNumber?.message}
                 />
               </div>
               <div className="col-span-6 relative">
                 <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
-                  Invoice Date
+                  PO Date
                 </label>
                 <Controller
-                  name="invoiceDate"
+                  name="poDate"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Popover
+                        placement="bottom"
+                        open={dueDatePopoverOpen}
+                        handler={setDueDatePopoverOpen}
+                      >
+                        <PopoverHandler>
+                          <Button
+                            variant="outlined"
+                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            ripple={false}
+                          >
+                            {moment(field.value).format("DD MMM, yyyy")}
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
+                            />
+                          </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="z-[9999]">
+                          <DayPicker
+                            selected={field.value}
+                            onDayClick={(newDate) => {
+                              if (newDate) {
+                                field.onChange(newDate);
+                                setDueDatePopoverOpen(false);
+                              }
+                            }}
+                            showOutsideDays
+                            className="border-0"
+                            classNames={{
+                              caption:
+                                "flex justify-center py-2 mb-4 relative items-center",
+                              caption_label:
+                                "text-sm !font-medium text-gray-900",
+                              nav: "flex items-center",
+                              nav_button:
+                                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                              nav_button_previous: "absolute left-1.5",
+                              nav_button_next: "absolute right-1.5",
+                              table: "w-full border-collapse",
+                              head_row: "flex !font-medium text-gray-900",
+                              head_cell: "m-0.5 w-9 !font-normal text-sm",
+                              row: "flex w-full mt-2",
+                              cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                              day: "h-9 w-9 p-0 !font-normal",
+                              day_range_end: "day-range-end",
+                              day_selected:
+                                "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                              day_today: "rounded-md bg-gray-200 text-gray-900",
+                              day_outside:
+                                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                              day_disabled: "text-gray-500 opacity-50",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => (
+                                <ChevronLeftIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                              IconRight: ({ ...props }) => (
+                                <ChevronRightIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.poDate}
+                  message={errors.poDate?.message}
+                />
+              </div>
+              <div className="col-span-6 relative">
+                <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
+                  Due Date
+                </label>
+                <Controller
+                  name="dueDate"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Popover
+                        placement="bottom"
+                        open={validityPeriodPopoverOpen}
+                        handler={setValidityPeriodPopoverOpen}
+                      >
+                        <PopoverHandler>
+                          <Button
+                            variant="outlined"
+                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            ripple={false}
+                          >
+                            {moment(field.value).format("DD MMM, yyyy")}
+                            <img
+                              src="/media/icons/calendar.svg"
+                              alt="calendar"
+                              className="w-5 h-5"
+                            />
+                          </Button>
+                        </PopoverHandler>
+                        <PopoverContent className="z-[9999]">
+                          <DayPicker
+                            selected={field.value}
+                            onDayClick={(newDate) => {
+                              if (newDate) {
+                                field.onChange(newDate);
+                                setValidityPeriodPopoverOpen(false);
+                              }
+                            }}
+                            showOutsideDays
+                            className="border-0"
+                            classNames={{
+                              caption:
+                                "flex justify-center py-2 mb-4 relative items-center",
+                              caption_label:
+                                "text-sm !font-medium text-gray-900",
+                              nav: "flex items-center",
+                              nav_button:
+                                "h-6 w-6 bg-transparent hover:bg-blue-gray-50 p-1 rounded-md transition-colors duration-300",
+                              nav_button_previous: "absolute left-1.5",
+                              nav_button_next: "absolute right-1.5",
+                              table: "w-full border-collapse",
+                              head_row: "flex !font-medium text-gray-900",
+                              head_cell: "m-0.5 w-9 !font-normal text-sm",
+                              row: "flex w-full mt-2",
+                              cell: "rounded-md h-9 w-9 text-center text-sm p-0 m-0.5 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-gray-900/20 [&:has([aria-selected].day-outside)]:text-white [&:has([aria-selected])]:bg-gray-900/50 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+                              day: "h-9 w-9 p-0 !font-normal",
+                              day_range_end: "day-range-end",
+                              day_selected:
+                                "rounded-md bg-gray-900 text-white hover:bg-gray-900 hover:text-white focus:bg-gray-900 focus:text-white",
+                              day_today: "rounded-md bg-gray-200 text-gray-900",
+                              day_outside:
+                                "day-outside text-gray-500 opacity-50 aria-selected:bg-gray-500 aria-selected:text-gray-900 aria-selected:bg-opacity-10",
+                              day_disabled: "text-gray-500 opacity-50",
+                              day_hidden: "invisible",
+                            }}
+                            components={{
+                              IconLeft: ({ ...props }) => (
+                                <ChevronLeftIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                              IconRight: ({ ...props }) => (
+                                <ChevronRightIcon
+                                  {...props}
+                                  className="h-4 w-4 stroke-2"
+                                />
+                              ),
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    );
+                  }}
+                />
+                <Error condition={errors.due} message={errors.due?.message} />
+              </div>
+              <div className="col-span-6">
+                <Controller
+                  name="customerName"
+                  control={control}
+                  rules={{
+                    required: "This field is required",
+                  }}
+                  render={({ field }) => {
+                    return (
+                      <Select
+                        label="Customer Name"
+                        value={field.value}
+                        onChange={(val) => {
+                          field.onChange(val);
+                        }}
+                        color="green"
+                      >
+                        {customers.map((customer) => (
+                          <Option
+                            key={customer}
+                            value={customer}
+                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                          >
+                            {customer}
+                          </Option>
+                        ))}
+                      </Select>
+                    );
+                  }}
+                />
+                <Error
+                  condition={errors.customerName}
+                  message={errors.customerName?.message}
+                />
+              </div>
+              <div className="col-span-6 relative">
+                <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
+                  Expected Delivery Date
+                </label>
+                <Controller
+                  name="expectedDeliveryDate"
                   control={control}
                   rules={{
                     required: "This field is required",
@@ -364,73 +525,12 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                   }}
                 />
                 <Error
-                  condition={errors.invoiceDate}
-                  message={errors.invoiceDate?.message}
-                />
-              </div>
-              <div className="col-span-6">
-                <Controller
-                  name="customerName"
-                  control={control}
-                  rules={{
-                    required: "This field is required",
-                  }}
-                  render={({ field }) => {
-                    return (
-                      <Select
-                        label="Customer Selection"
-                        value={field.value}
-                        onChange={(val) => {
-                          field.onChange(val);
-                        }}
-                        color="green"
-                      >
-                        {customers.map((customer) => (
-                          <Option
-                            key={customer}
-                            value={customer}
-                            className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
-                          >
-                            {customer}
-                          </Option>
-                        ))}
-                      </Select>
-                    );
-                  }}
-                />
-                <Error
-                  condition={errors.customerName}
-                  message={errors.customerName?.message}
-                />
-              </div>
-              <div className="col-span-12">
-                <Controller
-                  name="referenceNumber"
-                  control={control}
-                  rules={{
-                    required: "This field is required",
-                  }}
-                  render={({ field }) => {
-                    return (
-                      <Input
-                        color="green"
-                        label="Reference Number"
-                        {...field}
-                        onChange={(value) => {
-                          //   onChange(value);
-                          field.onChange(value);
-                        }}
-                      />
-                    );
-                  }}
-                />
-                <Error
-                  condition={errors.referenceNumber}
-                  message={errors.referenceNumber?.message}
+                  condition={errors.expectedDeliveryDate}
+                  message={errors.expectedDeliveryDate?.message}
                 />
               </div>
               <div className="col-span-12 flex gap-3 items-center">
-                <Typography variant="h6">Stocks/Product</Typography>
+                <Typography variant="h6">Item/Services</Typography>
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
@@ -726,9 +826,9 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                   </Option>
                 </Select>
                 {/* <Error
-                condition={errors.customerName}
-                message={errors.customerName?.message}
-              /> */}
+                            condition={errors.customerName}
+                            message={errors.customerName?.message}
+                          /> */}
               </div>
               {selectedPaymentStatus == "custom" && (
                 <div className="col-span-12">
@@ -755,30 +855,25 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
                     }}
                   />
                   {/* <Error
-                condition={errors.days}
-                message={errors.days?.message}
-              /> */}
+                            condition={errors.days}
+                            message={errors.days?.message}
+                          /> */}
                 </div>
               )}
               <div className="col-span-12">
-                <Button
-                  className="w-full"
-                  color="green"
-                  type="submit"
-                  style={{ color: "white !importannt" }}
-                >
+                <Button className="w-full" color="green" type="submit">
                   Submit
                 </Button>
               </div>
             </div>
-          </form>
-        </div>
-        {/* <DialogFooter>
-          <Button className="ml-auto" onClick={handleOpen}>
-            submit
-          </Button>
-        </DialogFooter> */}
+          </div>
+        </form>
       </Drawer>
+      <AddCustomerDialog
+        open={areDialogsOpen.customer}
+        handleOpen={handleDialogsOpen}
+        addHandler={addCustomerHandler}
+      />
       <AddProductDialog
         open={areDialogsOpen.product}
         handleOpen={handleDialogsOpen}
@@ -795,4 +890,4 @@ const CreatePurchaseInvoiceDrawer = ({ open, toggleDrawer, data }) => {
   );
 };
 
-export default CreatePurchaseInvoiceDrawer;
+export default PurchaseOrder;

@@ -14,11 +14,11 @@ import {
 
 import { Controller, useForm } from "react-hook-form";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   name: "",
-  underGroup: "Duities & Taxes",
+  underGroup: "Duties & Taxes",
   openingBalance: "",
   typeOfDuty: "",
   percentage: "",
@@ -27,7 +27,7 @@ const defaultValues = {
 const UNDER_GROUP = [
   "Sundry Debtors",
   "Sundry Creditors",
-  "Duities & Taxes",
+  "Duties & Taxes",
   "Custom Groups",
 ];
 
@@ -55,7 +55,6 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    console.log(data);
     resetFields();
   };
 
@@ -70,7 +69,7 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
       >
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="relative mt-0 flex justify-between">
-            <Typography variant="h4">Duities & Taxes</Typography>
+            <Typography variant="h4">Duties & Taxes</Typography>
             <IconButton
               size="sm"
               variant="text"
@@ -267,12 +266,7 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
                 />
               </div>
               <div className="col-span-12">
-                <Button
-                  className="w-full"
-                  color="green"
-                  type="submit"
-                  style={{ color: "white !importannt" }}
-                >
+                <Button className="w-full" color="green" type="submit">
                   Submit
                 </Button>
               </div>

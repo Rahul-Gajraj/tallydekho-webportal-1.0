@@ -18,7 +18,7 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   name: "",
@@ -105,7 +105,6 @@ const CompanyInformation = ({
 
     // Create preview URL
     const previewUrl = URL.createObjectURL(file);
-    console.log(previewUrl);
     setAvatarSrc(previewUrl);
   };
 
@@ -116,7 +115,6 @@ const CompanyInformation = ({
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     resetFields();
   };
 
@@ -413,7 +411,6 @@ const CompanyInformation = ({
               className="ml-auto"
               color="green"
               type="submit"
-              style={{ color: "white !importannt" }}
             >
               Save
             </Button>

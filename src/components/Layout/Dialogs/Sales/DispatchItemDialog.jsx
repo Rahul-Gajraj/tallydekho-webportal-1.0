@@ -19,7 +19,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 
-import Error from "../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   productName: "",
@@ -71,7 +71,6 @@ const DispatchItemDialog = ({
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     upsertHandler({
       ...data,
       qtyType: selectedQtyType,
@@ -267,7 +266,6 @@ const DispatchItemDialog = ({
               className="ml-auto"
               color="green"
               type="submit"
-              style={{ color: "white !importannt" }}
             >
               {initialData ? "Update" : "Add"}
             </Button>

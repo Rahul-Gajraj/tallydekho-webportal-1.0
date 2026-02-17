@@ -17,9 +17,9 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../../Error/Error";
-import CustomTime from "../../../../common/CustomTime";
-import IntegerInput from "../../../../common/CustomInput/IntegerInput";
+import Error from "@/components/Error/Error";
+import CustomTime from "@/components/common/CustomTime";
+import IntegerInput from "@/components/common/CustomInput/IntegerInput";
 
 const ALERT_DAYS = ["7 Days", "15 Days", "30 Days", "60 Days"];
 
@@ -54,7 +54,6 @@ const LowStock = ({ open, handleOpen, upsertHandler, initialData }) => {
   });
 
   const onSubmit = async (data) => {
-    // console.log(data);
     handleOpen("lowStock");
     reset();
   };
@@ -421,12 +420,7 @@ const LowStock = ({ open, handleOpen, upsertHandler, initialData }) => {
             </div>
           </DialogBody>
           <DialogFooter>
-            <Button
-              className="ml-auto"
-              color="green"
-              type="submit"
-              style={{ color: "white !importannt" }}
-            >
+            <Button className="ml-auto" color="green" type="submit">
               Save
             </Button>
           </DialogFooter>

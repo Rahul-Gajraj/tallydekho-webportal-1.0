@@ -19,7 +19,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 
-import Error from "../../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const CustomRadio = ({ label, value }) => {
   return (
@@ -62,7 +62,6 @@ const BuyCredit = ({ open, handleOpen }) => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     resetFields();
   };
 
@@ -220,7 +219,6 @@ const BuyCredit = ({ open, handleOpen }) => {
               className="w-full"
               color="green"
               type="submit"
-              style={{ color: "white !importannt" }}
             >
               Buy Now
             </Button>

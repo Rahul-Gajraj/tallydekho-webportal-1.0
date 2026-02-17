@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 
 import KPIStrip from "@/components/common/KPIStrip";
-import GSTInfo from "../../../components/Compliance/GST/GSTInfo";
-import UnmatchedGSTDrawer from "../../../components/Compliance/GST/UnmatchedGSTDrawer";
+import GSTInfo from "@/components/Compliance/GST/GSTInfo";
+import UnmatchedGSTDrawer from "@/components/Compliance/GST/UnmatchedGSTDrawer";
 
 const KPI_DATA = [
   { title: "GST Collected", price: "₹475K", subtitle: "Sum of outward tax" },

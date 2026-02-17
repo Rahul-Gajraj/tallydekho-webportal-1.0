@@ -16,16 +16,14 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
-
-import Error from "../../../Error/Error";
+import { useSelector } from "react-redux";
 import moment from "moment";
+
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   group: "",
@@ -41,6 +39,9 @@ const defaultValues = {
 };
 
 const AddItem = ({ open, toggleDrawer }) => {
+  const { preference } = useSelector((state) => state.preferences);
+  const timezone = preference?.timezone ?? "Asia/Kolkata";
+
   const {
     register,
     handleSubmit,
@@ -62,7 +63,6 @@ const AddItem = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    console.log(data);
     resetFields();
   };
 
@@ -382,6 +382,7 @@ const AddItem = ({ open, toggleDrawer }) => {
                       <PopoverContent className="z-[9999]">
                         <DayPicker
                           selected={field.value}
+                          timeZone={timezone}
                           onDayClick={(newDate) => {
                             if (newDate) {
                               field.onChange(newDate);
@@ -467,12 +468,7 @@ const AddItem = ({ open, toggleDrawer }) => {
               />
             </div>
             <div className="col-span-12">
-              <Button
-                className="w-full"
-                color="green"
-                type="submit"
-                style={{ color: "white !importannt" }}
-              >
+              <Button className="w-full" color="green" type="submit">
                 Submit
               </Button>
             </div>

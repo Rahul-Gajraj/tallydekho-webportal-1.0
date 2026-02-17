@@ -16,14 +16,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 
-import {
-  CogIcon,
-  UserIcon,
-  BuildingLibraryIcon,
-} from "@heroicons/react/24/outline";
-
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import OTPInput from "react-otp-input";
 
 const defaultValues = {
   fullName: "",
@@ -86,8 +79,6 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
   const handleMobileOtpChange = (index, value) => {
     const newOtp = [...mobileOtp];
     newOtp[index] = value.replace(/[^0-9]/g, "");
-    // console.log(Number(newOtp[index]));
-    // console.log(typeof newOtp[index]);
     setMobileOtp(newOtp);
 
     if (value && index < inputMobileOtpRefs.current.length - 1) {
@@ -97,15 +88,13 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
 
   function handleMobileOtpBackspace(event, index) {
     if (event.key === "Backspace" && !event.target.value && index > 0) {
-      // console.log(inputMobileOtpRefs.current[index - 1]);
       inputMobileOtpRefs.current[index - 1].focus();
     }
   }
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // handleOpen("tallyPrimeSync");
-    // reset();
+    handleOpen("tallyPrimeSync");
+    reset();
   };
 
   return (
@@ -240,10 +229,20 @@ const TallyPrimeSync = ({ open, handleOpen, upsertHandler, initialData }) => {
           </div>
         )}
         <div className="mt-32 flex justify-between">
-          <Button size="sm" color="green" onClick={handlePrev} disabled={isFirstStep}>
+          <Button
+            size="sm"
+            color="green"
+            onClick={handlePrev}
+            disabled={isFirstStep}
+          >
             Prev
           </Button>
-          <Button size="sm" color="green" onClick={handleNext} disabled={isLastStep}>
+          <Button
+            size="sm"
+            color="green"
+            onClick={handleNext}
+            disabled={isLastStep}
+          >
             Next
           </Button>
         </div>

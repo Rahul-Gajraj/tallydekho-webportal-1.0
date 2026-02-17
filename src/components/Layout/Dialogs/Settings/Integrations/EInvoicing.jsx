@@ -17,7 +17,7 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import Error from "../../../../Error/Error";
+import Error from "@/components/Error/Error";
 
 const defaultValues = {
   gstProvider: "",
@@ -46,7 +46,7 @@ const EInvoicing = ({ open, handleOpen, upsertHandler, initialData }) => {
     getValues,
     reset,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm({
     defaultValues,
   });
@@ -66,7 +66,6 @@ const EInvoicing = ({ open, handleOpen, upsertHandler, initialData }) => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
     resetFields();
   };
 
@@ -233,12 +232,7 @@ const EInvoicing = ({ open, handleOpen, upsertHandler, initialData }) => {
             </div>
           </DialogBody>
           <DialogFooter>
-            <Button
-              className="ml-auto"
-              color="green"
-              type="submit"
-              style={{ color: "white !importannt" }}
-            >
+            <Button className="ml-auto" color="green" type="submit">
               Save
             </Button>
           </DialogFooter>
