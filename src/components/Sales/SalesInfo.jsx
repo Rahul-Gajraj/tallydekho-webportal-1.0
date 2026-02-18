@@ -31,6 +31,8 @@ import {
 
 import moment from "moment";
 
+import EmptyData from "../common/EmptyData";
+
 const SALES_TABLE_HEAD = [
   {
     head: "Date",
@@ -375,83 +377,95 @@ const SalesInfo = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {SALES_TABLE_ROW.map(
-                      (
-                        { date, invoice, customer, amount, status, irn, docs },
-                        index
-                      ) => {
-                        const classes = "!py-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={`${classes} pl-4`}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {date || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {invoice || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {customer || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {amount || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <div className="w-max">
-                                {status ? (
-                                  <Chip
-                                    variant="ghost"
-                                    value={status}
-                                    className={`${
-                                      status === "Paid"
-                                        ? "bg-green-50/70 text-green-400"
-                                        : status === "Unpaid"
-                                        ? "bg-red-50/70 text-red-400"
-                                        : "bg-amber-50/70 text-amber-800"
-                                    } normal-case`}
-                                  />
-                                ) : (
-                                  "-"
-                                )}
-                              </div>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {irn || "-"}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <img
-                                src="/media/common/docs.svg"
-                                alt="docs"
-                                className="w-5 h-5 ml-2"
-                              />
-                            </td>
-                          </tr>
-                        );
-                      }
+                    {SALES_TABLE_ROW.length > 0 ? (
+                      SALES_TABLE_ROW.map(
+                        (
+                          {
+                            date,
+                            invoice,
+                            customer,
+                            amount,
+                            status,
+                            irn,
+                            docs,
+                          },
+                          index
+                        ) => {
+                          const classes = "!py-4 border-b border-gray-300";
+                          return (
+                            <tr key={index}>
+                              <td className={`${classes} pl-4`}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {date || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {invoice || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {customer || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {amount || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <div className="w-max">
+                                  {status ? (
+                                    <Chip
+                                      variant="ghost"
+                                      value={status}
+                                      className={`${
+                                        status === "Paid"
+                                          ? "bg-green-50/70 text-green-400"
+                                          : status === "Unpaid"
+                                          ? "bg-red-50/70 text-red-400"
+                                          : "bg-amber-50/70 text-amber-800"
+                                      } normal-case`}
+                                    />
+                                  ) : (
+                                    "-"
+                                  )}
+                                </div>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {irn || "-"}
+                                </Typography>
+                              </td>
+                              <td className="border-b border-gray-300">
+                                <img
+                                  src="/media/common/docs.svg"
+                                  alt="docs"
+                                  className="w-5 h-5 ml-2"
+                                />
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      <EmptyData />
                     )}
                   </tbody>
                 </table>
@@ -475,82 +489,86 @@ const SalesInfo = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {ORDER_TABLE_ROW.map(
-                      (
-                        { date, sales, customer, amount, status, irn, docs },
-                        index
-                      ) => {
-                        const classes = "!py-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={`${classes} pl-4`}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {date || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {sales || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {customer || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {amount || "-"}
-                              </Typography>
-                            </td>
-                            <td className={`${classes}`}>
-                              <div className="w-max">
-                                {status ? (
-                                  <Chip
-                                    variant="ghost"
-                                    value={status}
-                                    // color={
-                                    //   status === "Paid"
-                                    //     ? "green"
-                                    //     : status === "Unpaid"
-                                    //     ? "red"
-                                    //     : "amber"
-                                    // }
-                                    className={`${
-                                      status === "Paid"
-                                        ? "bg-green-50/70 text-green-400"
-                                        : status === "Unpaid"
-                                        ? "bg-red-50/70 text-red-400"
-                                        : "bg-amber-50/70 text-amber-600"
-                                    } normal-case`}
-                                  />
-                                ) : (
-                                  "-"
-                                )}
-                              </div>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <img
-                                src="/media/common/docs.svg"
-                                alt="docs"
-                                className="w-5 h-5 ml-2"
-                              />
-                            </td>
-                          </tr>
-                        );
-                      }
+                    {ORDER_TABLE_ROW.length > 0 ? (
+                      ORDER_TABLE_ROW.map(
+                        (
+                          { date, sales, customer, amount, status, irn, docs },
+                          index
+                        ) => {
+                          const classes = "!py-4 border-b border-gray-300";
+                          return (
+                            <tr key={index}>
+                              <td className={`${classes} pl-4`}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {date || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {sales || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {customer || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {amount || "-"}
+                                </Typography>
+                              </td>
+                              <td className={`${classes}`}>
+                                <div className="w-max">
+                                  {status ? (
+                                    <Chip
+                                      variant="ghost"
+                                      value={status}
+                                      // color={
+                                      //   status === "Paid"
+                                      //     ? "green"
+                                      //     : status === "Unpaid"
+                                      //     ? "red"
+                                      //     : "amber"
+                                      // }
+                                      className={`${
+                                        status === "Paid"
+                                          ? "bg-green-50/70 text-green-400"
+                                          : status === "Unpaid"
+                                          ? "bg-red-50/70 text-red-400"
+                                          : "bg-amber-50/70 text-amber-600"
+                                      } normal-case`}
+                                    />
+                                  ) : (
+                                    "-"
+                                  )}
+                                </div>
+                              </td>
+                              <td className="border-b border-gray-300">
+                                <img
+                                  src="/media/common/docs.svg"
+                                  alt="docs"
+                                  className="w-5 h-5 ml-2"
+                                />
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      <EmptyData />
                     )}
                   </tbody>
                 </table>
@@ -574,94 +592,98 @@ const SalesInfo = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {DELIVERY_TABLE_ROW.map(
-                      (
-                        {
-                          date,
-                          dnNumber,
-                          customer,
-                          amount,
-                          status,
-                          vehicleNumber,
-                          docs,
-                        },
-                        index
-                      ) => {
-                        const classes = "!py-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal ml-4"
-                              >
-                                {date || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {dnNumber || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {customer || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {amount}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <div className="w-max">
-                                <Chip
-                                  variant="ghost"
-                                  value={status}
-                                  // color={
-                                  //   status === "Paid"
-                                  //     ? "green"
-                                  //     : status === "Unpaid"
-                                  //     ? "red"
-                                  //     : "amber"
-                                  // }
-                                  className={`${
-                                    status === "Paid"
-                                      ? "bg-green-50/70 text-green-400"
-                                      : status === "Unpaid"
-                                      ? "bg-red-50/70 text-red-400"
-                                      : "bg-amber-50/70 text-amber-600"
-                                  } normal-case`}
+                    {DELIVERY_TABLE_ROW.length > 0 ? (
+                      DELIVERY_TABLE_ROW.map(
+                        (
+                          {
+                            date,
+                            dnNumber,
+                            customer,
+                            amount,
+                            status,
+                            vehicleNumber,
+                            docs,
+                          },
+                          index
+                        ) => {
+                          const classes = "!py-4 border-b border-gray-300";
+                          return (
+                            <tr key={index}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal ml-4"
+                                >
+                                  {date || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {dnNumber || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {customer || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {amount}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <div className="w-max">
+                                  <Chip
+                                    variant="ghost"
+                                    value={status}
+                                    // color={
+                                    //   status === "Paid"
+                                    //     ? "green"
+                                    //     : status === "Unpaid"
+                                    //     ? "red"
+                                    //     : "amber"
+                                    // }
+                                    className={`${
+                                      status === "Paid"
+                                        ? "bg-green-50/70 text-green-400"
+                                        : status === "Unpaid"
+                                        ? "bg-red-50/70 text-red-400"
+                                        : "bg-amber-50/70 text-amber-600"
+                                    } normal-case`}
+                                  />
+                                </div>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {vehicleNumber}
+                                </Typography>
+                              </td>
+                              <td className="border-b border-gray-300">
+                                <img
+                                  src="/media/common/docs.svg"
+                                  alt="docs"
+                                  className="w-5 h-5 ml-2"
                                 />
-                              </div>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {vehicleNumber}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <img
-                                src="/media/common/docs.svg"
-                                alt="docs"
-                                className="w-5 h-5 ml-2"
-                              />
-                            </td>
-                          </tr>
-                        );
-                      }
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      <EmptyData />
                     )}
                   </tbody>
                 </table>
@@ -685,64 +707,68 @@ const SalesInfo = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {PERFORMA_TABLE_ROW.map(
-                      (
-                        { date, piNumber, customer, amount, validUpTo, docs },
-                        index
-                      ) => {
-                        const classes = "!py-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal ml-4"
-                              >
-                                {date}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {piNumber}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {customer}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {amount}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal"
-                              >
-                                {validUpTo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <img
-                                src="/media/common/docs.svg"
-                                alt="docs"
-                                className="w-5 h-5 ml-2"
-                              />
-                            </td>
-                          </tr>
-                        );
-                      }
+                    {PERFORMA_TABLE_ROW.length > 0 ? (
+                      PERFORMA_TABLE_ROW.map(
+                        (
+                          { date, piNumber, customer, amount, validUpTo, docs },
+                          index
+                        ) => {
+                          const classes = "!py-4 border-b border-gray-300";
+                          return (
+                            <tr key={index}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal ml-4"
+                                >
+                                  {date}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {piNumber}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {customer}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {amount}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal"
+                                >
+                                  {validUpTo}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <img
+                                  src="/media/common/docs.svg"
+                                  alt="docs"
+                                  className="w-5 h-5 ml-2"
+                                />
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      <EmptyData />
                     )}
                   </tbody>
                 </table>

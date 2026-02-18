@@ -124,8 +124,26 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
 };
 
 const SalesReceiptsComparision = () => {
+  const [salesRecepitData, setSalesRecepitData] = useState([
+    {
+      name: "Sales",
+      data: [
+        0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900, 0, 200, 180,
+        350, 500, 680, 800, 800, 880, 900, 680, 900, 0, 200, 180, 350, 500, 680,
+      ],
+    },
+    {
+      name: "Receipts",
+      data: [
+        200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800, 200, 160,
+        150, 260, 600, 790, 900, 660, 720, 800, 500, 800, 200, 160, 150, 260,
+        600, 790,
+      ],
+    },
+  ]);
+
   return (
-    <Card className="col-span-8 shadow-sm border border-gray-200 !rounded-lg">
+    <Card className="xl:col-span-8 col-span-12 shadow-sm border border-gray-200 !rounded-lg">
       <CardHeader
         floated={false}
         shadow={false}
@@ -133,66 +151,62 @@ const SalesReceiptsComparision = () => {
       >
         <Typography variant="h6">Sales vs Receipts — Last 30 Days</Typography>
       </CardHeader>
-      <CardBody className="!p-2">
-        <div className="w-full overflow-x-auto overflow-y-hidden">
-          <AreaChart
-            colors={["#4CAF50", "#2196F3"]}
-            options={{
-              xaxis: {
-                categories: [
-                  "Day 1",
-                  "Day 2",
-                  "Day 3",
-                  "Day 4",
-                  "Day 5",
-                  "Day 6",
-                  "Day 7",
-                  "Day 8",
-                  "Day 9",
-                  "Day 10",
-                  "Day 11",
-                  "Day 12",
-                  "Day 13",
-                  "Day 14",
-                  "Day 15",
-                  "Day 16",
-                  "Day 17",
-                  "Day 18",
-                  "Day 19",
-                  "Day 20",
-                  "Day 21",
-                  "Day 22",
-                  "Day 23",
-                  "Day 24",
-                  "Day 25",
-                  "Day 26",
-                  "Day 27",
-                  "Day 28",
-                  "Day 29",
-                  "Day 30",
-                ],
-              },
-            }}
-            series={[
-              {
-                name: "Sales",
-                data: [
-                  0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900, 0,
-                  200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900, 0, 200,
-                  180, 350, 500, 680,
-                ],
-              },
-              {
-                name: "Receipts",
-                data: [
-                  200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800,
-                  200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800,
-                  200, 160, 150, 260, 600, 790,
-                ],
-              },
-            ]}
-          />
-        </div>
+      <CardBody className={salesRecepitData.length > 0 ? "!p-2" : "!pt-2"}>
+        {salesRecepitData.length > 0 ? (
+          <div className="w-full overflow-x-auto overflow-y-hidden">
+            <AreaChart
+              colors={["#4CAF50", "#2196F3"]}
+              options={{
+                xaxis: {
+                  categories: [
+                    "Day 1",
+                    "Day 2",
+                    "Day 3",
+                    "Day 4",
+                    "Day 5",
+                    "Day 6",
+                    "Day 7",
+                    "Day 8",
+                    "Day 9",
+                    "Day 10",
+                    "Day 11",
+                    "Day 12",
+                    "Day 13",
+                    "Day 14",
+                    "Day 15",
+                    "Day 16",
+                    "Day 17",
+                    "Day 18",
+                    "Day 19",
+                    "Day 20",
+                    "Day 21",
+                    "Day 22",
+                    "Day 23",
+                    "Day 24",
+                    "Day 25",
+                    "Day 26",
+                    "Day 27",
+                    "Day 28",
+                    "Day 29",
+                    "Day 30",
+                  ],
+                },
+              }}
+              series={salesRecepitData}
+            />
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
+            <img
+              src="/media/icons/line_graph.svg"
+              alt="line_graph"
+              className="h-5 w-5"
+            />
+            <Typography className="!text-[#6f7c97]">
+              Report Visualization
+            </Typography>
+          </div>
+        )}
       </CardBody>
     </Card>
   );
@@ -222,7 +236,7 @@ const SalesReport = () => {
     <section className="mx-auto">
       <div className="grid grid-cols-12 gap-5 my-5">
         <SalesReceiptsComparision />
-        <Card className="col-span-4 shadow-sm border border-gray-200 !rounded-lg">
+        <Card className="xl:col-span-4 col-span-12 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader
             floated={false}
             shadow={false}
@@ -231,18 +245,31 @@ const SalesReport = () => {
             <Typography className="font-bold text-lg">Alerts</Typography>
           </CardHeader>
           <CardBody className="!p-2 !pt-0 mx-4">
-            <List className="pt-0 gap-4">
-              {alerts.map(({ title, img }) => (
-                <Card key={title} className="border shadow-none">
-                  <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                    <ListItemPrefix className="items-start mr-2">
-                      {img}
-                    </ListItemPrefix>
-                    <Typography>{title}</Typography>
-                  </ListItem>
-                </Card>
-              ))}
-            </List>
+            {alerts.length > 0 ? (
+              <List className="pt-0 gap-4">
+                {alerts.map(({ title, img }) => (
+                  <Card key={title} className="border shadow-none">
+                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                      <ListItemPrefix className="items-start mr-2">
+                        {img}
+                      </ListItemPrefix>
+                      <Typography>{title}</Typography>
+                    </ListItem>
+                  </Card>
+                ))}
+              </List>
+            ) : (
+              <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
+                <img
+                  src="/media/icons/line_graph.svg"
+                  alt="line_graph"
+                  className="h-5 w-5"
+                />
+                <Typography className="!text-[#6f7c97]">
+                  No Alerts
+                </Typography>
+              </div>
+            )}
           </CardBody>
         </Card>
       </div>

@@ -25,7 +25,10 @@ import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 import SummaryAccordion from "../Sales/SummaryAccordion";
 import Error from "@/components/Error/Error";
-import { validateDateNotFuture, validateEndDateAfterStart } from "@/utils/validation";
+import {
+  validateDateNotFuture,
+  validateEndDateAfterStart,
+} from "@/utils/validation";
 
 const ITEM_TABLE_HEAD = [
   "Warehouse",
@@ -841,9 +844,12 @@ const PurchaseOrder = ({ open, toggleDrawer }) => {
                   <Controller
                     name="days"
                     control={control}
-                    // rules={{
-                    //   required: "This field is required",
-                    // }}
+                    rules={{
+                      required:
+                        selectedPaymentStatus == "custom"
+                          ? "This field is required"
+                          : false,
+                    }}
                     render={({ field }) => {
                       return (
                         <Input
@@ -860,10 +866,10 @@ const PurchaseOrder = ({ open, toggleDrawer }) => {
                       );
                     }}
                   />
-                  {/* <Error
-                            condition={errors.days}
-                            message={errors.days?.message}
-                          /> */}
+                  <Error
+                    condition={errors.days}
+                    message={errors.days?.message}
+                  />
                 </div>
               )}
               <div className="col-span-12">

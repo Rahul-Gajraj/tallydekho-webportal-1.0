@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+import EmptyData from "@/components/common/EmptyData";
+
 const EXPENSES_TABLE_HEAD = [
   {
     head: "Date",
@@ -228,71 +230,94 @@ const ExpenseRegister = () => {
               </tr>
             </thead>
             <tbody>
-              {EXPENSES_TABLE_ROW.map((row, index) => {
-                const { date, voucherNo, category, mode, amount, status } = row;
-                const isLast = index === EXPENSES_TABLE_ROW.length - 1;
-                const classes = "p-4 px-0 border-b border-blue-gray-50";
+              {EXPENSES_TABLE_ROW.length > 0 ? (
+                EXPENSES_TABLE_ROW.map((row, index) => {
+                  const { date, voucherNo, category, mode, amount, status } =
+                    row;
+                  const isLast = index === EXPENSES_TABLE_ROW.length - 1;
+                  const classes = "p-4 px-0 border-b border-blue-gray-50";
 
-                return (
-                  <tr key={index}>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {voucherNo}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {category}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {mode}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {amount}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {status}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <img
-                        src="/media/common/docs.svg"
-                        alt="docs"
-                        className="w-5 h-5 ml-3"
-                      />
-                    </td>
-                    <td className={classes}>
-                      <div className="flex gap-3 pl-3">
+                  return (
+                    <tr key={index}>
+                      <td className={classes}>
                         <Typography
                           variant="small"
-                          className="font-normal cursor-pointer"
-                          color="green"
+                          className="font-normal pl-3"
                         >
-                          Share PDF
+                          {date}
                         </Typography>
+                      </td>
+                      <td className={classes}>
                         <Typography
                           variant="small"
-                          className="font-normal cursor-pointer"
-                          color="green"
+                          className="font-normal pl-3"
                         >
-                          Download
+                          {voucherNo}
                         </Typography>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {category}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {mode}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {amount}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {status}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <img
+                          src="/media/common/docs.svg"
+                          alt="docs"
+                          className="w-5 h-5 ml-3"
+                        />
+                      </td>
+                      <td className={classes}>
+                        <div className="flex gap-3 pl-3">
+                          <Typography
+                            variant="small"
+                            className="font-normal cursor-pointer"
+                            color="green"
+                          >
+                            Share PDF
+                          </Typography>
+                          <Typography
+                            variant="small"
+                            className="font-normal cursor-pointer"
+                            color="green"
+                          >
+                            Download
+                          </Typography>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <EmptyData colSpan={8} />
+              )}
             </tbody>
           </table>
         </CardBody>

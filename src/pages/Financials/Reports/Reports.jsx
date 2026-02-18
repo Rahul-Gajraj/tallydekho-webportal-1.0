@@ -166,7 +166,7 @@ const Reports = () => {
           {KPI_DATA.map(({ title, children, icon }) => (
             <Card
               key={title}
-              className="xl:col-span-4 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12"
+              className="2xl:col-span-4 xl:col-span-6 lg:col-span-6 col-span-12"
             >
               <CardHeader shadow={false} floated={false}>
                 <div className="flex gap-2 items-center">
@@ -192,11 +192,13 @@ const Reports = () => {
                         <span
                           className={`!rounded-md text-[10px] p-2 py-0 flex justify-center items-center ${data.class}`}
                         >
-                          {data.value}
+                          {data.value || 0}
                         </span>
                       )}
                     </div>
-                    <Typography className="font-bold">{data.price}</Typography>
+                    <Typography className="font-bold">
+                      {data.price || "₹0"}
+                    </Typography>
                     {/* <KPIStrip {...data} /> */}
                   </div>
                 ))}
@@ -214,19 +216,19 @@ const Reports = () => {
         </div>
       </section>
       <div className="grid grid-cols-12 gap-5 my-5">
-        <div className="col-span-12 lg:col-span-7 xl:col-span-4">
+        <div className="col-span-12 xl:col-span-12 2xl:col-span-4">
           <ProfitTrendGraph />
         </div>
-        <div className="col-span-12 lg:col-span-5 xl:col-span-4">
+        <div className="col-span-12 lg:col-span-5 2xl:col-span-4">
           <ExpenseBreakdownGraph />
         </div>
-        {/* <div className="col-span-12 lg:col-span-5 xl:col-span-4">
+        {/* <div className="col-span-12 xl:col-span-5 xl:col-span-4">
           <IncomeBreakdownGraph />
         </div> */}
-        <div className="col-span-12 lg:col-span-5 xl:col-span-4">
+        <div className="col-span-12 lg:col-span-7 2xl:col-span-4">
           <AssetsLiabilitiesGraph />
         </div>
-        {/* <div className="col-span-12 lg:col-span-5 xl:col-span-6">
+        {/* <div className="col-span-12 xl:col-span-5 xl:col-span-6">
           <SalesPurchaseTrendGraph />
         </div> */}
       </div>

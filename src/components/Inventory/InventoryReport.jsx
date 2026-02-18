@@ -19,6 +19,8 @@ import {
 
 import merge from "deepmerge";
 
+import EmptyData from "../common/EmptyData";
+
 const AreaChart = ({ height = 250, series, colors, options }) => {
   const chartOptions = useMemo(
     () => ({
@@ -131,6 +133,17 @@ const AreaChart = ({ height = 250, series, colors, options }) => {
 };
 
 const InventoryReport = () => {
+  const [inventroyData, setInventroyData] = useState([
+    {
+      name: "Stock In",
+      data: [0, 200, 180, 350, 500, 450, 250],
+    },
+    {
+      name: "Stock Out",
+      data: [200, 160, 150, 260, 300, 250, 100],
+    },
+  ]);
+
   const alerts = [
     {
       title: "7 items out of stock",
@@ -231,45 +244,60 @@ const InventoryReport = () => {
           >
             <Typography variant="h6">Stock Movement Trend</Typography>
           </CardHeader>
-          <CardBody className="!py-0">
-            <div className="w-full overflow-x-auto overflow-y-hidden">
-              <AreaChart
-                colors={["#4CAF50", "#2196F3"]}
-                options={{
-                  xaxis: {
-                    categories: [
-                      "Day 1",
-                      "Day 2",
-                      "Day 3",
-                      "Day 4",
-                      "Day 5",
-                      "Day 6",
-                      "Day 7",
-                    ],
-                  },
-                  fill: {
-                    type: "gradient",
-                    gradient: {
-                      shadeIntensity: 1,
-                      inverseColors: false,
-                      opacityFrom: 0.7,
-                      opacityTo: 0,
-                      stops: [0, 90, 100],
+          <CardBody
+            className={inventroyData.length > 0 ? "!py-0" : "!pt-2 !pb-4"}
+          >
+            {inventroyData.length > 0 ? (
+              <div className="w-full overflow-x-auto overflow-y-hidden">
+                <AreaChart
+                  colors={["#4CAF50", "#2196F3"]}
+                  options={{
+                    xaxis: {
+                      categories: [
+                        "Day 1",
+                        "Day 2",
+                        "Day 3",
+                        "Day 4",
+                        "Day 5",
+                        "Day 6",
+                        "Day 7",
+                      ],
                     },
-                  },
-                }}
-                series={[
-                  {
-                    name: "Stock In",
-                    data: [0, 200, 180, 350, 500, 450, 250],
-                  },
-                  {
-                    name: "Stock Out",
-                    data: [200, 160, 150, 260, 300, 250, 100],
-                  },
-                ]}
-              />
-            </div>
+                    fill: {
+                      type: "gradient",
+                      gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.7,
+                        opacityTo: 0,
+                        stops: [0, 90, 100],
+                      },
+                    },
+                  }}
+                  series={[
+                    {
+                      name: "Stock In",
+                      data: [0, 200, 180, 350, 500, 450, 250],
+                    },
+                    {
+                      name: "Stock Out",
+                      data: [200, 160, 150, 260, 300, 250, 100],
+                    },
+                  ]}
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center items-center h-[250px] gap-2 bg-[#F6F7F9]">
+                <img
+                  src="/media/icons/line_graph.svg"
+                  alt="line_graph"
+                  className="h-5 w-5"
+                />
+                <Typography className="!text-[#6f7c97]">
+                  Report Visualization
+                </Typography>
+              </div>
+            )}
           </CardBody>
         </Card>
         <Card className="xl:col-span-4 md:col-span-6 sm:col-span-12 ">
@@ -302,46 +330,53 @@ const InventoryReport = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {SALES_TABLE_ROW.map(
-                        ({ item, roLevel, currentStock, required }, index) => {
-                          const classes = "!p-4 border-b border-gray-300";
-                          return (
-                            <tr key={index}>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {item}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {roLevel}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {currentStock}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {required}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        }
+                      {SALES_TABLE_ROW.length > 0 ? (
+                        SALES_TABLE_ROW.map(
+                          (
+                            { item, roLevel, currentStock, required },
+                            index
+                          ) => {
+                            const classes = "!p-4 border-b border-gray-300";
+                            return (
+                              <tr key={index}>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {item}
+                                  </Typography>
+                                </td>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {roLevel}
+                                  </Typography>
+                                </td>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {currentStock}
+                                  </Typography>
+                                </td>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {required}
+                                  </Typography>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )
+                      ) : (
+                        <EmptyData />
                       )}
                     </tbody>
                   </table>
@@ -368,46 +403,53 @@ const InventoryReport = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {SALES_TABLE_ROW.map(
-                        ({ item, roLevel, currentStock, required }, index) => {
-                          const classes = "!p-4 border-b border-gray-300";
-                          return (
-                            <tr key={index}>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {item}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {roLevel}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {currentStock}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {required}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        }
+                      {SALES_TABLE_ROW.length > 0 ? (
+                        SALES_TABLE_ROW.map(
+                          (
+                            { item, roLevel, currentStock, required },
+                            index
+                          ) => {
+                            const classes = "!p-4 border-b border-gray-300";
+                            return (
+                              <tr key={index}>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {item}
+                                  </Typography>
+                                </td>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {roLevel}
+                                  </Typography>
+                                </td>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {currentStock}
+                                  </Typography>
+                                </td>
+                                <td className={classes}>
+                                  <Typography
+                                    variant="small"
+                                    className="!font-normal text-center"
+                                  >
+                                    {required}
+                                  </Typography>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )
+                      ) : (
+                        <EmptyData />
                       )}
                     </tbody>
                   </table>
@@ -425,23 +467,34 @@ const InventoryReport = () => {
             <Typography className="font-bold text-lg">Alerts</Typography>
           </CardHeader>
           <CardBody className="!p-2 !pt-0 mx-4 h-[250px] overflow-scroll">
-            <List className="pt-0 gap-3">
-              {alerts.map(({ title, subtitle, img }) => (
-                <Card key={title} className="border shadow-none">
-                  <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                    <ListItemPrefix className="items-start mr-2">
-                      {img}
-                    </ListItemPrefix>
-                    <div>
-                      <Typography>{title}</Typography>
-                      <Typography className="text-[14px]">
-                        {subtitle}
-                      </Typography>
-                    </div>
-                  </ListItem>
-                </Card>
-              ))}
-            </List>
+            {alerts.length > 0 ? (
+              <List className="pt-0 gap-3">
+                {alerts.map(({ title, subtitle, img }) => (
+                  <Card key={title} className="border shadow-none">
+                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                      <ListItemPrefix className="items-start mr-2">
+                        {img}
+                      </ListItemPrefix>
+                      <div>
+                        <Typography>{title}</Typography>
+                        <Typography className="text-[14px]">
+                          {subtitle}
+                        </Typography>
+                      </div>
+                    </ListItem>
+                  </Card>
+                ))}
+              </List>
+            ) : (
+              <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                <img
+                  src="/media/icons/line_graph.svg"
+                  alt="line_graph"
+                  className="h-5 w-5"
+                />
+                <Typography className="!text-[#6f7c97]">No Alerts</Typography>
+              </div>
+            )}
           </CardBody>
         </Card>
       </div>

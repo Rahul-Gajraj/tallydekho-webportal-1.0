@@ -67,11 +67,11 @@ const Purchase = () => {
   return (
     <div className="mx-5 overflow-y-scroll">
       <section className="mx-auto mt-8">
-        <div className="mt-5 grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-2 grid-cols-1 items-center gap-4">
+        <div className="mt-5 grid grid-cols-6 items-center gap-4">
           {kpiData.map((data) => (
             <div
               key={data.title}
-              className="xl:col-span-1 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full"
+              className="2xl:col-span-1 xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-6 h-full"
             >
               <KPIStrip {...data} />
             </div>

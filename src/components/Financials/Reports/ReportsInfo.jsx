@@ -15,6 +15,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+import EmptyData from "../../common/EmptyData";
+
 const KpiCard = ({ title, subtitle, price, img }) => {
   return (
     <Card className="shadow-sm border border-gray-200 !rounded-lg">
@@ -24,7 +26,7 @@ const KpiCard = ({ title, subtitle, price, img }) => {
             {img}
             <Typography className="font-medium">{title}</Typography>
           </div>
-          <Typography className="font-bold">{price}</Typography>
+          <Typography className="font-bold">{price || "₹0"}</Typography>
         </div>
         {/* <Typography className="mt-1 font-bold text-2xl">{price}</Typography> */}
       </CardBody>
@@ -416,7 +418,10 @@ const ReportsInfo = () => {
               <TabPanel value="profit_loss">
                 <div className="grid grid-cols-12 gap-3">
                   {plSummaryData.map((kpiData, idx) => (
-                    <div key={idx} className="col-span-3">
+                    <div
+                      key={idx}
+                      className="col-span-12 md:col-span-6 xl:col-span-3"
+                    >
                       <KpiCard {...kpiData} />
                     </div>
                   ))}
@@ -520,7 +525,10 @@ const ReportsInfo = () => {
               <TabPanel value="trial_balance">
                 <div className="grid grid-cols-12 gap-3">
                   {TRIAL_BALANCE_DATA.map((kpiData, idx) => (
-                    <div key={idx} className="col-span-3">
+                    <div
+                      key={idx}
+                      className="col-span-12 md:col-span-6 xl:col-span-3"
+                    >
                       <KpiCard {...kpiData} />
                     </div>
                   ))}
@@ -544,54 +552,58 @@ const ReportsInfo = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {TRAIL_BALANCE_TABLE_BODY.map((row, idx) => {
-                      const {
-                        ledgerGroup,
-                        debit,
-                        credit,
-                        netBalance,
-                        isDebit,
-                      } = row;
-                      const classes = "p-4 px-0 border-b border-blue-gray-50";
+                    {TRAIL_BALANCE_TABLE_BODY.length > 0 ? (
+                      TRAIL_BALANCE_TABLE_BODY.map((row, idx) => {
+                        const {
+                          ledgerGroup,
+                          debit,
+                          credit,
+                          netBalance,
+                          isDebit,
+                        } = row;
+                        const classes = "p-4 px-0 border-b border-blue-gray-50";
 
-                      return (
-                        <tr key={ledgerGroup}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3"
-                            >
-                              {ledgerGroup || "-"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3"
-                            >
-                              {debit || "-"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3"
-                            >
-                              {credit || "-"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3"
-                            >
-                              {isDebit ? "Dr " : "Cr "}
-                              {netBalance || "-"}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                        return (
+                          <tr key={ledgerGroup}>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="font-normal pl-3"
+                              >
+                                {ledgerGroup || "-"}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="font-normal pl-3"
+                              >
+                                {debit || "-"}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="font-normal pl-3"
+                              >
+                                {credit || "-"}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="font-normal pl-3"
+                              >
+                                {isDebit ? "Dr " : "Cr "}
+                                {netBalance || "-"}
+                              </Typography>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <EmptyData colSpan={4} />
+                    )}
                   </tbody>
                 </table>
               </TabPanel>

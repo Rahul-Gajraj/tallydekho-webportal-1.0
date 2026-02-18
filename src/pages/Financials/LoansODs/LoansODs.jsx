@@ -19,6 +19,7 @@ import {
 
 import LoanODFilterTable from "@/components/Financials/LoansODs/LoanODFilterTable";
 import KPIStrip from "@/components/common/KPIStrip";
+import EmptyData from "@/components/common/EmptyData";
 
 const LOAN_SUMMARY_TABLE_HEAD = [
   {
@@ -137,13 +138,16 @@ const LoanODs = () => {
     <div className="mx-5 overflow-y-scroll">
       <div className="grid grid-cols-6 gap-3 mt-8">
         {LOANS_ODS_KPI.map((kpiData, idx) => (
-          <div key={idx} className="col-span-1">
+          <div
+            key={idx}
+            className="2xl:col-span-1 xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-6"
+          >
             <KPIStrip {...kpiData} />
           </div>
         ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
-        <Card className="col-span-2 shadow-sm border border-gray-200 !rounded-lg">
+        <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader floated={false} shadow={false} className="p-2">
             <Typography className="font-bold text-lg">Loan Summary</Typography>
           </CardHeader>
@@ -166,61 +170,65 @@ const LoanODs = () => {
                 </tr>
               </thead>
               <tbody>
-                {LOAN_SUMMARY_TABLE_ROWS.map(
-                  ({ loan, lender, type, outstanding, nextEMI }, index) => {
-                    const classes = "!p-4 border-b border-gray-300";
-                    return (
-                      <tr key={index}>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {loan}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {lender}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {type}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {outstanding}
-                          </Typography>
-                        </td>
-                        <td className="border-b border-gray-300">
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {nextEMI}
-                          </Typography>
-                        </td>
-                      </tr>
-                    );
-                  }
+                {LOAN_SUMMARY_TABLE_ROWS.length > 0 ? (
+                  LOAN_SUMMARY_TABLE_ROWS.map(
+                    ({ loan, lender, type, outstanding, nextEMI }, index) => {
+                      const classes = "!p-4 border-b border-gray-300";
+                      return (
+                        <tr key={index}>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {loan}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {lender}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {type}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {outstanding}
+                            </Typography>
+                          </td>
+                          <td className="border-b border-gray-300">
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {nextEMI}
+                            </Typography>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )
+                ) : (
+                  <EmptyData colSpan={5} />
                 )}
               </tbody>
             </table>
           </CardBody>
         </Card>
-        <div className="col-span-1">
-          <Card className="shadow-sm border border-gray-200 !rounded-lg">
+        <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader
               floated={false}
               shadow={false}
@@ -229,37 +237,50 @@ const LoanODs = () => {
               <Typography className="font-bold text-lg">OD Accounts</Typography>
             </CardHeader>
             <CardBody className="!p-2 !pt-0 mx-4 max-h-[270px] overflow-scroll">
-              <List className="pt-0 gap-3">
-                {ODsAccount.map(({ title, subtitle, value }) => (
-                  <Card key={title} className="border shadow-none">
-                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                      <div className="flex justify-between w-full">
-                        <div>
-                          <Typography className="text-sm font-bold">
-                            {title}
-                          </Typography>
-                          <Typography className="text-xs">
-                            {subtitle}
-                          </Typography>
+              {ODsAccount.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {ODsAccount.map(({ title, subtitle, value }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <div className="flex justify-between w-full">
+                          <div>
+                            <Typography className="text-sm font-bold">
+                              {title}
+                            </Typography>
+                            <Typography className="text-xs">
+                              {subtitle}
+                            </Typography>
+                          </div>
+                          <Chip
+                            value={value}
+                            size="sm"
+                            color="green"
+                            className="h-[30px]"
+                            style={{
+                              color: "#108f6f",
+                              backgroundColor: "#eaf8f4",
+                            }}
+                          />
                         </div>
-                        <Chip
-                          value={value}
-                          size="sm"
-                          color="green"
-                          className="h-[30px]"
-                          style={{
-                            color: "#108f6f",
-                            backgroundColor: "#eaf8f4",
-                          }}
-                        />
-                      </div>
-                    </ListItem>
-                  </Card>
-                ))}
-              </List>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-[230px] gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">
+                    No Accounts
+                  </Typography>
+                </div>
+              )}
             </CardBody>
           </Card>
-          <Card className="shadow-sm border border-gray-200 !rounded-lg mt-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader
               floated={false}
               shadow={false}
@@ -268,15 +289,28 @@ const LoanODs = () => {
               <Typography className="font-bold text-lg">Alerts</Typography>
             </CardHeader>
             <CardBody className="!p-2 !pt-0 mx-4 max-h-[270px] overflow-scroll">
-              <List className="pt-0 gap-3">
-                {alerts.map(({ title, subtitle, img }) => (
-                  <Card key={title} className="border shadow-none">
-                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                      <Typography className="text-sm">{title}</Typography>
-                    </ListItem>
-                  </Card>
-                ))}
-              </List>
+              {alerts.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <Typography className="text-sm">{title}</Typography>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-[230px] gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">
+                    No Alerts
+                  </Typography>
+                </div>
+              )}
             </CardBody>
           </Card>
         </div>

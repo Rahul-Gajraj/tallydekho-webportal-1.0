@@ -10,23 +10,21 @@ const KPIStrip = ({ title, subtitle, value, price, color, bg, img }) => {
           <div className="flex items-center gap-2">
             {img}
             <div>
-              <Typography className="font-medium !text-sm">
-                {title}
-              </Typography>
-              {subtitle && <Typography className="mt-1 !text-xs">{subtitle}</Typography>}
+              <Typography className="font-medium !text-sm">{title}</Typography>
+              {subtitle && (
+                <Typography className="mt-1 !text-xs">{subtitle}</Typography>
+              )}
             </div>
           </div>
           {value && (
             <Chip
               className={"px-2 normal-case"}
-              value={value}
+              value={value || 0}
               style={{ color, backgroundColor: bg }}
             />
           )}
         </div>
-        <Typography className="mt-1 text-lg">
-          {price}
-        </Typography>
+        <Typography className="mt-1 text-lg">{price || "₹0"}</Typography>
       </CardBody>
     </Card>
   );

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Chart from "react-apexcharts";
 
 import {
@@ -118,6 +118,21 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
 };
 
 const ComparisionGraph = () => {
+  const [comparisionData, setComparisionData] = useState([
+    {
+      name: "Sales",
+      data: [0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900],
+    },
+    {
+      name: "Purchase",
+      data: [200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800],
+    },
+    {
+      name: "Expences",
+      data: [100, 180, 170, 300, 550, 730, 850, 720, 790, 850, 650, 850],
+    },
+  ]);
+
   return (
     <Card className="shadow-sm border border-gray-200 !rounded-lg h-full">
       <CardHeader
@@ -126,56 +141,47 @@ const ComparisionGraph = () => {
         className="p-2 flex gap-6 flex-wrap items-center justify-between"
       >
         <div>
-          <Typography variant="h6">
-            Sales vs Purchases vs Expenses
-          </Typography>
+          <Typography variant="h6">Sales vs Purchases vs Expenses</Typography>
         </div>
       </CardHeader>
-      <CardBody className="!p-2">
-        {/** chart */}
-        <div className="w-full overflow-x-auto overflow-y-hidden">
-          <AreaChart
-            colors={["#4CAF50", "#2196F3", "#673AB7"]}
-            options={{
-              xaxis: {
-                categories: [
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
-                  "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec",
-                ],
-              },
-            }}
-            series={[
-              {
-                name: "Sales",
-                data: [
-                  0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900,
-                ],
-              },
-              {
-                name: "Purchase",
-                data: [
-                  200, 160, 150, 260, 600, 790, 900, 660, 720, 800, 500, 800,
-                ],
-              },
-              {
-                name: "Expences",
-                data: [
-                  100, 180, 170, 300, 550, 730, 850, 720, 790, 850, 650, 850,
-                ],
-              },
-            ]}
-          />
-        </div>
+      <CardBody className={comparisionData.length > 0 ? "!p-2" : "!pt-2"}>
+        {comparisionData.length > 0 ? (
+          <div className="w-full overflow-x-auto overflow-y-hidden">
+            <AreaChart
+              colors={["#4CAF50", "#2196F3", "#673AB7"]}
+              options={{
+                xaxis: {
+                  categories: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ],
+                },
+              }}
+              series={comparisionData}
+            />
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
+            <img
+              src="/media/icons/line_graph.svg"
+              alt="line_graph"
+              className="h-5 w-5"
+            />
+            <Typography className="!text-[#6f7c97]">
+              Report Visualization
+            </Typography>
+          </div>
+        )}
       </CardBody>
     </Card>
   );

@@ -14,6 +14,8 @@ import {
 import ExpenseRegister from "@/components/Financials/Expenses/ExpenseRegister";
 import KPIStrip from "@/components/common/KPIStrip";
 
+import EmptyData from "@/components/common/EmptyData";
+
 const EXPENSES_KPI = [
   {
     title: "Today",
@@ -123,13 +125,13 @@ const Expenses = () => {
     <div className="mx-5 overflow-y-scroll">
       <div className="grid grid-cols-4 gap-3 mt-8">
         {EXPENSES_KPI.map((kpiData, idx) => (
-          <div key={idx} className="col-span-1">
+          <div key={idx} className="col-span-4 sm:col-span-2 lg:col-span-1">
             <KPIStrip {...kpiData} />
           </div>
         ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
-        <Card className="col-span-2 shadow-sm border border-gray-200 !rounded-lg">
+        <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader floated={false} shadow={false} className="p-2">
             <Typography className="font-bold text-lg">
               Recent Expenses
@@ -157,68 +159,72 @@ const Expenses = () => {
                 </tr>
               </thead>
               <tbody>
-                {EXPENSES_TABLE_ROW.map(
-                  ({ date, voucherNo, ledger, amount, status }, index) => {
-                    const classes = "!p-4 border-b border-gray-300";
-                    return (
-                      <tr key={index}>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {date}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {voucherNo}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {ledger}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {amount}
-                          </Typography>
-                        </td>
-                        <td className="border-b border-gray-300">
-                          <div className="w-full flex justify-center">
-                            <Chip
-                              variant="ghost"
-                              value={status}
-                              className={`${
-                                status === "Paid"
-                                  ? "bg-green-50/70 text-green-400"
-                                  : status === "Unpaid"
-                                  ? "bg-red-50/70 text-red-400"
-                                  : "bg-amber-50/70 text-amber-800"
-                              } normal-case`}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
+                {EXPENSES_TABLE_ROW.length > 0 ? (
+                  EXPENSES_TABLE_ROW.map(
+                    ({ date, voucherNo, ledger, amount, status }, index) => {
+                      const classes = "!p-4 border-b border-gray-300";
+                      return (
+                        <tr key={index}>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {date}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {voucherNo}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {ledger}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {amount}
+                            </Typography>
+                          </td>
+                          <td className="border-b border-gray-300">
+                            <div className="w-full flex justify-center">
+                              <Chip
+                                variant="ghost"
+                                value={status}
+                                className={`${
+                                  status === "Paid"
+                                    ? "bg-green-50/70 text-green-400"
+                                    : status === "Unpaid"
+                                    ? "bg-red-50/70 text-red-400"
+                                    : "bg-amber-50/70 text-amber-800"
+                                } normal-case`}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )
+                ) : (
+                  <EmptyData colspan={5} />
                 )}
               </tbody>
             </table>
           </CardBody>
         </Card>
-        <div className="col-span-1">
-          <Card className="shadow-sm border border-gray-200 !rounded-lg">
+        <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader
               floated={false}
               shadow={false}
@@ -227,26 +233,37 @@ const Expenses = () => {
               <Typography className="font-bold text-lg">Alerts</Typography>
             </CardHeader>
             <CardBody className="!p-2 !pt-0 mx-4 h-[270px] overflow-scroll">
-              <List className="pt-0 gap-3">
-                {alerts.map(({ title, subtitle, img }) => (
-                  <Card key={title} className="border shadow-none">
-                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                      <ListItemPrefix className="items-start mr-2">
-                        {img}
-                      </ListItemPrefix>
-                      <div>
-                        <Typography>{title}</Typography>
-                        <Typography className="text-[14px]">
-                          {subtitle}
-                        </Typography>
-                      </div>
-                    </ListItem>
-                  </Card>
-                ))}
-              </List>
+              {alerts.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <ListItemPrefix className="items-start mr-2">
+                          {img}
+                        </ListItemPrefix>
+                        <div>
+                          <Typography>{title}</Typography>
+                          <Typography className="text-[14px]">
+                            {subtitle}
+                          </Typography>
+                        </div>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
+                </div>
+              )}
             </CardBody>
           </Card>
-          <Card className="shadow-sm border border-gray-200 !rounded-lg mt-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader floated={false} shadow={false} className="p-2">
               <Typography className="font-bold text-lg">
                 Top Categories (MTD)

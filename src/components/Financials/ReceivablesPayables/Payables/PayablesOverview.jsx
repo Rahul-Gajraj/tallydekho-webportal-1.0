@@ -15,6 +15,7 @@ import {
   TabsHeader,
   Typography,
 } from "@material-tailwind/react";
+
 import KPIStrip from "@/components/common/KPIStrip";
 
 const RECEIVABLES_KPI = [
@@ -151,13 +152,13 @@ const PayablesOverview = () => {
     <>
       <div className="grid grid-cols-4 gap-3 mt-5">
         {RECEIVABLES_KPI.map((kpiData, idx) => (
-          <div key={idx} className="col-span-1">
+          <div key={idx} className="col-span-4 sm:col-span-2 lg:col-span-1">
             <KPIStrip {...kpiData} />
           </div>
         ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
-        <Card className="col-span-2 shadow-sm border border-gray-200 !rounded-lg">
+        <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader
             shadow={false}
             floated={false}
@@ -254,8 +255,8 @@ const PayablesOverview = () => {
             </table>
           </CardBody>
         </Card>
-        <div className="col-span-1">
-          <Card className="shadow-sm border border-gray-200 !rounded-lg">
+        <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader shadow={false} floated={false} className="p-2">
               <Typography className="font-bold text-lg">
                 Payables Aging Summary
@@ -313,7 +314,7 @@ const PayablesOverview = () => {
               </div>
             </CardBody>
           </Card>
-          <Card className="shadow-sm border border-gray-200 !rounded-lg mt-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader floated={false} shadow={false} className="p-2">
               <Typography className="font-bold text-lg">
                 Payables Alerts

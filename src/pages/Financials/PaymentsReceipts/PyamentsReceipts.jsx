@@ -19,6 +19,8 @@ import {
 import PaymentReceiptRegister from "@/components/Financials/PaymentsReceipts/PaymentReceiptRegister";
 import KPIStrip from "@/components/common/KPIStrip";
 
+import EmptyData from "@/components/common/EmptyData";
+
 const PAYMENTS_RECEIPTS_KPI = [
   {
     title: "Payments Today",
@@ -269,15 +271,18 @@ const PaymentsReceipts = () => {
 
   return (
     <div className="mx-5">
-      <div className="grid grid-cols-4 gap-3 mt-8">
+      <div className="grid grid-cols-8 xl:grid-cols-8 lg:grid-cols-6 sm:grid-cols-6 gap-3 mt-8">
         {PAYMENTS_RECEIPTS_KPI.map((kpiData, idx) => (
-          <div key={idx} className="col-span-1">
+          <div
+            key={idx}
+            className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
+          >
             <KPIStrip {...kpiData} />
           </div>
         ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
-        <Card className="col-span-2 shadow-sm border border-gray-200 !rounded-lg">
+        <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader
             floated={false}
             shadow={false}
@@ -332,54 +337,58 @@ const PaymentsReceipts = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {PAYMENTS_TABLE_ROW.map(
-                    ({ date, paymentNo, party, amount, mode }, index) => {
-                      const classes = "!p-4 border-b border-gray-300";
-                      return (
-                        <tr key={index}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {date}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {paymentNo}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {party}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {amount}
-                            </Typography>
-                          </td>
-                          <td className="border-b border-gray-300">
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {mode}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    }
+                  {PAYMENTS_TABLE_ROW.length > 0 ? (
+                    PAYMENTS_TABLE_ROW.map(
+                      ({ date, paymentNo, party, amount, mode }, index) => {
+                        const classes = "!p-4 border-b border-gray-300";
+                        return (
+                          <tr key={index}>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {date}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {paymentNo}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {party}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {amount}
+                              </Typography>
+                            </td>
+                            <td className="border-b border-gray-300">
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {mode}
+                              </Typography>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : (
+                    <EmptyData colspan={5} />
                   )}
                 </tbody>
               </table>
@@ -402,62 +411,66 @@ const PaymentsReceipts = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {RECEIPTS_TABLE_ROW.map(
-                    ({ date, receiptNo, party, amount, mode }, index) => {
-                      const classes = "!p-4 border-b border-gray-300";
-                      return (
-                        <tr key={index}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {date}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {receiptNo}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {party}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {amount}
-                            </Typography>
-                          </td>
-                          <td className="border-b border-gray-300">
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {mode}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    }
+                  {RECEIPTS_TABLE_ROW.length > 0 ? (
+                    RECEIPTS_TABLE_ROW.map(
+                      ({ date, receiptNo, party, amount, mode }, index) => {
+                        const classes = "!p-4 border-b border-gray-300";
+                        return (
+                          <tr key={index}>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {date}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {receiptNo}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {party}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {amount}
+                              </Typography>
+                            </td>
+                            <td className="border-b border-gray-300">
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {mode}
+                              </Typography>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : (
+                    <EmptyData colspan={5} />
                   )}
                 </tbody>
               </table>
             )}
           </CardBody>
         </Card>
-        <div className="col-span-1">
-          <Card className="shadow-sm border border-gray-200 !rounded-lg">
+        <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardBody>
               <Tabs value="payment">
                 <TabsHeader>
@@ -581,7 +594,7 @@ const PaymentsReceipts = () => {
               </Tabs>
             </CardBody>
           </Card>
-          <Card className="shadow-sm border border-gray-200 !rounded-lg mt-5">
+          <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader floated={false} shadow={false} className="p-2">
               <Typography className="font-bold text-lg">
                 Payments & Receipts Alerts
@@ -591,23 +604,34 @@ const PaymentsReceipts = () => {
               </Typography>
             </CardHeader>
             <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-              <List className="pt-0 gap-3">
-                {alerts.map(({ title, subtitle, img }) => (
-                  <Card key={title} className="border shadow-none">
-                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                      <ListItemPrefix className="items-start mr-2">
-                        {img}
-                      </ListItemPrefix>
-                      <div>
-                        <Typography>{title}</Typography>
-                        <Typography className="text-[14px]">
-                          {subtitle}
-                        </Typography>
-                      </div>
-                    </ListItem>
-                  </Card>
-                ))}
-              </List>
+              {alerts.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <ListItemPrefix className="items-start mr-2">
+                          {img}
+                        </ListItemPrefix>
+                        <div>
+                          <Typography>{title}</Typography>
+                          <Typography className="text-[14px]">
+                            {subtitle}
+                          </Typography>
+                        </div>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
+                </div>
+              )}
             </CardBody>
           </Card>
         </div>
