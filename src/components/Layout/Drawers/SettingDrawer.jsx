@@ -32,12 +32,6 @@ import VoucherConfiguration from "../Dialogs/Settings/Preferences/VoucherConfigu
 const LIST_ITEM_STYLES =
   "select-none hover:bg-[#EAF8F4] hover:!text-[#108F6F] menu-link data-[selected=true]:text-[#108F6F] data-[selected=true]:bg-[#EAF8F4] active:bg-[#EAF8F4] focus:bg-[#EAF8F4] focus:text-[#108F6F]";
 
-const PROFILE_INFO = {
-  fullName: "John Doe",
-  phoneNumber: "1234567890",
-  email: "jphnDoe@gmail.com",
-};
-
 const SettingDrawer = ({ open, toggleDrawer }) => {
   const [openItem, setOpenItem] = useState(0);
 
@@ -422,7 +416,6 @@ const SettingDrawer = ({ open, toggleDrawer }) => {
       <Profile
         open={areDialogsOpen.profile}
         handleOpen={handleDialogsOpen}
-        initialData={PROFILE_INFO}
       />
       <CompanyInformation
         open={areDialogsOpen.companyInformation}

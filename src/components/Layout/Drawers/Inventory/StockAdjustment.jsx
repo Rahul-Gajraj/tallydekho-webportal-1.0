@@ -47,7 +47,8 @@ const StockAdjustment = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("stockAdjustment");
+    // resetFields();
   };
 
   return (

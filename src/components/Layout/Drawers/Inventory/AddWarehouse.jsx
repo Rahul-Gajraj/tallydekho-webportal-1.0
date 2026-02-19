@@ -19,7 +19,6 @@ const defaultValues = {
   email: "",
   address: "",
   zipCode: "",
-  racks: "",
   label: "",
   narration: "",
   racks: [{ rack: "", label: "" }],
@@ -52,7 +51,8 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("addWarehouse");
+    // resetFields();
   };
 
   return (

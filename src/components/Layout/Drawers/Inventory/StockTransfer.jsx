@@ -49,7 +49,8 @@ const StockTransfer = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("stockTransfer");
+    // resetFields();
   };
 
   return (

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+
 import {
   Typography,
   Button,
@@ -36,6 +38,8 @@ import SundryCreditors from "./Drawers/Ledgers/SundryCreditors";
 import SundryDebtors from "./Drawers/Ledgers/SundryDebtors";
 import DuitiesTaxes from "./Drawers/Ledgers/DuitiesTaxes";
 import CustomGroups from "./Drawers/Ledgers/CustomGroups";
+
+import { getInitials } from "@/utils/functions";
 
 const Notification = () => {
   const [openNotificationMenu, setOpenNotificationMenu] = useState(false);
@@ -140,6 +144,12 @@ const FYear = () => {
 };
 
 const Profile = ({ toggleDrawer }) => {
+  const { fullName, email, mobile } = useSelector((state) => state.auth);
+
+  const userName = useMemo(() => {
+    return getInitials(fullName);
+  }, [fullName]);
+
   return (
     <>
       <Menu>
@@ -149,18 +159,18 @@ const Profile = ({ toggleDrawer }) => {
               src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
               className="h-[35px] !w-[35px] rounded-full shrink-0"
             /> */}
-            JD
+            {userName}
           </p>
         </MenuHandler>
         <MenuList className="flex flex-col gap-2 border-[#D5DAE1] z-30">
           <MenuItem disabled className="flex items-center gap-4 py-2 pl-2 pr-8">
             <Typography variant="small" className="font-black">
-              John Doe
+              {fullName}
             </Typography>
           </MenuItem>
           <MenuItem disabled className="flex items-center gap-4 py-2 pl-2 pr-8">
             <Typography variant="small" className="font-black">
-              9876543210
+              {mobile}
             </Typography>
           </MenuItem>
           <MenuItem className="flex items-center gap-4 py-2 pl-2 pr-8 hover:bg-[#f8dcdc]">

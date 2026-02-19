@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
@@ -138,7 +138,8 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
   };
 
   const onSubmit = async (data) => {
-    resetFields();
+    toggleDrawer("salesQuotation");
+    // resetFields();
   };
 
   return (
@@ -247,7 +248,9 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                             className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
                             ripple={false}
                           >
-                            {moment(field.value).format("DD MMM, yyyy")}
+                            {moment(field.value)
+                              .tz(timezone)
+                              .format(dateFormat)}
                             <img
                               src="/media/icons/calendar.svg"
                               alt="calendar"
@@ -258,6 +261,7 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                         <PopoverContent className="z-[9999]">
                           <DayPicker
                             selected={new Date()}
+                            timeZone={timezone}
                             onDayClick={(newDate) => {
                               if (newDate) {
                                 field.onChange(newDate);
@@ -374,7 +378,9 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                             className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
                             ripple={false}
                           >
-                            {moment(field.value).format("DD MMM, yyyy")}
+                            {moment(field.value)
+                              .tz(timezone)
+                              .format(dateFormat)}
                             <img
                               src="/media/icons/calendar.svg"
                               alt="calendar"
@@ -385,6 +391,7 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                         <PopoverContent className="z-[9999]">
                           <DayPicker
                             selected={new Date()}
+                            timeZone={timezone}
                             onDayClick={(newDate) => {
                               if (newDate) {
                                 field.onChange(newDate);

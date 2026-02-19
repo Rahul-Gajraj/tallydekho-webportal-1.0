@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Input,
@@ -18,6 +19,7 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import Error from "@/components/Error/Error";
+import { updateCurrencyNumber } from "@/store/preferenceSlice";
 
 const defaultValues = {
   currency: "",
@@ -61,6 +63,17 @@ const THOUSAND_FORMATES = [
 const NEGATIVE_FORMATES = ["-1234", "(1234)", "1234-", "1234"];
 
 const CurrencyFormat = ({ open, handleOpen, upsertHandler, initialData }) => {
+  const preferences = useSelector((state) => state?.preferences);
+  const currencyNumber = preferences?.currencyNumber || {};
+
+  const {
+    currency,
+    dateFormat,
+    timeFormat,
+    thousandSeperator,
+    negativeFormat,
+  } = currencyNumber;
+
   const {
     register,
     handleSubmit,
@@ -71,8 +84,20 @@ const CurrencyFormat = ({ open, handleOpen, upsertHandler, initialData }) => {
     watch,
     clearErrors,
   } = useForm({
-    defaultValues,
+    defaultValues: {
+      currency,
+      dateFormat,
+      timeFormat,
+      thousandSeperator,
+      negativeFormat,
+    },
   });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    reset(currencyNumber);
+  }, [currencyNumber]);
 
   //   useEffect(() => {
   //     if (initialData) {
@@ -89,7 +114,9 @@ const CurrencyFormat = ({ open, handleOpen, upsertHandler, initialData }) => {
   };
 
   const onSubmit = async (data) => {
-    resetFields();
+    dispatch(updateCurrencyNumber(data));
+    handleOpen("currency");
+    // resetFields();
   };
 
   return (
@@ -103,7 +130,7 @@ const CurrencyFormat = ({ open, handleOpen, upsertHandler, initialData }) => {
         className="p-4"
       >
         <DialogHeader className="relative m-0 block">
-          <Typography variant="h4">Currency Format</Typography>
+          <Typography variant="h4">Currency & Number Format</Typography>
           <IconButton
             size="sm"
             variant="text"

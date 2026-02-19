@@ -74,7 +74,8 @@ const CustomGroups = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("customGroups");
+    // resetFields();
   };
 
   return (

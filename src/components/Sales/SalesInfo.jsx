@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 import {
   Button,
@@ -29,7 +30,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 
-import moment from "moment";
+import moment from "moment-timezone";
 
 import EmptyData from "../common/EmptyData";
 
@@ -200,6 +201,13 @@ const PERFORMA_TABLE_ROW = [
 ];
 
 const SalesInfo = () => {
+  const preferences = useSelector((state) => state?.preferences);
+  const preference = preferences?.preference || {};
+  const currencyNumber = preferences?.currencyNumber || {};
+  const { dateFormat } = currencyNumber;
+
+  const timezone = preference?.timezone ?? "Asia/Kolkata";
+
   const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
 
   const [date, setDate] = useState({
@@ -229,8 +237,8 @@ const SalesInfo = () => {
                     isDateRangeOpen ? "!border-[2px]" : "broder-px"
                   } hover:border-[#108f6f] shadow-none h-[40px]`}
                 >
-                  {moment(date.from).format("DD MMM, yyyy")} -{" "}
-                  {moment(date.to).format("DD MMM, yyyy")}
+                  {moment(date.from).tz(timezone).format(dateFormat)}-{" "}
+                  {moment(date.to).tz(timezone).format(dateFormat)}
                   <img
                     src="/media/icons/calendar.svg"
                     alt="calendar"

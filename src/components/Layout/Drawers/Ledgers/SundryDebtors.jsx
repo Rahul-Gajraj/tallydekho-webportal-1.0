@@ -74,7 +74,8 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("sundryDebtors");
+    // resetFields();
   };
 
   return (

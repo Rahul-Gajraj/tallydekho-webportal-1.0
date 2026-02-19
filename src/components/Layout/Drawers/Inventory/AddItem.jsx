@@ -21,7 +21,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Controller, useForm } from "react-hook-form";
 import { DayPicker } from "react-day-picker";
 import { useSelector } from "react-redux";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import Error from "@/components/Error/Error";
 import { validateDateInFuture } from "@/utils/validation";
@@ -40,8 +40,13 @@ const defaultValues = {
 };
 
 const AddItem = ({ open, toggleDrawer }) => {
-  const preferencesState = useSelector((state) => state?.preferences);
-  const preference = preferencesState?.preference || {};
+  const preferences = useSelector((state) => state?.preferences);
+  const preference = preferences?.preference || {};
+  const currencyNumber = preferences?.currencyNumber || {};
+  const {
+    dateFormat,
+  } = currencyNumber;
+
   const timezone = preference?.timezone ?? "Asia/Kolkata";
 
   const {
@@ -65,7 +70,8 @@ const AddItem = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("addItem");
+    // resetFields();
   };
 
   return (
@@ -374,7 +380,9 @@ const AddItem = ({ open, toggleDrawer }) => {
                           className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
                           ripple={false}
                         >
-                          {moment(field.value).format("DD MMM, yyyy")}
+                          {moment(field.value)
+                            .tz(timezone)
+                            .format(dateFormat)}
                           <img
                             src="/media/icons/calendar.svg"
                             alt="calendar"

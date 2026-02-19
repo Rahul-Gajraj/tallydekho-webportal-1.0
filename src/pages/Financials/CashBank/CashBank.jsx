@@ -238,7 +238,7 @@ const CashBank = () => {
         <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader floated={false} shadow={false} className="p-2">
             <Typography className="font-bold text-lg">
-              Cash & Bank Overwiew
+              Cash & Bank Overview
             </Typography>
             <Typography className="font-normal text-sm">
               Account-wise balances with unreconlied entries

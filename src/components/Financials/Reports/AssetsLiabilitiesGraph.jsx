@@ -44,19 +44,6 @@ const AssetsLiabilitiesGraph = () => {
               height={350}
               series={cashFlowTrendData}
               options={{
-                chart: {
-                  // type: "area",
-                  stacked: false,
-                  // height: 350,
-                  // zoom: {
-                  //   type: "x",
-                  //   enabled: true,
-                  //   autoScaleYaxis: true,
-                  // },
-                  // toolbar: {
-                  //   autoSelected: "zoom",
-                  // },
-                },
                 plotOptions: {
                   bar: {
                     borderRadius: 5,
@@ -133,6 +120,7 @@ const AssetsLiabilitiesGraph = () => {
                   zoom: {
                     enabled: false,
                   },
+                  stacked: false,
                 },
                 colors: ["#108f6f", "#f46a6c"],
               }}

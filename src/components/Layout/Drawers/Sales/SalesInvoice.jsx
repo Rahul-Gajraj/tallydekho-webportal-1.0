@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
 import {
   Drawer,
   Button,
@@ -13,7 +15,7 @@ import {
   Card,
   Switch,
 } from "@material-tailwind/react";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
@@ -63,6 +65,13 @@ const defaultValues = {
 const UPIs = ["BHIM", "G Pay", "PhonePe", "Paytm"];
 
 const SalesInvoice = ({ open, toggleDrawer }) => {
+  const preferences = useSelector((state) => state?.preferences);
+  const preference = preferences?.preference || {};
+  const currencyNumber = preferences?.currencyNumber || {};
+  const { dateFormat } = currencyNumber;
+
+  const timezone = preference?.timezone ?? "Asia/Kolkata";
+
   const {
     register,
     handleSubmit,
@@ -149,7 +158,8 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("salesInvoice");
+    // resetFields();
   };
 
   return (
@@ -291,7 +301,9 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                             className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
                             ripple={false}
                           >
-                            {moment(field.value).format("DD MMM, yyyy")}
+                            {moment(field.value)
+                              .tz(timezone)
+                              .format(dateFormat)}
                             <img
                               src="/media/icons/calendar.svg"
                               alt="calendar"
@@ -302,6 +314,7 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                         <PopoverContent className="z-[9999]">
                           <DayPicker
                             selected={field.value}
+                            timeZone={timezone}
                             onDayClick={(newDate) => {
                               if (newDate) {
                                 field.onChange(newDate);
@@ -400,7 +413,9 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {!products || !Array.isArray(products) || products.length === 0 ? (
+                {!products ||
+                !Array.isArray(products) ||
+                products.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("product")}
@@ -413,22 +428,23 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                       <table className="w-full min-w-max table-auto text-left">
                         <thead>
                           <tr>
-                            {ITEM_TABLE_HEAD && ITEM_TABLE_HEAD.map((head) => (
-                              <th key={head} className="px-4 pt-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-bold leading-none"
-                                >
-                                  {head}
-                                </Typography>
-                              </th>
-                            ))}
+                            {ITEM_TABLE_HEAD &&
+                              ITEM_TABLE_HEAD.map((head) => (
+                                <th key={head} className="px-4 pt-4">
+                                  <Typography
+                                    variant="small"
+                                    className="font-bold leading-none"
+                                  >
+                                    {head}
+                                  </Typography>
+                                </th>
+                              ))}
                           </tr>
                         </thead>
                         <tbody>
                           {products.map((item, index) => {
                             if (!item) return null; // Skip null/undefined items
-                            
+
                             try {
                               const {
                                 id,
@@ -441,16 +457,28 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                                 isFlatDiscount,
                                 isFlatTax,
                               } = item || {};
-                              
+
                               // Use index as fallback key if id is missing
                               const itemKey = id || `item-${index}`;
-                              
+
                               // Safely parse numeric values
-                              const safeQty = qty !== null && qty !== undefined ? (Number(qty) || 0) : 0;
-                              const safeDiscount = discount !== null && discount !== undefined ? (Number(discount) || 0) : 0;
-                              const safeTax = tax !== null && tax !== undefined ? (Number(tax) || 0) : 0;
-                              const safeUnitPrice = unitPrice !== null && unitPrice !== undefined ? (Number(unitPrice) || 0) : 0;
-                              
+                              const safeQty =
+                                qty !== null && qty !== undefined
+                                  ? Number(qty) || 0
+                                  : 0;
+                              const safeDiscount =
+                                discount !== null && discount !== undefined
+                                  ? Number(discount) || 0
+                                  : 0;
+                              const safeTax =
+                                tax !== null && tax !== undefined
+                                  ? Number(tax) || 0
+                                  : 0;
+                              const safeUnitPrice =
+                                unitPrice !== null && unitPrice !== undefined
+                                  ? Number(unitPrice) || 0
+                                  : 0;
+
                               return (
                                 <tr key={itemKey}>
                                   <td className="p-2 px-4">
@@ -533,7 +561,10 @@ const SalesInvoice = ({ open, toggleDrawer }) => {
                                 </tr>
                               );
                             } catch (error) {
-                              console.error("Error rendering product item:", error);
+                              console.error(
+                                "Error rendering product item:",
+                                error
+                              );
                               return null;
                             }
                           })}

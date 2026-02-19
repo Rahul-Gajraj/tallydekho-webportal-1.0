@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Input,
@@ -16,6 +17,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 
 import Error from "@/components/Error/Error";
+import { updateAuth } from "@/store/authSlice";
 
 const defaultValues = {
   fullName: "",
@@ -26,6 +28,8 @@ const defaultValues = {
 };
 
 const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
+  const { fullName, email, mobile } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
@@ -34,9 +38,15 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
     getValues,
     reset,
     watch,
-    clearErrors
+    clearErrors,
   } = useForm({
-    defaultValues,
+    defaultValues: {
+      fullName,
+      phoneNumber: mobile,
+      mobileOtp: "",
+      email,
+      emailOtp: "",
+    },
   });
 
   const [isMobileOtpSend, setIsMobileOtpSend] = useState(false);
@@ -47,6 +57,8 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
 
   const [mobileTimer, setMobileTimer] = useState(60);
   const [emailTimer, setEmailTimer] = useState(60);
+
+  const dispatch = useDispatch();
 
   const inputMobileOtpRefs = useRef([]);
   const inputEmailOtpRefs = useRef([]);
@@ -77,13 +89,13 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
     };
   }, [emailTimer]);
 
-  useEffect(() => {
-    if (initialData) {
-      reset(initialData);
-    } else {
-      reset(defaultValues);
-    }
-  }, [initialData]);
+  // useEffect(() => {
+  //   if (initialData) {
+  //     reset(initialData);
+  //   } else {
+  //     reset(defaultValues);
+  //   }
+  // }, [initialData]);
 
   const handleMobileOtpChange = (index, value) => {
     const newOtp = [...mobileOtp];
@@ -157,7 +169,11 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
       return;
     }
 
-    resetFields();
+    const { fullName, email, phoneNumber } = data;
+    dispatch(updateAuth({ fullName, email, mobile: phoneNumber }));
+    handleOpen("profile");
+    clearErrors();
+    // resetFields();
   };
 
   return (
@@ -342,11 +358,6 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
                     <div className="relative flex w-full">
                       <Input
                         color="green"
-                        // label="Phone Number"
-                        // pattern="[0-9]*"
-                        // type="tel"
-                        // inputMode="numeric"
-                        maxLength={12}
                         {...field}
                         onChange={(value) => {
                           //   onChange(value);

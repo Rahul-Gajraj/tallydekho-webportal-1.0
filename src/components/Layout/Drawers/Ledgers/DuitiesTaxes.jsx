@@ -55,7 +55,8 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = (data) => {
-    resetFields();
+    toggleDrawer("duitiesTaxes");
+    // resetFields();
   };
 
   return (

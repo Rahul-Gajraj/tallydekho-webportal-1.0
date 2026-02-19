@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+
 import {
   Drawer,
   Button,
@@ -17,7 +19,7 @@ import {
   AccordionBody,
   Textarea,
 } from "@material-tailwind/react";
-import moment from "moment";
+import moment from "moment-timezone";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
@@ -147,6 +149,13 @@ const SummaryAccordion = ({ dispatchItems }) => {
 };
 
 const DeliveryNote = ({ open, toggleDrawer }) => {
+  const preferences = useSelector((state) => state?.preferences);
+  const preference = preferences?.preference || {};
+  const currencyNumber = preferences?.currencyNumber || {};
+  const { dateFormat } = currencyNumber;
+
+  const timezone = preference?.timezone ?? "Asia/Kolkata";
+
   const {
     register,
     handleSubmit,
@@ -211,7 +220,8 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
   };
 
   const onSubmitHandler = async (data) => {
-    resetFields();
+    toggleDrawer("salesDeliveryNote");
+    // resetFields();
   };
 
   return (
@@ -314,7 +324,9 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
                             className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
                             ripple={false}
                           >
-                            {moment(field.value).format("DD MMM, yyyy")}
+                            {moment(field.value)
+                              .tz(timezone)
+                              .format(dateFormat)}
                             <img
                               src="/media/icons/calendar.svg"
                               alt="calendar"
@@ -325,6 +337,7 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
                         <PopoverContent className="z-[9999]">
                           <DayPicker
                             selected={field.value}
+                            timeZone={timezone}
                             onDayClick={(newDate) => {
                               if (newDate) {
                                 field.onChange(newDate);
