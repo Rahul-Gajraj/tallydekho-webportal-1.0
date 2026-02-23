@@ -206,7 +206,7 @@ const STOCK_ADJUSTMENT_TABLE_BODY = [
   },
 ];
 
-const InventoryInfo = () => {
+const InventoryInfo = ({ isLoading }) => {
   const [isWarehouseDrawerOpen, setIsWarehouseDrawerOpen] = useState(false);
   const [selectedWarehouse, setSelectedWarehouse] = useState({});
 
@@ -532,138 +532,166 @@ const InventoryInfo = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
-                    {itemsList.length > 0 ? (
-                      itemsList.map((row, index) => {
-                        const {
-                          item,
-                          sku,
-                          onHand,
-                          available,
-                          committed,
-                          valuation,
-                          availability,
-                          actions,
-                        } = row;
-                        const isLast = index === itemsList.length - 1;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
-
-                        return (
-                          <tr key={item}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {item}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {sku}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {onHand}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {available}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {committed}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {valuation}
-                              </Typography>
-                            </td>
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(2)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {ITEM_TABLE_HEAD.map((_, idx) => (
                             <td
-                              className={`${classes}`}
-                              onClick={() => {
-                                setSelectedWarehouse(row);
-                                toggleWarehouseDrawer();
-                              }}
+                              key={idx}
+                              className="py-4 border-b border-gray-300 pl-4"
                             >
-                              <div className="flex pl-3 gap-2 cursor-pointer">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 -960 960 960"
-                                  className="h-5 w-5"
-                                  fill="green"
-                                >
-                                  <path d="M480-754 160-626v426h80v-240q0-33 23.5-56.5T320-520h320q33 0 56.5 23.5T720-440v240h80v-426L480-754ZM80-200v-426q0-25 13.5-45t36.5-29l320-128q14-6 30-6t30 6l320 128q23 9 36.5 29t13.5 45v426q0 33-23.5 56.5T800-120H640v-320H320v320H160q-33 0-56.5-23.5T80-200Zm280 80v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM320-520h320-320Z" />
-                                </svg>
-                                <Typography
-                                  variant="small"
-                                  className="font-norma"
-                                  color="green"
-                                >
-                                  {availability}
-                                </Typography>
-                              </div>
+                              <div className="h-4 bg-gray-300 rounded w-24"></div>
                             </td>
-                            <td className={classes}>
-                              <div className="flex gap-3 pl-3">
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {itemsList.length > 0 ? (
+                        itemsList.map((row, index) => {
+                          const {
+                            item,
+                            sku,
+                            onHand,
+                            available,
+                            committed,
+                            valuation,
+                            availability,
+                            actions,
+                          } = row;
+                          const isLast = index === itemsList.length - 1;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
+
+                          return (
+                            <tr key={item}>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  View
+                                  {item}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Transfer
+                                  {sku}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Adjust
+                                  {onHand}
                                 </Typography>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={8} />
-                    )}
-                  </tbody>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {available}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {committed}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {valuation}
+                                </Typography>
+                              </td>
+                              <td
+                                className={`${classes}`}
+                                onClick={() => {
+                                  setSelectedWarehouse(row);
+                                  toggleWarehouseDrawer();
+                                }}
+                              >
+                                <div className="flex pl-3 gap-2 cursor-pointer">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 -960 960 960"
+                                    className="h-5 w-5"
+                                    fill="green"
+                                  >
+                                    <path d="M480-754 160-626v426h80v-240q0-33 23.5-56.5T320-520h320q33 0 56.5 23.5T720-440v240h80v-426L480-754ZM80-200v-426q0-25 13.5-45t36.5-29l320-128q14-6 30-6t30 6l320 128q23 9 36.5 29t13.5 45v426q0 33-23.5 56.5T800-120H640v-320H320v320H160q-33 0-56.5-23.5T80-200Zm280 80v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM320-520h320-320Z" />
+                                  </svg>
+                                  <Typography
+                                    variant="small"
+                                    className="font-norma"
+                                    color="green"
+                                  >
+                                    {availability}
+                                  </Typography>
+                                </div>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex gap-3 pl-3">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    View
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Transfer
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Adjust
+                                  </Typography>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={8} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
               <TabPanel value="warehouses">
                 <div className="grid grid-cols-3 gap-3">
-                  {warehouseKpiData.map((kpiData, idx) => (
-                    <div key={idx} className="col-span-1">
-                      <KpiCard {...kpiData} />
-                    </div>
-                  ))}
+                  {isLoading
+                    ? [...Array(3)].map((_, idx) => (
+                        <div key={idx} className="col-span-1">
+                          <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[94px]">
+                            <CardBody>
+                              <div></div>
+                            </CardBody>
+                          </Card>
+                        </div>
+                      ))
+                    : warehouseKpiData.map((kpiData, idx) => (
+                        <div key={idx} className="col-span-1">
+                          <KpiCard {...kpiData} />
+                        </div>
+                      ))}
                 </div>
                 <div className="flex items-center gap-2 flex-wrap justify-between mt-5">
                   <div className="flex rounded-md ring-1 ring-inset ring-gray-300 h-[40px]  items-center focus-within:ring-[#108F6F] w-[400px]">
@@ -777,112 +805,130 @@ const InventoryInfo = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
-                    {warehouses.length > 0 ? (
-                      warehouses.map((row, index) => {
-                        const {
-                          warehouse,
-                          code,
-                          onHand,
-                          available,
-                          inTransit,
-                          lowStockItems,
-                          negativeStock,
-                          actions,
-                        } = row;
-                        const isLast = index === warehouses.length - 1;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(2)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {WAREHOUSE_TABLE_HEAD.map((_, idx) => (
+                            <td
+                              key={idx}
+                              className="py-4 border-b border-gray-300 pl-4"
+                            >
+                              <div className="h-4 bg-gray-300 rounded w-24"></div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {warehouses.length > 0 ? (
+                        warehouses.map((row, index) => {
+                          const {
+                            warehouse,
+                            code,
+                            onHand,
+                            available,
+                            inTransit,
+                            lowStockItems,
+                            negativeStock,
+                            actions,
+                          } = row;
+                          const isLast = index === warehouses.length - 1;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
 
-                        return (
-                          <tr key={warehouse}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {warehouse}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {code}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {onHand}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {available}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {inTransit}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {lowStockItems}
-                              </Typography>
-                            </td>
-                            <td className={`${classes}`} onClick={() => {}}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {negativeStock}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <div className="flex gap-3 pl-3">
+                          return (
+                            <tr key={warehouse}>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  View
+                                  {warehouse}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Transfer
+                                  {code}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Adjust
+                                  {onHand}
                                 </Typography>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={8} />
-                    )}
-                  </tbody>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {available}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {inTransit}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {lowStockItems}
+                                </Typography>
+                              </td>
+                              <td className={`${classes}`} onClick={() => {}}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {negativeStock}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex gap-3 pl-3">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    View
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Transfer
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Adjust
+                                  </Typography>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={8} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
               <TabPanel value="stock_movement">
@@ -997,104 +1043,122 @@ const InventoryInfo = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
-                    {stockAdjustments.length > 0 ? (
-                      stockMovements.map((row, index) => {
-                        const {
-                          date,
-                          voucherNo,
-                          type,
-                          warehouse,
-                          item,
-                          qtyIn,
-                          qtyOut,
-                          balance,
-                          reference,
-                        } = row;
-                        const isLast = index === stockMovements.length - 1;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(3)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {STOCK_MOVEMENT_TABLE_HEAD.map((_, idx) => (
+                            <td
+                              key={idx}
+                              className="py-4 border-b border-gray-300 pl-4"
+                            >
+                              <div className="h-4 bg-gray-300 rounded w-24"></div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {stockAdjustments.length > 0 ? (
+                        stockMovements.map((row, index) => {
+                          const {
+                            date,
+                            voucherNo,
+                            type,
+                            warehouse,
+                            item,
+                            qtyIn,
+                            qtyOut,
+                            balance,
+                            reference,
+                          } = row;
+                          const isLast = index === stockMovements.length - 1;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
 
-                        return (
-                          <tr key={date}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {date}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {voucherNo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {type}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {warehouse}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {item}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {qtyIn}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {qtyOut}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {balance}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {reference}
-                              </Typography>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={9} />
-                    )}
-                  </tbody>
+                          return (
+                            <tr key={date}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {date}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {voucherNo}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {type}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {warehouse}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {item}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {qtyIn}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {qtyOut}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {balance}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {reference}
+                                </Typography>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={9} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
               <TabPanel value="stock_adjustments">
@@ -1221,119 +1285,137 @@ const InventoryInfo = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
-                    {stockAdjustments.length > 0 ? (
-                      stockAdjustments.map((row, index) => {
-                        const {
-                          date,
-                          adjustmentNo,
-                          warehouse,
-                          item,
-                          type,
-                          qty,
-                          reason,
-                          enteredBy,
-                          status,
-                          actions,
-                        } = row;
-                        const isLast = index === stockAdjustments.length - 1;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(3)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {STOCK_ADJUSTMENT_TABLE_HEAD.map((_, idx) => (
+                            <td
+                              key={idx}
+                              className="py-4 border-b border-gray-300 pl-4"
+                            >
+                              <div className="h-4 bg-gray-300 rounded w-24"></div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {stockAdjustments.length > 0 ? (
+                        stockAdjustments.map((row, index) => {
+                          const {
+                            date,
+                            adjustmentNo,
+                            warehouse,
+                            item,
+                            type,
+                            qty,
+                            reason,
+                            enteredBy,
+                            status,
+                            actions,
+                          } = row;
+                          const isLast = index === stockAdjustments.length - 1;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
 
-                        return (
-                          <tr key={date}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {date}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {adjustmentNo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {warehouse}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {item}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {type}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {qty}
-                              </Typography>
-                            </td>
-                            <td className={`${classes}`} onClick={() => {}}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {reason}
-                              </Typography>
-                            </td>
-                            <td className={`${classes}`} onClick={() => {}}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {enteredBy}
-                              </Typography>
-                            </td>
-                            <td className={`${classes}`} onClick={() => {}}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {status}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <div className="flex gap-3 pl-3">
-                                {actions.map((action) => (
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal cursor-pointer"
-                                    color="green"
-                                    key={action}
-                                  >
-                                    {action}
-                                  </Typography>
-                                ))}
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={10} />
-                    )}
-                  </tbody>
+                          return (
+                            <tr key={date}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {date}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {adjustmentNo}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {warehouse}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {item}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {type}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {qty}
+                                </Typography>
+                              </td>
+                              <td className={`${classes}`} onClick={() => {}}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {reason}
+                                </Typography>
+                              </td>
+                              <td className={`${classes}`} onClick={() => {}}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {enteredBy}
+                                </Typography>
+                              </td>
+                              <td className={`${classes}`} onClick={() => {}}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {status}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex gap-3 pl-3">
+                                  {actions.map((action) => (
+                                    <Typography
+                                      variant="small"
+                                      className="font-normal cursor-pointer"
+                                      color="green"
+                                      key={action}
+                                    >
+                                      {action}
+                                    </Typography>
+                                  ))}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={10} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
             </TabsBody>

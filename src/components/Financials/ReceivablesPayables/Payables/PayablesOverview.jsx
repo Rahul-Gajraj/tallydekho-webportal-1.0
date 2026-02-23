@@ -147,15 +147,28 @@ const alerts = [
   },
 ];
 
-const PayablesOverview = () => {
+const PayablesOverview = ({ isLoading }) => {
   return (
     <>
       <div className="grid grid-cols-4 gap-3 mt-5">
-        {RECEIVABLES_KPI.map((kpiData, idx) => (
-          <div key={idx} className="col-span-4 sm:col-span-2 lg:col-span-1">
-            <KPIStrip {...kpiData} />
-          </div>
-        ))}
+        {isLoading
+          ? [...Array(4)].map((_, idx) => (
+              <div
+                key={idx}
+                className="col-span-4 sm:col-span-2 lg:col-span-1 h-full"
+              >
+                <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[94px]">
+                  <CardBody>
+                    <div></div>
+                  </CardBody>
+                </Card>
+              </div>
+            ))
+          : RECEIVABLES_KPI.map((kpiData, idx) => (
+              <div key={idx} className="col-span-4 sm:col-span-2 lg:col-span-1">
+                <KPIStrip {...kpiData} />
+              </div>
+            ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
         <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
@@ -201,57 +214,76 @@ const PayablesOverview = () => {
                   )}
                 </tr>
               </thead>
-              <tbody>
-                {VENDOR_OUTSTANDING_TABLE_ROWS.map(
-                  ({ vendor, outstanding, overdue, aging, status }, index) => {
-                    const classes = "!p-4 border-b border-gray-300";
-                    return (
-                      <tr key={index}>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {vendor}
-                          </Typography>
+              {isLoading ? (
+                <tbody>
+                  {[...Array(4)].map((_, index) => (
+                    <tr key={index} className="animate-pulse">
+                      {VENDORS_OUTSTANDING_TABLE_HEAD.map((_, idx) => (
+                        <td key={idx} className="p-4 border-b border-gray-300">
+                          <div className="flex justify-center">
+                            <span className="h-4 bg-gray-300 rounded w-24"></span>
+                          </div>
                         </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {outstanding}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {overdue}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {aging}
-                          </Typography>
-                        </td>
-                        <td className="border-b border-gray-300">
-                          <Typography
-                            variant="small"
-                            className="!font-normal text-center"
-                          >
-                            {status}
-                          </Typography>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
-              </tbody>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              ) : (
+                <tbody>
+                  {VENDOR_OUTSTANDING_TABLE_ROWS.map(
+                    (
+                      { vendor, outstanding, overdue, aging, status },
+                      index
+                    ) => {
+                      const classes = "!p-4 border-b border-gray-300";
+                      return (
+                        <tr key={index}>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {vendor}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {outstanding}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {overdue}
+                            </Typography>
+                          </td>
+                          <td className={classes}>
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {aging}
+                            </Typography>
+                          </td>
+                          <td className="border-b border-gray-300">
+                            <Typography
+                              variant="small"
+                              className="!font-normal text-center"
+                            >
+                              {status}
+                            </Typography>
+                          </td>
+                        </tr>
+                      );
+                    }
+                  )}
+                </tbody>
+              )}
             </table>
           </CardBody>
         </Card>
@@ -265,54 +297,60 @@ const PayablesOverview = () => {
                 Bucket-wise vendor outstanding
               </Typography>
             </CardHeader>
-            <CardBody className="pt-3">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+            {isLoading ? (
+              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] rounded mx-6 mb-6 h-[124px]">
+                <div></div>
+              </Card>
+            ) : (
+              <CardBody className="pt-3">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        0-30 days
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      0-30 days
+                      ₹1,740,000
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    ₹1,740,000
-                  </Typography>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        31-60 days
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      31-60 days
+                      ₹1,020,000
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    ₹1,020,000
-                  </Typography>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        61-90 days
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      61-90 days
+                      ₹620,000
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    ₹620,000
-                  </Typography>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        {">"}90 days
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      {">"}90 days
+                      ₹560,000
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    ₹560,000
-                  </Typography>
                 </div>
-              </div>
-            </CardBody>
+              </CardBody>
+            )}
           </Card>
           <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader floated={false} shadow={false} className="p-2">
@@ -323,25 +361,33 @@ const PayablesOverview = () => {
                 Payment risk signals
               </Typography>
             </CardHeader>
-            <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-              <List className="pt-0 gap-3">
-                {alerts.map(({ title, subtitle, img }) => (
-                  <Card key={title} className="border shadow-none">
-                    <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                      <ListItemPrefix className="items-start mr-2">
-                        {img}
-                      </ListItemPrefix>
-                      <div>
-                        <Typography>{title}</Typography>
-                        <Typography className="text-[14px]">
-                          {subtitle}
-                        </Typography>
-                      </div>
-                    </ListItem>
-                  </Card>
-                ))}
-              </List>
-            </CardBody>
+            {isLoading ? (
+              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
+                <CardBody>
+                  <div></div>
+                </CardBody>
+              </Card>
+            ) : (
+              <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <ListItemPrefix className="items-start mr-2">
+                          {img}
+                        </ListItemPrefix>
+                        <div>
+                          <Typography>{title}</Typography>
+                          <Typography className="text-[14px]">
+                            {subtitle}
+                          </Typography>
+                        </div>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              </CardBody>
+            )}
           </Card>
         </div>
       </div>

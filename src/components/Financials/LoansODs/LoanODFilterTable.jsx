@@ -123,7 +123,7 @@ const OD_ACCOUNTS_TABLE_ROWS = [
   },
 ];
 
-const LoanODFilterTable = () => {
+const LoanODFilterTable = ({ isLoading }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [openLoanDetail, setOpenLoanDetail] = useState(false);
   const [openODDetail, setOpenODDetail] = useState(false);
@@ -250,137 +250,155 @@ const LoanODFilterTable = () => {
                       )}
                     </tr>
                   </thead>
-                  <tbody>
-                    {LOANS_REGISTER_TABLE_ROWS.length > 0 ? (
-                      LOANS_REGISTER_TABLE_ROWS.map((row, index) => {
-                        const {
-                          loanName,
-                          lender,
-                          accountNo,
-                          type,
-                          sanctionedAmt,
-                          outstanding,
-                          emiAmount,
-                          nextEmiDate,
-                          status,
-                        } = row;
-                        const isLast =
-                          index === LOANS_REGISTER_TABLE_ROWS.length - 1;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(3)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {LOANS_REGISTER_TABLE_HEAD.map((_, idx) => (
+                            <td
+                              key={idx}
+                              className="py-4 border-b border-gray-300 pl-4"
+                            >
+                              <div className="h-4 bg-gray-300 rounded w-24"></div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {LOANS_REGISTER_TABLE_ROWS.length > 0 ? (
+                        LOANS_REGISTER_TABLE_ROWS.map((row, index) => {
+                          const {
+                            loanName,
+                            lender,
+                            accountNo,
+                            type,
+                            sanctionedAmt,
+                            outstanding,
+                            emiAmount,
+                            nextEmiDate,
+                            status,
+                          } = row;
+                          const isLast =
+                            index === LOANS_REGISTER_TABLE_ROWS.length - 1;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
 
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {loanName}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {lender}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {accountNo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {type}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {sanctionedAmt}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {outstanding}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {emiAmount}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {nextEmiDate}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <div className="flex pl-3">
-                                <Chip
-                                  value={status}
-                                  size="sm"
-                                  color="green"
-                                  className="h-[30px] normal-case"
-                                  style={{
-                                    color: "#108f6f",
-                                    backgroundColor: "#eaf8f4",
-                                  }}
-                                />
-                              </div>
-                            </td>
-                            <td className={classes}>
-                              <div className="flex gap-3 pl-3">
+                          return (
+                            <tr key={index}>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
-                                  onClick={() => handleOpenLoadDrawer()}
+                                  className="font-normal pl-3"
                                 >
-                                  View
+                                  {loanName}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Edit
+                                  {lender}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Close
+                                  {accountNo}
                                 </Typography>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={10} />
-                    )}
-                  </tbody>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {type}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {sanctionedAmt}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {outstanding}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {emiAmount}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {nextEmiDate}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex pl-3">
+                                  <Chip
+                                    value={status}
+                                    size="sm"
+                                    color="green"
+                                    className="h-[30px] normal-case"
+                                    style={{
+                                      color: "#108f6f",
+                                      backgroundColor: "#eaf8f4",
+                                    }}
+                                  />
+                                </div>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex gap-3 pl-3">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                    onClick={() => handleOpenLoadDrawer()}
+                                  >
+                                    View
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Edit
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Close
+                                  </Typography>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={10} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
               <TabPanel value="od_accounts">
@@ -462,121 +480,139 @@ const LoanODFilterTable = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
-                    {OD_ACCOUNTS_TABLE_ROWS.length > 0 ? (
-                      OD_ACCOUNTS_TABLE_ROWS.map((row, index) => {
-                        const {
-                          odName,
-                          bank,
-                          accountNo,
-                          odLimit,
-                          utilized,
-                          available,
-                          roi,
-                          status,
-                        } = row;
-                        const isLast =
-                          index === OD_ACCOUNTS_TABLE_ROWS.length - 1;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(1)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {OD_ACCOUNTS_TABLE_HEAD.map((_, idx) => (
+                            <td
+                              key={idx}
+                              className="py-4 border-b border-gray-300 pl-4"
+                            >
+                              <div className="h-4 bg-gray-300 rounded w-24"></div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {OD_ACCOUNTS_TABLE_ROWS.length > 0 ? (
+                        OD_ACCOUNTS_TABLE_ROWS.map((row, index) => {
+                          const {
+                            odName,
+                            bank,
+                            accountNo,
+                            odLimit,
+                            utilized,
+                            available,
+                            roi,
+                            status,
+                          } = row;
+                          const isLast =
+                            index === OD_ACCOUNTS_TABLE_ROWS.length - 1;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
 
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {odName}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {bank}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {accountNo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {odLimit}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {utilized}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {available}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {roi}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <div className="flex pl-3">
-                                <Chip
-                                  value={status}
-                                  size="sm"
-                                  color="green"
-                                  className="h-[30px] normal-case"
-                                  style={{
-                                    color: "#108f6f",
-                                    backgroundColor: "#eaf8f4",
-                                  }}
-                                />
-                              </div>
-                            </td>
-                            <td className={classes}>
-                              <div className="flex gap-3 pl-3">
+                          return (
+                            <tr key={index}>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
-                                  onClick={() => handleOpenODDrawer()}
+                                  className="font-normal pl-3"
                                 >
-                                  View
+                                  {odName}
                                 </Typography>
+                              </td>
+                              <td className={classes}>
                                 <Typography
                                   variant="small"
-                                  className="font-normal cursor-pointer"
-                                  color="green"
+                                  className="font-normal pl-3"
                                 >
-                                  Edit
+                                  {bank}
                                 </Typography>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={10} />
-                    )}
-                  </tbody>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {accountNo}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {odLimit}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {utilized}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {available}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {roi}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex pl-3">
+                                  <Chip
+                                    value={status}
+                                    size="sm"
+                                    color="green"
+                                    className="h-[30px] normal-case"
+                                    style={{
+                                      color: "#108f6f",
+                                      backgroundColor: "#eaf8f4",
+                                    }}
+                                  />
+                                </div>
+                              </td>
+                              <td className={classes}>
+                                <div className="flex gap-3 pl-3">
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                    onClick={() => handleOpenODDrawer()}
+                                  >
+                                    View
+                                  </Typography>
+                                  <Typography
+                                    variant="small"
+                                    className="font-normal cursor-pointer"
+                                    color="green"
+                                  >
+                                    Edit
+                                  </Typography>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={10} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
               <TabPanel value="emi_calendar">

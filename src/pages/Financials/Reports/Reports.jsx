@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Card,
@@ -53,7 +53,7 @@ const KPI_DATA = [
   },
   {
     title: "Profit",
-    icon: 'profit.svg',
+    icon: "profit.svg",
     children: [
       // {
       //   title: "Net Profit / Net Loss",
@@ -159,52 +159,73 @@ const REPORTS_KPI = [
 ];
 
 const Reports = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
+
   return (
     <div className="mx-5 overflow-y-scroll">
       <section className="mx-auto mt-8">
         <div className="grid grid-cols-12 items-center gap-5">
-          {KPI_DATA.map(({ title, children, icon }) => (
-            <Card
-              key={title}
-              className="2xl:col-span-4 xl:col-span-6 lg:col-span-6 col-span-12"
-            >
-              <CardHeader shadow={false} floated={false}>
-                <div className="flex gap-2 items-center">
-                  <img
-                    className="h-5 w-5"
-                    src={`/media/icons/${icon}`}
-                    alt="expense"
-                  />
-                  {title}
+          {isLoading
+            ? [...Array(6)].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="2xl:col-span-4 xl:col-span-6 lg:col-span-6 col-span-12"
+                >
+                  <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[129px]">
+                    <CardBody>
+                      <div></div>
+                    </CardBody>
+                  </Card>
                 </div>
-              </CardHeader>
-              <CardBody className="flex justify-between gap-3 p-4 !pt-2">
-                {children.map((data) => (
-                  <div
-                    key={data.title}
-                    className="w-full shadow-sm border border-gray-200 !rounded-lg p-3 py-2"
-                  >
-                    <div className="flex justify-between">
-                      <Typography className="text-[14px]">
-                        {data.title}
-                      </Typography>
-                      {data.value && (
-                        <span
-                          className={`!rounded-md text-[10px] p-2 py-0 flex justify-center items-center ${data.class}`}
-                        >
-                          {data.value || 0}
-                        </span>
-                      )}
+              ))
+            : KPI_DATA.map(({ title, children, icon }) => (
+                <Card
+                  key={title}
+                  className="2xl:col-span-4 xl:col-span-6 lg:col-span-6 col-span-12"
+                >
+                  <CardHeader shadow={false} floated={false}>
+                    <div className="flex gap-2 items-center">
+                      <img
+                        className="h-5 w-5"
+                        src={`/media/icons/${icon}`}
+                        alt="expense"
+                      />
+                      {title}
                     </div>
-                    <Typography className="font-bold">
-                      {data.price || "₹0"}
-                    </Typography>
-                    {/* <KPIStrip {...data} /> */}
-                  </div>
-                ))}
-              </CardBody>
-            </Card>
-          ))}
+                  </CardHeader>
+                  <CardBody className="flex justify-between gap-3 p-4 !pt-2">
+                    {children.map((data) => (
+                      <div
+                        key={data.title}
+                        className="w-full shadow-sm border border-gray-200 !rounded-lg p-3 py-2"
+                      >
+                        <div className="flex justify-between">
+                          <Typography className="text-[14px]">
+                            {data.title}
+                          </Typography>
+                          {data.value && (
+                            <span
+                              className={`!rounded-md text-[10px] p-2 py-0 flex justify-center items-center ${data.class}`}
+                            >
+                              {data.value || 0}
+                            </span>
+                          )}
+                        </div>
+                        <Typography className="font-bold">
+                          {data.price || "₹0"}
+                        </Typography>
+                        {/* <KPIStrip {...data} /> */}
+                      </div>
+                    ))}
+                  </CardBody>
+                </Card>
+              ))}
           {/* {REPORTS_KPI.map((data) => (
             <div
               key={data.title}
@@ -217,23 +238,23 @@ const Reports = () => {
       </section>
       <div className="grid grid-cols-12 gap-5 my-5">
         <div className="col-span-12 xl:col-span-12 2xl:col-span-4">
-          <ProfitTrendGraph />
+          <ProfitTrendGraph isLoading={isLoading} />
         </div>
         <div className="col-span-12 lg:col-span-5 2xl:col-span-4">
-          <ExpenseBreakdownGraph />
+          <ExpenseBreakdownGraph isLoading={isLoading} />
         </div>
         {/* <div className="col-span-12 xl:col-span-5 xl:col-span-4">
           <IncomeBreakdownGraph />
         </div> */}
         <div className="col-span-12 lg:col-span-7 2xl:col-span-4">
-          <AssetsLiabilitiesGraph />
+          <AssetsLiabilitiesGraph isLoading={isLoading} />
         </div>
         {/* <div className="col-span-12 xl:col-span-5 xl:col-span-6">
           <SalesPurchaseTrendGraph />
         </div> */}
       </div>
       <section>
-        <ReportsInfo />
+        <ReportsInfo isLoading={isLoading} />
       </section>
     </div>
   );

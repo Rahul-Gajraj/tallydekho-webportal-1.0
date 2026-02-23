@@ -82,7 +82,7 @@ const BILL_REGISTER_TABLE_ROWS = [
   },
 ];
 
-const PayablesInvoiceTable = () => {
+const PayablesInvoiceTable = ({ isLoading }) => {
   return (
     <>
       <Card className="mt-5">
@@ -267,101 +267,145 @@ const PayablesInvoiceTable = () => {
                 ))}
               </tr>
             </thead>
-            <tbody>
-              {BILL_REGISTER_TABLE_ROWS.map((row, index) => {
-                const {
-                  billDate,
-                  billNo,
-                  vendor,
-                  dueDate,
-                  aging,
-                  amount,
-                  paid,
-                  balance,
-                  status,
-                } = row;
-                const isLast = index === BILL_REGISTER_TABLE_ROWS.length - 1;
-                const classes = "p-4 px-0 border-b border-blue-gray-50";
-
-                return (
-                  <tr key={index}>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {billDate}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {billNo}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {vendor}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {dueDate}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {aging}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {amount}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {paid}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {balance}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {status}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 -960 960 960"
-                        className="w-5 h-5 ml-3"
-                        fill="#108f6f"
+            {isLoading ? (
+              <tbody>
+                {[...Array(3)].map((_, index) => (
+                  <tr key={index} className="animate-pulse">
+                    {BILL_REGISTER_HEAD.map((_, idx) => (
+                      <td
+                        key={idx}
+                        className="py-4 border-b border-gray-300 pl-4"
                       >
-                        <path d="M360-440h240q17 0 28.5-11.5T640-480q0-17-11.5-28.5T600-520H360q-17 0-28.5 11.5T320-480q0 17 11.5 28.5T360-440Zm0 120h240q17 0 28.5-11.5T640-360q0-17-11.5-28.5T600-400H360q-17 0-28.5 11.5T320-360q0 17 11.5 28.5T360-320Zm0 120h120q17 0 28.5-11.5T520-240q0-17-11.5-28.5T480-280H360q-17 0-28.5 11.5T320-240q0 17 11.5 28.5T360-200ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm480-520H580q-25 0-42.5-17.5T520-660v-140H240v640h480v-440ZM240-800v200-200 640-640Z" />
-                      </svg>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex gap-3 pl-3">
-                        <Typography
-                          variant="small"
-                          className="font-normal cursor-pointer"
-                          color="green"
-                        >
-                          Share PDF
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          className="font-normal cursor-pointer"
-                          color="green"
-                        >
-                          Download
-                        </Typography>
-                      </div>
-                    </td>
+                        <div className="h-4 bg-gray-300 rounded w-24"></div>
+                      </td>
+                    ))}
                   </tr>
-                );
-              })}
-            </tbody>
+                ))}
+              </tbody>
+            ) : (
+              <tbody>
+                {BILL_REGISTER_TABLE_ROWS.map((row, index) => {
+                  const {
+                    billDate,
+                    billNo,
+                    vendor,
+                    dueDate,
+                    aging,
+                    amount,
+                    paid,
+                    balance,
+                    status,
+                  } = row;
+                  const isLast = index === BILL_REGISTER_TABLE_ROWS.length - 1;
+                  const classes = "p-4 px-0 border-b border-blue-gray-50";
+
+                  return (
+                    <tr key={index}>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {billDate}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {billNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {vendor}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {dueDate}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {aging}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {amount}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {paid}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {balance}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3"
+                        >
+                          {status}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 -960 960 960"
+                          className="w-5 h-5 ml-3"
+                          fill="#108f6f"
+                        >
+                          <path d="M360-440h240q17 0 28.5-11.5T640-480q0-17-11.5-28.5T600-520H360q-17 0-28.5 11.5T320-480q0 17 11.5 28.5T360-440Zm0 120h240q17 0 28.5-11.5T640-360q0-17-11.5-28.5T600-400H360q-17 0-28.5 11.5T320-360q0 17 11.5 28.5T360-320Zm0 120h120q17 0 28.5-11.5T520-240q0-17-11.5-28.5T480-280H360q-17 0-28.5 11.5T320-240q0 17 11.5 28.5T360-200ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm480-520H580q-25 0-42.5-17.5T520-660v-140H240v640h480v-440ZM240-800v200-200 640-640Z" />
+                        </svg>
+                      </td>
+                      <td className={classes}>
+                        <div className="flex gap-3 pl-3">
+                          <Typography
+                            variant="small"
+                            className="font-normal cursor-pointer"
+                            color="green"
+                          >
+                            Share PDF
+                          </Typography>
+                          <Typography
+                            variant="small"
+                            className="font-normal cursor-pointer"
+                            color="green"
+                          >
+                            Download
+                          </Typography>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            )}
           </table>
         </CardBody>
       </Card>

@@ -123,7 +123,7 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
   );
 };
 
-const SalesReceiptsComparision = () => {
+const SalesReceiptsComparision = ({ isLoading }) => {
   const [salesRecepitData, setSalesRecepitData] = useState([
     {
       name: "Sales",
@@ -151,68 +151,74 @@ const SalesReceiptsComparision = () => {
       >
         <Typography variant="h6">Sales vs Receipts — Last 30 Days</Typography>
       </CardHeader>
-      <CardBody className={salesRecepitData.length > 0 ? "!p-2" : "!pt-2"}>
-        {salesRecepitData.length > 0 ? (
-          <div className="w-full overflow-x-auto overflow-y-hidden">
-            <AreaChart
-              colors={["#4CAF50", "#2196F3"]}
-              options={{
-                xaxis: {
-                  categories: [
-                    "Day 1",
-                    "Day 2",
-                    "Day 3",
-                    "Day 4",
-                    "Day 5",
-                    "Day 6",
-                    "Day 7",
-                    "Day 8",
-                    "Day 9",
-                    "Day 10",
-                    "Day 11",
-                    "Day 12",
-                    "Day 13",
-                    "Day 14",
-                    "Day 15",
-                    "Day 16",
-                    "Day 17",
-                    "Day 18",
-                    "Day 19",
-                    "Day 20",
-                    "Day 21",
-                    "Day 22",
-                    "Day 23",
-                    "Day 24",
-                    "Day 25",
-                    "Day 26",
-                    "Day 27",
-                    "Day 28",
-                    "Day 29",
-                    "Day 30",
-                  ],
-                },
-              }}
-              series={salesRecepitData}
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
-            <img
-              src="/media/icons/line_graph.svg"
-              alt="line_graph"
-              className="h-5 w-5"
-            />
-            <Typography className="!text-[#6f7c97]">
-              Report Visualization
-            </Typography>
-          </div>
-        )}
-      </CardBody>
+      {isLoading ? (
+        <CardBody className="h-[350px] bg-[#ECEEF1] rounded !mx-6 mb-6 mt-2">
+          <div></div>
+        </CardBody>
+      ) : (
+        <CardBody className={salesRecepitData.length > 0 ? "!p-2" : "!pt-2"}>
+          {salesRecepitData.length > 0 ? (
+            <div className="w-full overflow-x-auto overflow-y-hidden">
+              <AreaChart
+                colors={["#4CAF50", "#2196F3"]}
+                options={{
+                  xaxis: {
+                    categories: [
+                      "Day 1",
+                      "Day 2",
+                      "Day 3",
+                      "Day 4",
+                      "Day 5",
+                      "Day 6",
+                      "Day 7",
+                      "Day 8",
+                      "Day 9",
+                      "Day 10",
+                      "Day 11",
+                      "Day 12",
+                      "Day 13",
+                      "Day 14",
+                      "Day 15",
+                      "Day 16",
+                      "Day 17",
+                      "Day 18",
+                      "Day 19",
+                      "Day 20",
+                      "Day 21",
+                      "Day 22",
+                      "Day 23",
+                      "Day 24",
+                      "Day 25",
+                      "Day 26",
+                      "Day 27",
+                      "Day 28",
+                      "Day 29",
+                      "Day 30",
+                    ],
+                  },
+                }}
+                series={salesRecepitData}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
+              <img
+                src="/media/icons/line_graph.svg"
+                alt="line_graph"
+                className="h-5 w-5"
+              />
+              <Typography className="!text-[#6f7c97]">
+                Report Visualization
+              </Typography>
+            </div>
+          )}
+        </CardBody>
+      )}
     </Card>
   );
 };
 
-const SalesReport = () => {
+const SalesReport = ({ isLoading }) => {
   const alerts = [
     {
       title: "14 invoices due for IRN generation",
@@ -235,7 +241,7 @@ const SalesReport = () => {
   return (
     <section className="mx-auto">
       <div className="grid grid-cols-12 gap-5 my-5">
-        <SalesReceiptsComparision />
+        <SalesReceiptsComparision isLoading={isLoading} />
         <Card className="xl:col-span-4 col-span-12 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader
             floated={false}
@@ -245,7 +251,18 @@ const SalesReport = () => {
             <Typography className="font-bold text-lg">Alerts</Typography>
           </CardHeader>
           <CardBody className="!p-2 !pt-0 mx-4">
-            {alerts.length > 0 ? (
+            {isLoading ? (
+              <List className="pt-0 gap-4">
+                {[...Array(5)].map((_, idx) => (
+                  <Card
+                    key={idx}
+                    className="transition-all animate-pulse w-full h-[50px] shadow-none bg-[#E1E6EA]"
+                  >
+                    <div></div>
+                  </Card>
+                ))}
+              </List>
+            ) : alerts.length > 0 ? (
               <List className="pt-0 gap-4">
                 {alerts.map(({ title, img }) => (
                   <Card key={title} className="border shadow-none">
@@ -265,9 +282,7 @@ const SalesReport = () => {
                   alt="line_graph"
                   className="h-5 w-5"
                 />
-                <Typography className="!text-[#6f7c97]">
-                  No Alerts
-                </Typography>
+                <Typography className="!text-[#6f7c97]">No Alerts</Typography>
               </div>
             )}
           </CardBody>

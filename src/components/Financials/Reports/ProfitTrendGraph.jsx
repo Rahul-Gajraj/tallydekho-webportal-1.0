@@ -117,7 +117,7 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
   );
 };
 
-const ProfitTrendGraph = () => {
+const ProfitTrendGraph = ({ isLoading }) => {
   const [profitTrendData, setProfitTrendData] = useState([
     {
       name: "Sales",
@@ -134,45 +134,53 @@ const ProfitTrendGraph = () => {
       >
         <Typography variant="h6">Profit Trend</Typography>
       </CardHeader>
-      <CardBody className={profitTrendData.length > 0 ? "!p-2" : "!pt-2"}>
-        {profitTrendData.length > 0 ? (
-          <div className="w-full overflow-x-auto overflow-y-hidden">
-            <AreaChart
-              colors={["#4caf50", "#2196f3", "#673ab7"]}
-              options={{
-                xaxis: {
-                  categories: [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec",
-                  ],
-                },
-              }}
-              series={profitTrendData}
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
-            <img
-              src="/media/icons/line_graph.svg"
-              alt="line_graph"
-              className="h-5 w-5"
-            />
-            <Typography className="!text-[#6f7c97]">
-              Report Visualization
-            </Typography>
-          </div>
-        )}
-      </CardBody>
+      {isLoading ? (
+        <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[360px] mx-6 mb-6">
+          <CardBody>
+            <div></div>
+          </CardBody>
+        </Card>
+      ) : (
+        <CardBody className={profitTrendData.length > 0 ? "!p-2" : "!pt-2"}>
+          {profitTrendData.length > 0 ? (
+            <div className="w-full overflow-x-auto overflow-y-hidden">
+              <AreaChart
+                colors={["#4caf50", "#2196f3", "#673ab7"]}
+                options={{
+                  xaxis: {
+                    categories: [
+                      "Jan",
+                      "Feb",
+                      "Mar",
+                      "Apr",
+                      "May",
+                      "Jun",
+                      "Jul",
+                      "Aug",
+                      "Sep",
+                      "Oct",
+                      "Nov",
+                      "Dec",
+                    ],
+                  },
+                }}
+                series={profitTrendData}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
+              <img
+                src="/media/icons/line_graph.svg"
+                alt="line_graph"
+                className="h-5 w-5"
+              />
+              <Typography className="!text-[#6f7c97]">
+                Report Visualization
+              </Typography>
+            </div>
+          )}
+        </CardBody>
+      )}
     </Card>
   );
 };

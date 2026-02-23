@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Card, Option, Select, Typography } from "@material-tailwind/react";
+import {
+  Card,
+  CardBody,
+  Option,
+  Select,
+  Typography,
+} from "@material-tailwind/react";
 
 import InventoryReport from "@/components/Inventory/InventoryReport";
 import InventoryInfo from "@/components/Inventory/InventoryInfo";
 import KPIStrip from "@/components/common/KPIStrip";
 
-const kpiData = [
+const KPI_DATA = [
   {
     title: "Total Stock Value",
     price: "₹ 18,40,000",
@@ -70,6 +76,15 @@ const WAREHOUSES = ["All", "W01", "W02"];
 const Inventory = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(PERIODS[0]);
   const [selectedWarehouse, setSelectedWarehouse] = useState(WAREHOUSES[0]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [kpiData, setKpiData] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setKpiData(KPI_DATA);
+    }, 3000);
+  }, []);
 
   return (
     <div className="mx-5 overflow-y-scroll">
@@ -126,18 +141,31 @@ const Inventory = () => {
       </Card>
       <section className="mx-auto">
         <div className="mt-5 grid xl:col-span-5 lg:grid-cols-5 md:grid-cols-6 sm:grid-cols-6 grid-cols-1 items-center gap-4">
-          {kpiData.map((data) => (
-            <div
-              key={data.title}
-              className="xl:col-span-1 lg:col-span-1 md:col-span-2 sm:col-span-3 col-span-12"
-            >
-              <KPIStrip {...data} />
-            </div>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="xl:col-span-1 lg:col-span-4 md:col-span-2 sm:col-span-3 col-span-12"
+                >
+                  <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[94px]">
+                    <CardBody>
+                      <div></div>
+                    </CardBody>
+                  </Card>
+                </div>
+              ))
+            : kpiData.map((data) => (
+                <div
+                  key={data.title}
+                  className="xl:col-span-1 lg:col-span-1 md:col-span-2 sm:col-span-3 col-span-12"
+                >
+                  <KPIStrip {...data} />
+                </div>
+              ))}
         </div>
       </section>
-      <InventoryReport />
-      <InventoryInfo />
+      <InventoryReport isLoading={isLoading} />
+      <InventoryInfo isLoading={isLoading} />
     </div>
   );
 };

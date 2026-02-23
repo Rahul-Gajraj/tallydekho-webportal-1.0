@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Card,
@@ -222,17 +222,40 @@ const alerts = [
 ];
 
 const CashBank = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [kpiData, setKpiData] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setKpiData(CASH_BANK_KPI);
+    }, 3000);
+  }, []);
+
   return (
     <div className="mx-5 overflow-y-scroll">
       <div className="grid grid-cols-8 xl:grid-cols-8 lg:grid-cols-6 sm:grid-cols-6 gap-3 mt-8">
-        {CASH_BANK_KPI.map((kpiData, idx) => (
-          <div
-            key={idx}
-            className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
-          >
-            <KPIStrip {...kpiData} />
-          </div>
-        ))}
+        {isLoading
+          ? [...Array(8)].map((_, idx) => (
+              <div
+                key={idx}
+                className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
+              >
+                <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[94px]">
+                  <CardBody>
+                    <div></div>
+                  </CardBody>
+                </Card>
+              </div>
+            ))
+          : kpiData.map((kpiData, idx) => (
+              <div
+                key={idx}
+                className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
+              >
+                <KPIStrip {...kpiData} />
+              </div>
+            ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
         <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
@@ -262,88 +285,104 @@ const CashBank = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody>
-                {CASH_BANK_TABLE_ROW.length > 0 ? (
-                  CASH_BANK_TABLE_ROW.map(
-                    (
-                      {
-                        account,
-                        type,
-                        balance,
-                        unreconciled,
-                        todayIn,
-                        todayOut,
-                        status,
-                      },
-                      index
-                    ) => {
-                      const classes = "!p-4 border-b border-gray-300";
-                      return (
-                        <tr key={index}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {account}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {type}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {balance}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {unreconciled}
-                            </Typography>
-                          </td>
-                          <td className="border-b border-gray-300">
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {todayIn}
-                            </Typography>
-                          </td>
-                          <td className="border-b border-gray-300">
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {todayOut}
-                            </Typography>
-                          </td>
-                          <td className="border-b border-gray-300">
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {status}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )
-                ) : (
-                  <EmptyData colSpan={7} />
-                )}
-              </tbody>
+              {isLoading ? (
+                <tbody>
+                  {[...Array(5)].map((_, index) => (
+                    <tr key={index} className="animate-pulse">
+                      {CASH_BANK_TABLE_HEAD.map((_, idx) => (
+                        <td key={idx} className="border-b border-gray-300">
+                          <div className="flex justify-center">
+                            <span className="h-4 bg-gray-300 rounded w-24"></span>
+                          </div>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              ) : (
+                <tbody>
+                  {CASH_BANK_TABLE_ROW.length > 0 ? (
+                    CASH_BANK_TABLE_ROW.map(
+                      (
+                        {
+                          account,
+                          type,
+                          balance,
+                          unreconciled,
+                          todayIn,
+                          todayOut,
+                          status,
+                        },
+                        index
+                      ) => {
+                        const classes = "!p-4 border-b border-gray-300";
+                        return (
+                          <tr key={index}>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {account}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {type}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {balance}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {unreconciled}
+                              </Typography>
+                            </td>
+                            <td className="border-b border-gray-300">
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {todayIn}
+                              </Typography>
+                            </td>
+                            <td className="border-b border-gray-300">
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {todayOut}
+                              </Typography>
+                            </td>
+                            <td className="border-b border-gray-300">
+                              <Typography
+                                variant="small"
+                                className="!font-normal text-center"
+                              >
+                                {status}
+                              </Typography>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : (
+                    <EmptyData colSpan={7} />
+                  )}
+                </tbody>
+              )}
             </table>
           </CardBody>
         </Card>
@@ -357,43 +396,49 @@ const CashBank = () => {
                 Statement vs book difference
               </Typography>
             </CardHeader>
-            <CardBody className="pt-3">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+            {isLoading ? (
+              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] rounded mx-6 mb-6 h-[124px]">
+                <div></div>
+              </Card>
+            ) : (
+              <CardBody className="pt-3">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        ICICI Bank - 0012
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      ICICI Bank - 0012
+                      Diff: ₹12,400
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    Diff: ₹12,400
-                  </Typography>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        Axis Bank
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      Axis Bank
+                      Diff: ₹8,900
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    Diff: ₹8,900
-                  </Typography>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                      <Typography variant="small" className="font-normal">
+                        HDFC CC A/C
+                      </Typography>
+                    </div>
                     <Typography variant="small" className="font-normal">
-                      HDFC CC A/C
+                      Diff: ₹0 (Reconcilled)
                     </Typography>
                   </div>
-                  <Typography variant="small" className="font-normal">
-                    Diff: ₹0 (Reconcilled)
-                  </Typography>
                 </div>
-              </div>
-            </CardBody>
+              </CardBody>
+            )}
           </Card>
           <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader floated={false} shadow={false} className="p-2">
@@ -404,41 +449,51 @@ const CashBank = () => {
                 Actionable issues from bank & cash ledgers
               </Typography>
             </CardHeader>
-            <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-              {alerts.length > 0 ? (
-                <List className="pt-0 gap-3">
-                  {alerts.map(({ title, subtitle, img }) => (
-                    <Card key={title} className="border shadow-none">
-                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                        <ListItemPrefix className="items-start mr-2">
-                          {img}
-                        </ListItemPrefix>
-                        <div>
-                          <Typography>{title}</Typography>
-                          <Typography className="text-[14px]">
-                            {subtitle}
-                          </Typography>
-                        </div>
-                      </ListItem>
-                    </Card>
-                  ))}
-                </List>
-              ) : (
-                <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
-                  <img
-                    src="/media/icons/line_graph.svg"
-                    alt="line_graph"
-                    className="h-5 w-5"
-                  />
-                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
-                </div>
-              )}
-            </CardBody>
+            {isLoading ? (
+              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
+                <CardBody>
+                  <div></div>
+                </CardBody>
+              </Card>
+            ) : (
+              <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
+                {alerts.length > 0 ? (
+                  <List className="pt-0 gap-3">
+                    {alerts.map(({ title, subtitle, img }) => (
+                      <Card key={title} className="border shadow-none">
+                        <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                          <ListItemPrefix className="items-start mr-2">
+                            {img}
+                          </ListItemPrefix>
+                          <div>
+                            <Typography>{title}</Typography>
+                            <Typography className="text-[14px]">
+                              {subtitle}
+                            </Typography>
+                          </div>
+                        </ListItem>
+                      </Card>
+                    ))}
+                  </List>
+                ) : (
+                  <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                    <img
+                      src="/media/icons/line_graph.svg"
+                      alt="line_graph"
+                      className="h-5 w-5"
+                    />
+                    <Typography className="!text-[#6f7c97]">
+                      No Alerts
+                    </Typography>
+                  </div>
+                )}
+              </CardBody>
+            )}
           </Card>
         </div>
       </div>
       <div className="mt-5">
-        <CashTransactionsDetail />
+        <CashTransactionsDetail isLoading={isLoading} />
       </div>
     </div>
   );

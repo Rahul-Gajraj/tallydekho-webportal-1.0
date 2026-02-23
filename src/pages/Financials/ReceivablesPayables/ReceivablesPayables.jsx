@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Card,
@@ -24,6 +24,13 @@ import PayablesInvoiceTable from "@/components/Financials/ReceivablesPayables/Pa
 
 const ReceivablesPayables = () => {
   const [selectedTab, setSelectedTab] = useState("receivables");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  }, []);
 
   return (
     <div className="mx-5">
@@ -34,14 +41,18 @@ const ReceivablesPayables = () => {
           </Typography>
           <div className="col-span-1 flex gap-3 justify-end">
             <Typography>Receivables</Typography>
-            <Switch color="green" value={selectedTab} onChange={(e) => {
-              const newValue = e.target.value
-              if(newValue == "receivables") {
-                setSelectedTab("payables")
-              } else {
-                setSelectedTab("receivables");
-              }
-            }} />
+            <Switch
+              color="green"
+              value={selectedTab}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                if (newValue == "receivables") {
+                  setSelectedTab("payables");
+                } else {
+                  setSelectedTab("receivables");
+                }
+              }}
+            />
             <Typography>Payables</Typography>
           </div>
           {/* <Tabs value={selectedTab} className="col-span-1">
@@ -65,13 +76,13 @@ const ReceivablesPayables = () => {
         </Card>
         {selectedTab == "receivables" ? (
           <>
-            <ReceivablesOverview />
-            <ReceivablesInvoiceTable />
+            <ReceivablesOverview isLoading={isLoading} />
+            <ReceivablesInvoiceTable isLoading={isLoading} />
           </>
         ) : (
           <>
-            <PayablesOverview />
-            <PayablesInvoiceTable />
+            <PayablesOverview isLoading={isLoading} />
+            <PayablesInvoiceTable isLoading={isLoading} />
           </>
         )}
       </section>

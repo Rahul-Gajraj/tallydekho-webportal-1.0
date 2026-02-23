@@ -117,7 +117,7 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
   );
 };
 
-const ComparisionGraph = () => {
+const ComparisionGraph = ({ isLoading }) => {
   const [comparisionData, setComparisionData] = useState([
     {
       name: "Sales",
@@ -144,45 +144,51 @@ const ComparisionGraph = () => {
           <Typography variant="h6">Sales vs Purchases vs Expenses</Typography>
         </div>
       </CardHeader>
-      <CardBody className={comparisionData.length > 0 ? "!p-2" : "!pt-2"}>
-        {comparisionData.length > 0 ? (
-          <div className="w-full overflow-x-auto overflow-y-hidden">
-            <AreaChart
-              colors={["#4CAF50", "#2196F3", "#673AB7"]}
-              options={{
-                xaxis: {
-                  categories: [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Jul",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec",
-                  ],
-                },
-              }}
-              series={comparisionData}
-            />
-          </div>
-        ) : (
-          <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
-            <img
-              src="/media/icons/line_graph.svg"
-              alt="line_graph"
-              className="h-5 w-5"
-            />
-            <Typography className="!text-[#6f7c97]">
-              Report Visualization
-            </Typography>
-          </div>
-        )}
-      </CardBody>
+      {isLoading ? (
+        <CardBody className="h-[350px] bg-[#ECEEF1] rounded !mx-6 mb-6 mt-2">
+          <div></div>
+        </CardBody>
+      ) : (
+        <CardBody className={comparisionData.length > 0 ? "!p-2" : "!pt-2"}>
+          {comparisionData.length > 0 ? (
+            <div className="w-full overflow-x-auto overflow-y-hidden">
+              <AreaChart
+                colors={["#4CAF50", "#2196F3", "#673AB7"]}
+                options={{
+                  xaxis: {
+                    categories: [
+                      "Jan",
+                      "Feb",
+                      "Mar",
+                      "Apr",
+                      "May",
+                      "Jun",
+                      "Jul",
+                      "Aug",
+                      "Sep",
+                      "Oct",
+                      "Nov",
+                      "Dec",
+                    ],
+                  },
+                }}
+                series={comparisionData}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center h-[350px] gap-2 bg-[#F6F7F9]">
+              <img
+                src="/media/icons/line_graph.svg"
+                alt="line_graph"
+                className="h-5 w-5"
+              />
+              <Typography className="!text-[#6f7c97]">
+                Report Visualization
+              </Typography>
+            </div>
+          )}
+        </CardBody>
+      )}
     </Card>
   );
 };

@@ -127,7 +127,7 @@ function Icon({ id, open }) {
   );
 }
 
-const AccordionPLData = () => {
+const AccordionPLData = ({ isLoading }) => {
   const [isIncomeAccordionOpen, setIsIncomeAccordionOpen] = useState(false);
   const [isExpenseAccordionOpen, setIsExpenseAccordionOpen] = useState(false);
   const [isTotalAccordionOpen, setIsTotalAccordionOpen] = useState(false);
@@ -155,208 +155,226 @@ const AccordionPLData = () => {
     <>
       <div className="grid grid-cols-12 gap-4 mt-2">
         <div className="col-span-6">
-          <Accordion
-            open={isIncomeAccordionOpen}
-            className={`rounded-lg border border-blue-gray-100 ${
-              isIncomeAccordionOpen && isExpenseAccordionOpen ? "h-full" : ""
-            }`}
-            icon={<Icon id={1} open={isIncomeAccordionOpen} />}
-          >
-            <AccordionHeader
-              onClick={handleIncomeAccordionOpen}
-              className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg max-h-[250px] overflow-auto"
+          {isLoading ? (
+            <Card className="h-[58px] transition-all animate-pulse shadow-none bg-[#E1E6EA]">
+              <div></div>
+            </Card>
+          ) : (
+            <Accordion
+              open={isIncomeAccordionOpen}
+              className={`rounded-lg border border-blue-gray-100 ${
+                isIncomeAccordionOpen && isExpenseAccordionOpen ? "h-full" : ""
+              }`}
+              icon={<Icon id={1} open={isIncomeAccordionOpen} />}
             >
-              Income (₹6,390,000)
-            </AccordionHeader>
-            <AccordionBody className="pt-0 text-base font-normal px-4">
-              <table className="min-w-full table-auto text-left">
-                <tbody>
-                  <tr>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography variant="small" className="font-normal">
-                        Direct Income
-                      </Typography>
-                    </td>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹25,30,000
-                      </Typography>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography variant="small" className="font-normal">
-                        Indirect Income
-                      </Typography>
-                    </td>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹20,20,000
-                      </Typography>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="pt-4">
-                      <Typography variant="small" className="font-normal">
-                        Other Income
-                      </Typography>
-                    </td>
-                    <td className="pt-4">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹18,40,000
-                      </Typography>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </AccordionBody>
-          </Accordion>
+              <AccordionHeader
+                onClick={handleIncomeAccordionOpen}
+                className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg max-h-[250px] overflow-auto"
+              >
+                Income (₹6,390,000)
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal px-4">
+                <table className="min-w-full table-auto text-left">
+                  <tbody>
+                    <tr>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography variant="small" className="font-normal">
+                          Direct Income
+                        </Typography>
+                      </td>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹25,30,000
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography variant="small" className="font-normal">
+                          Indirect Income
+                        </Typography>
+                      </td>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹20,20,000
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="pt-4">
+                        <Typography variant="small" className="font-normal">
+                          Other Income
+                        </Typography>
+                      </td>
+                      <td className="pt-4">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹18,40,000
+                        </Typography>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </AccordionBody>
+            </Accordion>
+          )}
         </div>
         <div className="col-span-6">
-          <Accordion
-            open={isExpenseAccordionOpen}
-            className="rounded-lg border border-blue-gray-100"
-            icon={<Icon id={2} open={isExpenseAccordionOpen} />}
-          >
-            <AccordionHeader
-              onClick={handleExpenseAccordionOpen}
-              className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg max-h-[250px] overflow-auto"
+          {isLoading ? (
+            <Card className="h-[58px] transition-all animate-pulse shadow-none bg-[#E1E6EA]">
+              <div></div>
+            </Card>
+          ) : (
+            <Accordion
+              open={isExpenseAccordionOpen}
+              className="rounded-lg border border-blue-gray-100"
+              icon={<Icon id={2} open={isExpenseAccordionOpen} />}
             >
-              Expenses (₹10,250,000)
-            </AccordionHeader>
-            <AccordionBody className="pt-0 text-base font-normal px-4">
-              <table className="min-w-full table-auto text-left">
-                <tbody>
-                  <tr>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography variant="small" className="font-normal">
-                        Indirect Expense
-                      </Typography>
-                    </td>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹20,20,000
-                      </Typography>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography variant="small" className="font-normal">
-                        Administrative Expense
-                      </Typography>
-                    </td>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹18,40,000
-                      </Typography>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography variant="small" className="font-normal">
-                        Miscellaneous
-                      </Typography>
-                    </td>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹20,20,000
-                      </Typography>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="pt-4">
-                      <Typography variant="small" className="font-normal">
-                        Depreciation
-                      </Typography>
-                    </td>
-                    <td className="pt-4">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹18,40,000
-                      </Typography>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </AccordionBody>
-          </Accordion>
+              <AccordionHeader
+                onClick={handleExpenseAccordionOpen}
+                className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg max-h-[250px] overflow-auto"
+              >
+                Expenses (₹10,250,000)
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal px-4">
+                <table className="min-w-full table-auto text-left">
+                  <tbody>
+                    <tr>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography variant="small" className="font-normal">
+                          Indirect Expense
+                        </Typography>
+                      </td>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹20,20,000
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography variant="small" className="font-normal">
+                          Administrative Expense
+                        </Typography>
+                      </td>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹18,40,000
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography variant="small" className="font-normal">
+                          Miscellaneous
+                        </Typography>
+                      </td>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹20,20,000
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="pt-4">
+                        <Typography variant="small" className="font-normal">
+                          Depreciation
+                        </Typography>
+                      </td>
+                      <td className="pt-4">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹18,40,000
+                        </Typography>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </AccordionBody>
+            </Accordion>
+          )}
         </div>
         <div className="col-span-12">
-          <Accordion
-            open={isTotalAccordionOpen}
-            className="rounded-lg border border-blue-gray-100 max-h-[250px] overflow-auto"
-            icon={<Icon id={3} open={isTotalAccordionOpen} />}
-          >
-            <AccordionHeader
-              onClick={handleTotalAccordionOpen}
-              className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg"
+          {isLoading ? (
+            <Card className="h-[58px] transition-all animate-pulse shadow-none bg-[#E1E6EA]">
+              <div></div>
+            </Card>
+          ) : (
+            <Accordion
+              open={isTotalAccordionOpen}
+              className="rounded-lg border border-blue-gray-100 max-h-[250px] overflow-auto"
+              icon={<Icon id={3} open={isTotalAccordionOpen} />}
             >
-              Totals (₹4,550,000)
-            </AccordionHeader>
-            <AccordionBody className="pt-0 text-base font-normal px-4">
-              <table className="min-w-full table-auto text-left">
-                <tbody>
-                  <tr>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography variant="small" className="font-normal">
-                        Gross Profit / Gross Loss
-                      </Typography>
-                    </td>
-                    <td className="p-4 px-0 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹25,30,000
-                      </Typography>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="pt-4">
-                      <Typography variant="small" className="font-normal">
-                        Net Profit / Net Loss
-                      </Typography>
-                    </td>
-                    <td className="pt-4">
-                      <Typography
-                        variant="small"
-                        className="font-normal pl-3 float-right"
-                      >
-                        ₹20,20,000
-                      </Typography>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </AccordionBody>
-          </Accordion>
+              <AccordionHeader
+                onClick={handleTotalAccordionOpen}
+                className="border-b-0 transition-colors font-medium text-md bg-[#f4f5f6] px-4 rounded-lg"
+              >
+                Totals (₹4,550,000)
+              </AccordionHeader>
+              <AccordionBody className="pt-0 text-base font-normal px-4">
+                <table className="min-w-full table-auto text-left">
+                  <tbody>
+                    <tr>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography variant="small" className="font-normal">
+                          Gross Profit / Gross Loss
+                        </Typography>
+                      </td>
+                      <td className="p-4 px-0 border-b border-blue-gray-50">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹25,30,000
+                        </Typography>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="pt-4">
+                        <Typography variant="small" className="font-normal">
+                          Net Profit / Net Loss
+                        </Typography>
+                      </td>
+                      <td className="pt-4">
+                        <Typography
+                          variant="small"
+                          className="font-normal pl-3 float-right"
+                        >
+                          ₹20,20,000
+                        </Typography>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </AccordionBody>
+            </Accordion>
+          )}
         </div>
       </div>
     </>
   );
 };
 
-const ReportsInfo = () => {
+const ReportsInfo = ({ isLoading }) => {
   const [plSummaryData, setPLSummaryData] = useState([
     {
       title: "Opening Stock",
@@ -417,121 +435,159 @@ const ReportsInfo = () => {
             <TabsBody>
               <TabPanel value="profit_loss">
                 <div className="grid grid-cols-12 gap-3">
-                  {plSummaryData.map((kpiData, idx) => (
-                    <div
-                      key={idx}
-                      className="col-span-12 md:col-span-6 xl:col-span-3"
-                    >
-                      <KpiCard {...kpiData} />
-                    </div>
-                  ))}
+                  {isLoading
+                    ? [...Array(4)].map((_, idx) => (
+                        <div
+                          key={idx}
+                          className="col-span-12 md:col-span-6 xl:col-span-3"
+                        >
+                          <Card className="w-full  transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[84px]">
+                            <CardBody>
+                              <div></div>
+                            </CardBody>
+                          </Card>
+                        </div>
+                      ))
+                    : plSummaryData.map((kpiData, idx) => (
+                        <div
+                          key={idx}
+                          className="col-span-12 md:col-span-6 xl:col-span-3"
+                        >
+                          <KpiCard {...kpiData} />
+                        </div>
+                      ))}
                   <div className="col-span-12">
-                    <AccordionPLData />
+                    <AccordionPLData isLoading={isLoading} />
                   </div>
                 </div>
               </TabPanel>
               <TabPanel value="balance_sheet">
                 <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
-                  <Card
-                    className="border !border-blue-gray-100 p-2"
-                    shadow={false}
-                  >
-                    <CardHeader
-                      floated={false}
+                  {isLoading ? (
+                    <Card className="h-[324px] transition-all animate-pulse shadow-none bg-[#E1E6EA]">
+                      <div></div>
+                    </Card>
+                  ) : (
+                    <Card
+                      className="border !border-blue-gray-100 p-2"
                       shadow={false}
-                      className="flex !justify-between !items-center rounded-none"
                     >
-                      <Typography variant="h6" className="!font-medium">
-                        ASSETS
-                      </Typography>
-                      <Typography variant="h6" className="!font-medium">
-                        AMOUNT (₹)
-                      </Typography>
-                    </CardHeader>
-                    <CardBody className="pl-4 space-y-3">
-                      {ASSETS.map(({ title, amount }) => (
-                        <div
-                          key={title}
-                          className="flex items-center justify-between"
-                        >
+                      <CardHeader
+                        floated={false}
+                        shadow={false}
+                        className="flex !justify-between !items-center rounded-none"
+                      >
+                        <Typography variant="h6" className="!font-medium">
+                          ASSETS
+                        </Typography>
+                        <Typography variant="h6" className="!font-medium">
+                          AMOUNT (₹)
+                        </Typography>
+                      </CardHeader>
+                      <CardBody className="pl-4 space-y-3">
+                        {ASSETS.map(({ title, amount }) => (
+                          <div
+                            key={title}
+                            className="flex items-center justify-between"
+                          >
+                            <Typography className="font-medium">
+                              {title}
+                            </Typography>
+                            <Typography className="font-normal">
+                              {amount}
+                            </Typography>
+                          </div>
+                        ))}
+                        <div className="flex items-center justify-between">
                           <Typography className="font-medium">
-                            {title}
+                            TOTAL ASSETS
                           </Typography>
                           <Typography className="font-normal">
-                            {amount}
+                            {ASSETS.reduce((prev, curr) => {
+                              return (
+                                prev + Number(curr.amount.split(",").join(""))
+                              );
+                            }, 0)}
                           </Typography>
                         </div>
-                      ))}
-                      <div className="flex items-center justify-between">
-                        <Typography className="font-medium">
-                          TOTAL ASSETS
-                        </Typography>
-                        <Typography className="font-normal">
-                          {ASSETS.reduce((prev, curr) => {
-                            return (
-                              prev + Number(curr.amount.split(",").join(""))
-                            );
-                          }, 0)}
-                        </Typography>
-                      </div>
-                    </CardBody>
-                  </Card>
-                  <Card
-                    className="border !border-blue-gray-100 p-2"
-                    shadow={false}
-                  >
-                    <CardHeader
-                      floated={false}
+                      </CardBody>
+                    </Card>
+                  )}
+                  {isLoading ? (
+                    <Card className="h-[324px] transition-all animate-pulse shadow-none bg-[#E1E6EA]">
+                      <div></div>
+                    </Card>
+                  ) : (
+                    <Card
+                      className="border !border-blue-gray-100 p-2"
                       shadow={false}
-                      className="flex !justify-between !items-center rounded-none"
                     >
-                      <Typography variant="h6" className="!font-medium">
-                        LIABILITIES
-                      </Typography>
-                      <Typography variant="h6" className="!font-medium">
-                        AMOUNT (₹)
-                      </Typography>
-                    </CardHeader>
-                    <CardBody className="pl-4 space-y-3">
-                      {LIABILITIES.map(({ title, amount }) => (
-                        <div
-                          key={title}
-                          className="flex items-center justify-between"
-                        >
+                      <CardHeader
+                        floated={false}
+                        shadow={false}
+                        className="flex !justify-between !items-center rounded-none"
+                      >
+                        <Typography variant="h6" className="!font-medium">
+                          LIABILITIES
+                        </Typography>
+                        <Typography variant="h6" className="!font-medium">
+                          AMOUNT (₹)
+                        </Typography>
+                      </CardHeader>
+                      <CardBody className="pl-4 space-y-3">
+                        {LIABILITIES.map(({ title, amount }) => (
+                          <div
+                            key={title}
+                            className="flex items-center justify-between"
+                          >
+                            <Typography className="font-medium">
+                              {title}
+                            </Typography>
+                            <Typography className="font-normal">
+                              {amount}
+                            </Typography>
+                          </div>
+                        ))}
+                        <div className="flex items-center justify-between">
                           <Typography className="font-medium">
-                            {title}
+                            TOTAL LIABILITIES
                           </Typography>
                           <Typography className="font-normal">
-                            {amount}
+                            {LIABILITIES.reduce((prev, curr) => {
+                              return (
+                                prev + Number(curr.amount.split(",").join(""))
+                              );
+                            }, 0)}
                           </Typography>
                         </div>
-                      ))}
-                      <div className="flex items-center justify-between">
-                        <Typography className="font-medium">
-                          TOTAL LIABILITIES
-                        </Typography>
-                        <Typography className="font-normal">
-                          {LIABILITIES.reduce((prev, curr) => {
-                            return (
-                              prev + Number(curr.amount.split(",").join(""))
-                            );
-                          }, 0)}
-                        </Typography>
-                      </div>
-                    </CardBody>
-                  </Card>
+                      </CardBody>
+                    </Card>
+                  )}
                 </div>
               </TabPanel>
               <TabPanel value="trial_balance">
                 <div className="grid grid-cols-12 gap-3">
-                  {TRIAL_BALANCE_DATA.map((kpiData, idx) => (
-                    <div
-                      key={idx}
-                      className="col-span-12 md:col-span-6 xl:col-span-3"
-                    >
-                      <KpiCard {...kpiData} />
-                    </div>
-                  ))}
+                  {isLoading
+                    ? [...Array(4)].map((_, idx) => (
+                        <div
+                          key={idx}
+                          className="col-span-12 md:col-span-6 xl:col-span-3"
+                        >
+                          <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[58px]">
+                            <CardBody>
+                              <div></div>
+                            </CardBody>
+                          </Card>
+                        </div>
+                      ))
+                    : TRIAL_BALANCE_DATA.map((kpiData, idx) => (
+                        <div
+                          key={idx}
+                          className="col-span-12 md:col-span-6 xl:col-span-3"
+                        >
+                          <KpiCard {...kpiData} />
+                        </div>
+                      ))}
                 </div>
                 <table className="mt-4 min-w-full table-auto text-left">
                   <thead>
@@ -551,60 +607,80 @@ const ReportsInfo = () => {
                       ))}
                     </tr>
                   </thead>
-                  <tbody>
-                    {TRAIL_BALANCE_TABLE_BODY.length > 0 ? (
-                      TRAIL_BALANCE_TABLE_BODY.map((row, idx) => {
-                        const {
-                          ledgerGroup,
-                          debit,
-                          credit,
-                          netBalance,
-                          isDebit,
-                        } = row;
-                        const classes = "p-4 px-0 border-b border-blue-gray-50";
+                  {isLoading ? (
+                    <tbody>
+                      {[...Array(4)].map((_, index) => (
+                        <tr key={index} className="animate-pulse">
+                          {TRAIL_BALANCE_TABLE_HEAD.map((_, idx) => (
+                            <td
+                              key={idx}
+                              className="p-4 border-b border-gray-300"
+                            >
+                              <div className="flex justify-center">
+                                <span className="h-4 bg-gray-300 rounded w-24"></span>
+                              </div>
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  ) : (
+                    <tbody>
+                      {TRAIL_BALANCE_TABLE_BODY.length > 0 ? (
+                        TRAIL_BALANCE_TABLE_BODY.map((row, idx) => {
+                          const {
+                            ledgerGroup,
+                            debit,
+                            credit,
+                            netBalance,
+                            isDebit,
+                          } = row;
+                          const classes =
+                            "p-4 px-0 border-b border-blue-gray-50";
 
-                        return (
-                          <tr key={ledgerGroup}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {ledgerGroup || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {debit || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {credit || "-"}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="font-normal pl-3"
-                              >
-                                {isDebit ? "Dr " : "Cr "}
-                                {netBalance || "-"}
-                              </Typography>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <EmptyData colSpan={4} />
-                    )}
-                  </tbody>
+                          return (
+                            <tr key={ledgerGroup}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {ledgerGroup || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {debit || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {credit || "-"}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="font-normal pl-3"
+                                >
+                                  {isDebit ? "Dr " : "Cr "}
+                                  {netBalance || "-"}
+                                </Typography>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <EmptyData colSpan={4} />
+                      )}
+                    </tbody>
+                  )}
                 </table>
               </TabPanel>
             </TabsBody>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Card,
@@ -268,18 +268,40 @@ const alerts = [
 
 const PaymentsReceipts = () => {
   const [tabValue, setTabValue] = useState("payments");
+  const [isLoading, setIsLoading] = useState(true);
+  const [kpiData, setKpiData] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      setKpiData(PAYMENTS_RECEIPTS_KPI);
+    }, 3000);
+  }, []);
 
   return (
     <div className="mx-5">
       <div className="grid grid-cols-8 xl:grid-cols-8 lg:grid-cols-6 sm:grid-cols-6 gap-3 mt-8">
-        {PAYMENTS_RECEIPTS_KPI.map((kpiData, idx) => (
-          <div
-            key={idx}
-            className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
-          >
-            <KPIStrip {...kpiData} />
-          </div>
-        ))}
+        {isLoading
+          ? [...Array(8)].map((_, idx) => (
+              <div
+                key={idx}
+                className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
+              >
+                <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[94px]">
+                  <CardBody>
+                    <div></div>
+                  </CardBody>
+                </Card>
+              </div>
+            ))
+          : kpiData.map((kpiData, idx) => (
+              <div
+                key={idx}
+                className="xl:col-span-2 lg:col-span-2 sm:col-span-3 col-span-8"
+              >
+                <KPIStrip {...kpiData} />
+              </div>
+            ))}
       </div>
       <div className="grid grid-cols-3 mt-5 gap-5">
         <Card className="col-span-3 xl:col-span-2 shadow-sm border border-gray-200 !rounded-lg">
@@ -336,61 +358,80 @@ const PaymentsReceipts = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody>
-                  {PAYMENTS_TABLE_ROW.length > 0 ? (
-                    PAYMENTS_TABLE_ROW.map(
-                      ({ date, paymentNo, party, amount, mode }, index) => {
-                        const classes = "!p-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {date}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {paymentNo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {party}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {amount}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {mode}
-                              </Typography>
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )
-                  ) : (
-                    <EmptyData colspan={5} />
-                  )}
-                </tbody>
+                {isLoading ? (
+                  <tbody>
+                    {[...Array(5)].map((_, index) => (
+                      <tr key={index} className="animate-pulse">
+                        {PAYMENTS_TABLE_HEAD.map((_, idx) => (
+                          <td
+                            key={idx}
+                            className="p-4 border-b border-gray-300"
+                          >
+                            <div className="flex justify-center">
+                              <span className="h-4 bg-gray-300 rounded w-24"></span>
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    {PAYMENTS_TABLE_ROW.length > 0 ? (
+                      PAYMENTS_TABLE_ROW.map(
+                        ({ date, paymentNo, party, amount, mode }, index) => {
+                          const classes = "!p-4 border-b border-gray-300";
+                          return (
+                            <tr key={index}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {date}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {paymentNo}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {party}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {amount}
+                                </Typography>
+                              </td>
+                              <td className="border-b border-gray-300">
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {mode}
+                                </Typography>
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      <EmptyData colspan={5} />
+                    )}
+                  </tbody>
+                )}
               </table>
             ) : (
               <table className="w-full table-auto h-[400px] overflow-scroll">
@@ -410,61 +451,80 @@ const PaymentsReceipts = () => {
                     ))}
                   </tr>
                 </thead>
-                <tbody>
-                  {RECEIPTS_TABLE_ROW.length > 0 ? (
-                    RECEIPTS_TABLE_ROW.map(
-                      ({ date, receiptNo, party, amount, mode }, index) => {
-                        const classes = "!p-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {date}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {receiptNo}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {party}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {amount}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {mode}
-                              </Typography>
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )
-                  ) : (
-                    <EmptyData colspan={5} />
-                  )}
-                </tbody>
+                {isLoading ? (
+                  <tbody>
+                    {[...Array(5)].map((_, index) => (
+                      <tr key={index} className="animate-pulse">
+                        {RECEIPTS_TABLE_HEAD.map((_, idx) => (
+                          <td
+                            key={idx}
+                            className="p-4 border-b border-gray-300"
+                          >
+                            <div className="flex justify-center">
+                              <span className="h-4 bg-gray-300 rounded w-24"></span>
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    {RECEIPTS_TABLE_ROW.length > 0 ? (
+                      RECEIPTS_TABLE_ROW.map(
+                        ({ date, receiptNo, party, amount, mode }, index) => {
+                          const classes = "!p-4 border-b border-gray-300";
+                          return (
+                            <tr key={index}>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {date}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {receiptNo}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {party}
+                                </Typography>
+                              </td>
+                              <td className={classes}>
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {amount}
+                                </Typography>
+                              </td>
+                              <td className="border-b border-gray-300">
+                                <Typography
+                                  variant="small"
+                                  className="!font-normal text-center"
+                                >
+                                  {mode}
+                                </Typography>
+                              </td>
+                            </tr>
+                          );
+                        }
+                      )
+                    ) : (
+                      <EmptyData colspan={5} />
+                    )}
+                  </tbody>
+                )}
               </table>
             )}
           </CardBody>
@@ -489,52 +549,58 @@ const PaymentsReceipts = () => {
                     <Typography className="font-normal text-sm">
                       Vendors receiving high payments this period
                     </Typography>
-                    <div className="flex flex-col gap-3 mt-5">
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+                    {isLoading ? (
+                      <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] rounded mt-4 h-[124px]">
+                        <div></div>
+                      </Card>
+                    ) : (
+                      <div className="flex flex-col gap-3 mt-5">
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              ABC Traders
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            ABC Traders
+                            ₹180,000
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹180,000
-                        </Typography>
-                      </div>
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              Raj Agencies
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            Raj Agencies
+                            ₹126,000
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹126,000
-                        </Typography>
-                      </div>
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              Metro Logistics
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            Metro Logistics
+                            ₹92,500
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹92,500
-                        </Typography>
-                      </div>
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              Repairs & Maintenance
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            Repairs & Maintenance
+                            ₹84,000
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹84,000
-                        </Typography>
                       </div>
-                    </div>
+                    )}
                   </TabPanel>
                   <TabPanel value="receipt">
                     <Typography className="font-bold text-lg">
@@ -543,52 +609,58 @@ const PaymentsReceipts = () => {
                     <Typography className="font-normal text-sm">
                       Customers paying biggest recievables
                     </Typography>
-                    <div className="flex flex-col gap-3 mt-5">
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+                    {isLoading ? (
+                      <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] rounded mt-4 h-[124px]">
+                        <div></div>
+                      </Card>
+                    ) : (
+                      <div className="flex flex-col gap-3 mt-5">
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#93C5FD] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              XYZ Exports
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            XYZ Exports
+                            ₹210,000
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹210,000
-                        </Typography>
-                      </div>
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#67E8F9] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              PP Enterprises
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            PP Enterprises
+                            ₹164,000
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹164,000
-                        </Typography>
-                      </div>
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              Global Traders
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            Global Traders
+                            ₹132,500
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹132,500
-                        </Typography>
-                      </div>
-                      <div className="flex items-center gap-10 justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                        <div className="flex items-center gap-10 justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2 w-2 bg-[#C4B5FD] rounded-full"></span>
+                            <Typography variant="small" className="font-normal">
+                              Repairs & Maintenance
+                            </Typography>
+                          </div>
                           <Typography variant="small" className="font-normal">
-                            Repairs & Maintenance
+                            ₹84,000
                           </Typography>
                         </div>
-                        <Typography variant="small" className="font-normal">
-                          ₹84,000
-                        </Typography>
                       </div>
-                    </div>
+                    )}
                   </TabPanel>
                 </TabsBody>
               </Tabs>
@@ -603,41 +675,51 @@ const PaymentsReceipts = () => {
                 Compilance & mapping receivables
               </Typography>
             </CardHeader>
-            <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-              {alerts.length > 0 ? (
-                <List className="pt-0 gap-3">
-                  {alerts.map(({ title, subtitle, img }) => (
-                    <Card key={title} className="border shadow-none">
-                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                        <ListItemPrefix className="items-start mr-2">
-                          {img}
-                        </ListItemPrefix>
-                        <div>
-                          <Typography>{title}</Typography>
-                          <Typography className="text-[14px]">
-                            {subtitle}
-                          </Typography>
-                        </div>
-                      </ListItem>
-                    </Card>
-                  ))}
-                </List>
-              ) : (
-                <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
-                  <img
-                    src="/media/icons/line_graph.svg"
-                    alt="line_graph"
-                    className="h-5 w-5"
-                  />
-                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
-                </div>
-              )}
-            </CardBody>
+            {isLoading ? (
+              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
+                <CardBody>
+                  <div></div>
+                </CardBody>
+              </Card>
+            ) : (
+              <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
+                {alerts.length > 0 ? (
+                  <List className="pt-0 gap-3">
+                    {alerts.map(({ title, subtitle, img }) => (
+                      <Card key={title} className="border shadow-none">
+                        <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                          <ListItemPrefix className="items-start mr-2">
+                            {img}
+                          </ListItemPrefix>
+                          <div>
+                            <Typography>{title}</Typography>
+                            <Typography className="text-[14px]">
+                              {subtitle}
+                            </Typography>
+                          </div>
+                        </ListItem>
+                      </Card>
+                    ))}
+                  </List>
+                ) : (
+                  <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                    <img
+                      src="/media/icons/line_graph.svg"
+                      alt="line_graph"
+                      className="h-5 w-5"
+                    />
+                    <Typography className="!text-[#6f7c97]">
+                      No Alerts
+                    </Typography>
+                  </div>
+                )}
+              </CardBody>
+            )}
           </Card>
         </div>
       </div>
       <div className="mt-5">
-        <PaymentReceiptRegister />
+        <PaymentReceiptRegister isLoading={isLoading} />
       </div>
     </div>
   );
