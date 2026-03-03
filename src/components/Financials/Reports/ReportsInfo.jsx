@@ -15,7 +15,11 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
+
 import EmptyData from "../../common/EmptyData";
+import Pagination from "../../common/Pagination";
+import TrailBalanceFilterTable from "./Table/TrailBalanceFilterTable";
 
 const KpiCard = ({ title, subtitle, price, img }) => {
   return (
@@ -69,40 +73,6 @@ const TRIAL_BALANCE_DATA = [
     title: "Purchase Accounts",
     price: "₹320,000",
     img: <img className="h-5 w-5" src="/media/kpi-strip/sales.svg" />,
-  },
-];
-
-const TRAIL_BALANCE_TABLE_HEAD = [
-  "Ledger Group",
-  "Dr (₹)",
-  "Cr (₹)",
-  "Net Balance",
-];
-
-const TRAIL_BALANCE_TABLE_BODY = [
-  {
-    ledgerGroup: "Current Assets",
-    debit: "250,000",
-    netBalance: "250,000",
-    isDebit: true,
-  },
-  {
-    ledgerGroup: "Misc Expenses",
-    debit: "15,000",
-    netBalance: "15,000",
-    isDebit: true,
-  },
-  {
-    ledgerGroup: "Sales Account",
-    credit: "480,000",
-    netBalance: "480,000",
-    isDebit: false,
-  },
-  {
-    ledgerGroup: "Purchase Account",
-    debit: "320,000",
-    netBalance: "320,000",
-    isDebit: true,
   },
 ];
 
@@ -589,99 +559,7 @@ const ReportsInfo = ({ isLoading }) => {
                         </div>
                       ))}
                 </div>
-                <table className="mt-4 min-w-full table-auto text-left">
-                  <thead>
-                    <tr>
-                      {TRAIL_BALANCE_TABLE_HEAD.map((head) => (
-                        <th
-                          key={head}
-                          className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                        >
-                          <Typography
-                            variant="small"
-                            className="font-normal leading-none pl-3"
-                          >
-                            {head}
-                          </Typography>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  {isLoading ? (
-                    <tbody>
-                      {[...Array(4)].map((_, index) => (
-                        <tr key={index} className="animate-pulse">
-                          {TRAIL_BALANCE_TABLE_HEAD.map((_, idx) => (
-                            <td
-                              key={idx}
-                              className="p-4 border-b border-gray-300"
-                            >
-                              <div className="flex justify-center">
-                                <span className="h-4 bg-gray-300 rounded w-24"></span>
-                              </div>
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  ) : (
-                    <tbody>
-                      {TRAIL_BALANCE_TABLE_BODY.length > 0 ? (
-                        TRAIL_BALANCE_TABLE_BODY.map((row, idx) => {
-                          const {
-                            ledgerGroup,
-                            debit,
-                            credit,
-                            netBalance,
-                            isDebit,
-                          } = row;
-                          const classes =
-                            "p-4 px-0 border-b border-blue-gray-50";
-
-                          return (
-                            <tr key={ledgerGroup}>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="font-normal pl-3"
-                                >
-                                  {ledgerGroup || "-"}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="font-normal pl-3"
-                                >
-                                  {debit || "-"}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="font-normal pl-3"
-                                >
-                                  {credit || "-"}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="font-normal pl-3"
-                                >
-                                  {isDebit ? "Dr " : "Cr "}
-                                  {netBalance || "-"}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        })
-                      ) : (
-                        <EmptyData colSpan={4} />
-                      )}
-                    </tbody>
-                  )}
-                </table>
+                <TrailBalanceFilterTable isLoading={isLoading} />
               </TabPanel>
             </TabsBody>
           </Tabs>

@@ -7,55 +7,13 @@ import {
   Chip,
   List,
   ListItem,
-  ListItemPrefix,
-  Switch,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsBody,
-  TabsHeader,
   Typography,
 } from "@material-tailwind/react";
 
 import LoanODFilterTable from "@/components/Financials/LoansODs/LoanODFilterTable";
 import KPIStrip from "@/components/common/KPIStrip";
-import EmptyData from "@/components/common/EmptyData";
 
-const LOAN_SUMMARY_TABLE_HEAD = [
-  {
-    head: "Loan",
-    customeStyle: "text-center",
-  },
-  {
-    head: "Lender",
-  },
-  {
-    head: "Type",
-  },
-  {
-    head: "Outstanding",
-  },
-  {
-    head: "Next EMI",
-  },
-];
-
-const LOAN_SUMMARY_TABLE_ROWS = [
-  {
-    loan: "Home Loan - Office",
-    lender: "HDFC Bank",
-    type: "Team",
-    outstanding: "₹1.45 Cr",
-    nextEMI: "10 Jul - ₹2,10,000",
-  },
-  {
-    loan: "Machinery Loan",
-    lender: "SBI",
-    type: "Team",
-    outstanding: "₹82 L",
-    nextEMI: "15 Jul - ₹1,40,000",
-  },
-];
+import LoanSummaryFilterTable from "@/components/Financials/LoansODs/Table/LoanSummaryFilterTable";
 
 const alerts = [
   {
@@ -139,7 +97,7 @@ const LoanODs = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1500);
   }, []);
 
   return (
@@ -173,95 +131,7 @@ const LoanODs = () => {
             <Typography className="font-bold text-lg">Loan Summary</Typography>
           </CardHeader>
           <CardBody className="pt-3">
-            <table className="w-full table-auto max-h-[400px] overflow-scroll">
-              <thead>
-                <tr>
-                  {LOAN_SUMMARY_TABLE_HEAD.map(({ head, customeStyle }) => (
-                    <th
-                      key={head}
-                      className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                    >
-                      <div className="flex gap-2 justify-center">
-                        <Typography variant="small" className="!font-bold">
-                          {head}
-                        </Typography>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              {isLoading ? (
-                <tbody>
-                  {[...Array(4)].map((_, index) => (
-                    <tr key={index} className="animate-pulse">
-                      {LOAN_SUMMARY_TABLE_HEAD.map((_, idx) => (
-                        <td key={idx} className="p-4 border-b border-gray-300">
-                          <div className="flex justify-center">
-                            <span className="h-4 bg-gray-300 rounded w-24"></span>
-                          </div>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <tbody>
-                  {LOAN_SUMMARY_TABLE_ROWS.length > 0 ? (
-                    LOAN_SUMMARY_TABLE_ROWS.map(
-                      ({ loan, lender, type, outstanding, nextEMI }, index) => {
-                        const classes = "!p-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {loan}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {lender}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {type}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {outstanding}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {nextEMI}
-                              </Typography>
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )
-                  ) : (
-                    <EmptyData colSpan={5} />
-                  )}
-                </tbody>
-              )}
-            </table>
+            <LoanSummaryFilterTable isLoading={isLoading} />
           </CardBody>
         </Card>
         <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
@@ -273,55 +143,60 @@ const LoanODs = () => {
             >
               <Typography className="font-bold text-lg">OD Accounts</Typography>
             </CardHeader>
-            {isLoading ? (
-              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] rounded mx-6 mb-6 h-[124px]">
-                <div></div>
-              </Card>
-            ) : (
-              <CardBody className="!p-2 !pt-0 mx-4 max-h-[270px] overflow-scroll">
-                {ODsAccount.length > 0 ? (
-                  <List className="pt-0 gap-3">
-                    {ODsAccount.map(({ title, subtitle, value }) => (
-                      <Card key={title} className="border shadow-none">
-                        <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                          <div className="flex justify-between w-full">
-                            <div>
-                              <Typography className="text-sm font-bold">
-                                {title}
-                              </Typography>
-                              <Typography className="text-xs">
-                                {subtitle}
-                              </Typography>
-                            </div>
-                            <Chip
-                              value={value}
-                              size="sm"
-                              color="green"
-                              className="h-[30px]"
-                              style={{
-                                color: "#108f6f",
-                                backgroundColor: "#eaf8f4",
-                              }}
-                            />
+            <CardBody className="!p-2 !pt-0 mx-4 max-h-[270px] overflow-scroll">
+              {isLoading ? (
+                <List className="pt-0 gap-3">
+                  {[...Array(2)].map((_, idx) => (
+                    <Card
+                      key={idx}
+                      className="transition-all animate-pulse w-full h-[60px] shadow-none bg-[#E1E6EA]"
+                    >
+                      <div></div>
+                    </Card>
+                  ))}
+                </List>
+              ) : ODsAccount.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {ODsAccount.map(({ title, subtitle, value }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <div className="flex justify-between w-full">
+                          <div>
+                            <Typography className="text-sm font-bold">
+                              {title}
+                            </Typography>
+                            <Typography className="text-xs">
+                              {subtitle}
+                            </Typography>
                           </div>
-                        </ListItem>
-                      </Card>
-                    ))}
-                  </List>
-                ) : (
-                  <div className="flex flex-col justify-center items-center h-[230px] gap-2 bg-[#F6F7F9]">
-                    <img
-                      src="/media/icons/line_graph.svg"
-                      alt="line_graph"
-                      className="h-5 w-5"
-                    />
-                    <Typography className="!text-[#6f7c97]">
-                      No Accounts
-                    </Typography>
-                  </div>
-                )}
-              </CardBody>
-            )}
+                          <Chip
+                            value={value}
+                            size="sm"
+                            color="green"
+                            className="h-[30px]"
+                            style={{
+                              color: "#108f6f",
+                              backgroundColor: "#eaf8f4",
+                            }}
+                          />
+                        </div>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-[230px] gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">
+                    No Accounts
+                  </Typography>
+                </div>
+              )}
+            </CardBody>
           </Card>
           <Card className="shadow-sm border border-gray-200 !rounded-lg w-full">
             <CardHeader
@@ -331,38 +206,39 @@ const LoanODs = () => {
             >
               <Typography className="font-bold text-lg">Alerts</Typography>
             </CardHeader>
-            {isLoading ? (
-              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
-                <CardBody>
-                  <div></div>
-                </CardBody>
-              </Card>
-            ) : (
-              <CardBody className="!p-2 !pt-0 mx-4 max-h-[270px] overflow-scroll">
-                {alerts.length > 0 ? (
-                  <List className="pt-0 gap-3">
-                    {alerts.map(({ title, subtitle, img }) => (
-                      <Card key={title} className="border shadow-none">
-                        <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                          <Typography className="text-sm">{title}</Typography>
-                        </ListItem>
-                      </Card>
-                    ))}
-                  </List>
-                ) : (
-                  <div className="flex flex-col justify-center items-center h-[230px] gap-2 bg-[#F6F7F9]">
-                    <img
-                      src="/media/icons/line_graph.svg"
-                      alt="line_graph"
-                      className="h-5 w-5"
-                    />
-                    <Typography className="!text-[#6f7c97]">
-                      No Alerts
-                    </Typography>
-                  </div>
-                )}
-              </CardBody>
-            )}
+            <CardBody className="!p-2 !pt-0 mx-4 max-h-[270px] overflow-scroll">
+              {isLoading ? (
+                <List className="pt-0 gap-3">
+                  {[...Array(3)].map((_, idx) => (
+                    <Card
+                      key={idx}
+                      className="transition-all animate-pulse w-full h-[44px] shadow-none bg-[#E1E6EA]"
+                    >
+                      <div></div>
+                    </Card>
+                  ))}
+                </List>
+              ) : alerts.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <Typography className="text-sm">{title}</Typography>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-[230px] gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
+                </div>
+              )}
+            </CardBody>
           </Card>
         </div>
       </div>

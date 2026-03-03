@@ -9,44 +9,60 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
+
 import ReceivablesDocsDrawer from "./ReceivablesDocsDrawer";
 
 import EmptyData from "@/components/common/EmptyData";
+import Pagination from "@/components/common/Pagination";
+
+import useTableSort from "@/hooks/useTableSort";
 
 const INVOICE_REGISTER_HEAD = [
   {
     head: "Invoice Date",
     customeStyle: "text-center",
+    value: "invoiceDate",
   },
   {
     head: "Invoice No.",
+    value: "invoiceNo",
   },
   {
     head: "Customer",
+    value: "customer",
   },
   {
     head: "Due Date",
+    value: "dueDate",
   },
   {
     head: "Aging",
+    value: "aging",
   },
   {
     head: "Amount",
+    value: "amount",
   },
   {
     head: "Received",
+    value: "received",
   },
   {
     head: "Balance",
+    value: "balance",
   },
   {
     head: "Status",
+    value: "status",
   },
   {
     head: "Docs",
+    value: "docs",
   },
   {
     head: "Actions",
+    value: "actions",
   },
 ];
 
@@ -87,6 +103,11 @@ const INVOICE_REGISTER_TABLE_ROWS = [
 ];
 
 const ReceivablesInvoiceTable = ({ isLoading }) => {
+  const {
+    sortedData: sortedInvoiceRegisterTableRows,
+    handleSort: handleInvoiceRegisterTableSort,
+  } = useTableSort(INVOICE_REGISTER_TABLE_ROWS);
+
   const [isDrawerOpen, setOpenDrawer] = useState(false);
 
   const handleToggleDrawer = () => {
@@ -235,17 +256,26 @@ const ReceivablesInvoiceTable = ({ isLoading }) => {
           <table className="mt-4 min-w-full table-auto text-left">
             <thead>
               <tr>
-                {INVOICE_REGISTER_HEAD.map(({ head, customeStyle }) => (
+                {INVOICE_REGISTER_HEAD.map(({ head, customeStyle, value }, index) => (
                   <th
                     key={head}
                     className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
                   >
-                    <Typography
-                      variant="small"
-                      className="font-normal leading-none pl-3"
-                    >
-                      {head}
-                    </Typography>
+                    <div className="flex">
+                      <Typography
+                        variant="small"
+                        className="flex items-center justify-between gap-2 font-normal leading-none !font-bold pl-3 cursor-pointer"
+                        onClick={() => handleInvoiceRegisterTableSort(value)}
+                      >
+                        {head}
+                        {index < INVOICE_REGISTER_HEAD.length - 2 && (
+                          <ChevronUpDownIcon
+                            strokeWidth={2}
+                            className="h-4 w-4"
+                          />
+                        )}
+                      </Typography>
+                    </div>
                   </th>
                 ))}
               </tr>
@@ -267,8 +297,8 @@ const ReceivablesInvoiceTable = ({ isLoading }) => {
               </tbody>
             ) : (
               <tbody>
-                {INVOICE_REGISTER_TABLE_ROWS.length > 0 ? (
-                  INVOICE_REGISTER_TABLE_ROWS.map((row, index) => {
+                {sortedInvoiceRegisterTableRows.length > 0 ? (
+                  sortedInvoiceRegisterTableRows.map((row, index) => {
                     const {
                       invoiceDate,
                       invoiceNo,
@@ -280,8 +310,6 @@ const ReceivablesInvoiceTable = ({ isLoading }) => {
                       balance,
                       status,
                     } = row;
-                    const isLast =
-                      index === INVOICE_REGISTER_TABLE_ROWS.length - 1;
                     const classes = "p-4 px-0 border-b border-blue-gray-50";
 
                     return (
@@ -398,6 +426,7 @@ const ReceivablesInvoiceTable = ({ isLoading }) => {
               </tbody>
             )}
           </table>
+          <Pagination />
         </CardBody>
       </Card>
       <ReceivablesDocsDrawer

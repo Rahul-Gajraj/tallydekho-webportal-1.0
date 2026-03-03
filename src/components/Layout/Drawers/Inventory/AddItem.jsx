@@ -43,9 +43,7 @@ const AddItem = ({ open, toggleDrawer }) => {
   const preferences = useSelector((state) => state?.preferences);
   const preference = preferences?.preference || {};
   const currencyNumber = preferences?.currencyNumber || {};
-  const {
-    dateFormat,
-  } = currencyNumber;
+  const { dateFormat } = currencyNumber;
 
   const timezone = preference?.timezone ?? "Asia/Kolkata";
 
@@ -377,12 +375,14 @@ const AddItem = ({ open, toggleDrawer }) => {
                       <PopoverHandler>
                         <Button
                           variant="outlined"
-                          className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                          className={`flex items-center w-full gap-3 font-medium justify-between focus:ring-0 h-[40px] px-3 ${
+                            expiryDatePopoverOpen
+                              ? "border-[#108f6f] !border-[2px]"
+                              : "border-[#b0bec5]"
+                          } hover:border-[#108f6f]`}
                           ripple={false}
                         >
-                          {moment(field.value)
-                            .tz(timezone)
-                            .format(dateFormat)}
+                          {moment(field.value).tz(timezone).format(dateFormat)}
                           <img
                             src="/media/icons/calendar.svg"
                             alt="calendar"

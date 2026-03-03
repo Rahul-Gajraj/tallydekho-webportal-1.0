@@ -229,7 +229,11 @@ const CreditNote = ({ open, toggleDrawer }) => {
                         <PopoverHandler>
                           <Button
                             variant="outlined"
-                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            className={`flex items-center w-full gap-3 text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3 ${
+                              debitNotePopoverOpen
+                                ? "border-[#108f6f] !border-[2px]"
+                                : "border-[#b0bec5]"
+                            } hover:border-[#108f6f]`}
                             ripple={false}
                           >
                             {moment(field.value)

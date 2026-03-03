@@ -301,7 +301,11 @@ const SalesOrder = ({ open, toggleDrawer }) => {
                         <PopoverHandler>
                           <Button
                             variant="outlined"
-                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            className={`flex items-center w-full gap-3 text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3 ${
+                              orderPopoverOpen
+                                ? "border-[#108f6f] !border-[2px]"
+                                : "border-[#b0bec5]"
+                            } hover:border-[#108f6f]`}
                             ripple={false}
                           >
                             {moment(field.value)
@@ -435,7 +439,11 @@ const SalesOrder = ({ open, toggleDrawer }) => {
                         <PopoverHandler>
                           <Button
                             variant="outlined"
-                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            className={`flex items-center w-full gap-3 text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3 ${
+                              dueDatePopoverOpen
+                                ? "border-[#108f6f] !border-[2px]"
+                                : "border-[#b0bec5]"
+                            } hover:border-[#108f6f]`}
                             ripple={false}
                           >
                             {moment(field.value)
@@ -512,7 +520,7 @@ const SalesOrder = ({ open, toggleDrawer }) => {
               </div>
               <div className="col-span-6 relative">
                 <label className="text-[12px] absolute -top-2.5 left-3 z-10 bg-white px-1 text-blue-gray-600">
-                  Validity Peroid
+                  Validity Period
                 </label>
                 <Controller
                   name="validityPeriod"
@@ -534,7 +542,11 @@ const SalesOrder = ({ open, toggleDrawer }) => {
                         <PopoverHandler>
                           <Button
                             variant="outlined"
-                            className="flex items-center w-full gap-3 !border-[#B0BEC5] text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3"
+                            className={`flex items-center w-full gap-3 text-[#455a64] font-medium justify-between focus:ring-0 h-[40px] px-3 ${
+                              validityPeriodPopoverOpen
+                                ? "border-[#108f6f] !border-[2px]"
+                                : "border-[#b0bec5]"
+                            } hover:border-[#108f6f]`}
                             ripple={false}
                           >
                             {moment(field.value)

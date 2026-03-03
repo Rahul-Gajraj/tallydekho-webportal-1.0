@@ -12,6 +12,10 @@ import LoanODs from "@/pages/Financials/LoansODs/LoansODs";
 import Reports from "@/pages/Financials/Reports/Reports";
 import GST from "@/pages/Compliance/GST/GST";
 import EWayBill from "@/pages/Compliance/EWayBill/EWayBill";
+import OtherTaxes from "@/pages/Compliance/OtherTaxes/OtherTaxes";
+import AuditTrial from "@/pages/Compliance/AuditTrail/AuditTrial";
+import Ledgers from "@/pages/Ledgers/Ledgers";
+import EInvoice from "@/pages/Compliance/EInvoice/EInvoice";
 
 const PrivateRoutes = () => {
   return (
@@ -34,6 +38,10 @@ const PrivateRoutes = () => {
       <Route path="/financials/reports" element={<Reports />} />
       <Route path="/compliance/gst" element={<GST />} />
       <Route path="/compliance/e-way-bill" element={<EWayBill />} />
+      <Route path="/compliance/e-invoice" element={<EInvoice />} />
+      <Route path="/compliance/other-taxes" element={<OtherTaxes />} />
+      <Route path="/compliance/audit-trail" element={<AuditTrial />} />
+      <Route path="/ledgers" element={<Ledgers />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
       {/* WIll be redirected to 404 page  */}

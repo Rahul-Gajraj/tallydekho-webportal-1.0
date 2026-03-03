@@ -9,40 +9,58 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
+
+import EmptyData from "@/components/common/EmptyData";
+import Pagination from "@/components/common/Pagination";
+
+import useTableSort from "@/hooks/useTableSort";
+
 const BILL_REGISTER_HEAD = [
   {
     head: "Bill Date",
     customeStyle: "text-center",
+    value: "billDate",
   },
   {
     head: "Bill No.",
+    value: "billNo",
   },
   {
     head: "Vendor",
+    value: "vendor",
   },
   {
     head: "Due Date",
+    value: "dueDate",
   },
   {
     head: "Aging",
+    value: "aging",
   },
   {
     head: "Amount",
+    value: "amount",
   },
   {
     head: "Paid",
+    value: "paid",
   },
   {
     head: "Balance",
+    value: "balance",
   },
   {
     head: "Status",
+    value: "status",
   },
   {
     head: "Docs",
+    value: "docs",
   },
   {
     head: "Actions",
+    value: "actions",
   },
 ];
 
@@ -83,6 +101,11 @@ const BILL_REGISTER_TABLE_ROWS = [
 ];
 
 const PayablesInvoiceTable = ({ isLoading }) => {
+  const {
+    sortedData: sortedBillRegisterTableRows,
+    handleSort: handleBillRegisterTableSort,
+  } = useTableSort(BILL_REGISTER_TABLE_ROWS);
+
   return (
     <>
       <Card className="mt-5">
@@ -252,19 +275,30 @@ const PayablesInvoiceTable = ({ isLoading }) => {
           <table className="mt-4 min-w-full table-auto text-left">
             <thead>
               <tr>
-                {BILL_REGISTER_HEAD.map(({ head, customeStyle }) => (
-                  <th
-                    key={head}
-                    className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                  >
-                    <Typography
-                      variant="small"
-                      className="font-normal leading-none pl-3"
+                {BILL_REGISTER_HEAD.map(
+                  ({ head, customeStyle, value }, index) => (
+                    <th
+                      key={head}
+                      className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
                     >
-                      {head}
-                    </Typography>
-                  </th>
-                ))}
+                      <div className="flex">
+                        <Typography
+                          variant="small"
+                          className="flex items-center justify-between gap-2 font-normal leading-none !font-bold pl-3 cursor-pointer"
+                          onClick={() => handleBillRegisterTableSort(value)}
+                        >
+                          {head}
+                          {index < BILL_REGISTER_HEAD.length - 2 && (
+                            <ChevronUpDownIcon
+                              strokeWidth={2}
+                              className="h-4 w-4"
+                            />
+                          )}
+                        </Typography>
+                      </div>
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
             {isLoading ? (
@@ -284,7 +318,7 @@ const PayablesInvoiceTable = ({ isLoading }) => {
               </tbody>
             ) : (
               <tbody>
-                {BILL_REGISTER_TABLE_ROWS.map((row, index) => {
+                {sortedBillRegisterTableRows.map((row, index) => {
                   const {
                     billDate,
                     billNo,
@@ -296,7 +330,6 @@ const PayablesInvoiceTable = ({ isLoading }) => {
                     balance,
                     status,
                   } = row;
-                  const isLast = index === BILL_REGISTER_TABLE_ROWS.length - 1;
                   const classes = "p-4 px-0 border-b border-blue-gray-50";
 
                   return (
@@ -407,6 +440,7 @@ const PayablesInvoiceTable = ({ isLoading }) => {
               </tbody>
             )}
           </table>
+          <Pagination />
         </CardBody>
       </Card>
     </>

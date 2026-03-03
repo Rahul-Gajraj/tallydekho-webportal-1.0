@@ -17,6 +17,7 @@ import {
 } from "@material-tailwind/react";
 
 import KPIStrip from "@/components/common/KPIStrip";
+import PayablesOutstandingFilterTable from "../Table/PayablesOutstandingFilterTable";
 
 const RECEIVABLES_KPI = [
   {
@@ -76,56 +77,6 @@ const RECEIVABLES_KPI = [
         <path d="M560-440q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM280-320q-33 0-56.5-23.5T200-400v-320q0-33 23.5-56.5T280-800h560q33 0 56.5 23.5T920-720v320q0 33-23.5 56.5T840-320H280Zm80-80h400q0-33 23.5-56.5T840-480v-160q-33 0-56.5-23.5T760-720H360q0 33-23.5 56.5T280-640v160q33 0 56.5 23.5T360-400Zm400 240H120q-33 0-56.5-23.5T40-240v-400q0-17 11.5-28.5T80-680q17 0 28.5 11.5T120-640v400h640q17 0 28.5 11.5T800-200q0 17-11.5 28.5T760-160ZM280-400v-320 320Z" />
       </svg>
     ),
-  },
-];
-
-const VENDORS_OUTSTANDING_TABLE_HEAD = [
-  {
-    head: "Vendor",
-    customeStyle: "text-center",
-  },
-  {
-    head: "Outstanding",
-  },
-  {
-    head: "Overdue",
-  },
-  {
-    head: "Aging",
-  },
-  {
-    head: "Status",
-  },
-];
-
-const VENDOR_OUTSTANDING_TABLE_ROWS = [
-  {
-    vendor: "ABC Traders",
-    outstanding: "₹780,000",
-    overdue: "₹310,000",
-    aging: "31-60 days",
-    status: "Pay Soon",
-  },
-  {
-    vendor: "Metro Logistics",
-    outstanding: "₹520,000",
-    overdue: "₹140,000",
-    aging: "0-30 days",
-    status: "On Track",
-  },
-  {
-    vendor: "Office Mart",
-    outstanding: "₹260,000",
-    overdue: "₹90,000",
-    aging: "61-90 days",
-    status: "Overdue",
-  },
-  {
-    vendor: "Fuel Station",
-    outstanding: "₹110,000",
-    overdue: "₹0",
-    aging: "0-30 days",
-    status: "Healthy",
   },
 ];
 
@@ -195,96 +146,7 @@ const PayablesOverview = ({ isLoading }) => {
             </div>
           </CardHeader>
           <CardBody className="p-4">
-            <table className="w-full table-auto h-[400px] overflow-scroll">
-              <thead>
-                <tr>
-                  {VENDORS_OUTSTANDING_TABLE_HEAD.map(
-                    ({ head, customeStyle }) => (
-                      <th
-                        key={head}
-                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                      >
-                        <div className="flex gap-2 justify-center">
-                          <Typography variant="small" className="!font-bold">
-                            {head}
-                          </Typography>
-                        </div>
-                      </th>
-                    )
-                  )}
-                </tr>
-              </thead>
-              {isLoading ? (
-                <tbody>
-                  {[...Array(4)].map((_, index) => (
-                    <tr key={index} className="animate-pulse">
-                      {VENDORS_OUTSTANDING_TABLE_HEAD.map((_, idx) => (
-                        <td key={idx} className="p-4 border-b border-gray-300">
-                          <div className="flex justify-center">
-                            <span className="h-4 bg-gray-300 rounded w-24"></span>
-                          </div>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <tbody>
-                  {VENDOR_OUTSTANDING_TABLE_ROWS.map(
-                    (
-                      { vendor, outstanding, overdue, aging, status },
-                      index
-                    ) => {
-                      const classes = "!p-4 border-b border-gray-300";
-                      return (
-                        <tr key={index}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {vendor}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {outstanding}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {overdue}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {aging}
-                            </Typography>
-                          </td>
-                          <td className="border-b border-gray-300">
-                            <Typography
-                              variant="small"
-                              className="!font-normal text-center"
-                            >
-                              {status}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    }
-                  )}
-                </tbody>
-              )}
-            </table>
+            <PayablesOutstandingFilterTable isLoading={isLoading} />
           </CardBody>
         </Card>
         <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
@@ -361,16 +223,21 @@ const PayablesOverview = ({ isLoading }) => {
                 Payment risk signals
               </Typography>
             </CardHeader>
-            {isLoading ? (
-              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
-                <CardBody>
-                  <div></div>
-                </CardBody>
-              </Card>
-            ) : (
-              <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-                <List className="pt-0 gap-3">
-                  {alerts.map(({ title, subtitle, img }) => (
+            <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
+              <List className="pt-0 gap-3">
+                {isLoading ? (
+                  <List className="pt-0 gap-3">
+                    {[...Array(3)].map((_, idx) => (
+                      <Card
+                        key={idx}
+                        className="transition-all animate-pulse w-full h-[67px] shadow-none bg-[#E1E6EA]"
+                      >
+                        <div></div>
+                      </Card>
+                    ))}
+                  </List>
+                ) : (
+                  alerts.map(({ title, subtitle, img }) => (
                     <Card key={title} className="border shadow-none">
                       <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
                         <ListItemPrefix className="items-start mr-2">
@@ -384,10 +251,10 @@ const PayablesOverview = ({ isLoading }) => {
                         </div>
                       </ListItem>
                     </Card>
-                  ))}
-                </List>
-              </CardBody>
-            )}
+                  ))
+                )}
+              </List>
+            </CardBody>
           </Card>
         </div>
       </div>

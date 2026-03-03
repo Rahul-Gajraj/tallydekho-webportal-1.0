@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Chart from "react-apexcharts";
 
@@ -10,6 +10,8 @@ import {
 } from "@material-tailwind/react";
 
 import KPIStrip from "@/components/common/KPIStrip";
+import EWayBillFilterTable from "@/components/Compliance/E-Way_Bill/EWayBillFilterTable";
+import RecentActivityFilterTable from "@/components/Compliance/E-Way_Bill/RecentActivityFilterTable";
 
 const kpiData = [
   {
@@ -29,7 +31,7 @@ const kpiData = [
     price: "9",
   },
   {
-    title: "Expising 24H",
+    title: "Expiring 24H",
     price: "6",
   },
 ];
@@ -68,91 +70,50 @@ const days = [
   "Jan 31",
 ];
 
-const recentActivity = [
-  { date: "10 Jul 14:42", activity: "14 bills generated" },
-  { date: "07 Jul 18:55", activity: "9 bills generated" },
-  { date: "05 Jul 09:40", activity: "1 bill cancelled" },
-];
-
-const eWayBillList = [
-  {
-    column: "date",
-    example: "12 Jul 23:59",
-    actions: [
-      "Extend Validity",
-      "Cancel E-Way Bill",
-      "View E-Way Bill",
-      "Share PDF",
-    ],
-  },
-  {
-    colmn: "invoice",
-    example: "INV-30865",
-    actions: [
-      "Extend Validity",
-      "Cancel E-Way Bill",
-      "View E-Way Bill",
-      "Share PDF",
-    ],
-  },
-  {
-    column: "party",
-    example: "Maaruji Technologies Pvt Ltd",
-    actions: [
-      "Extend Validity",
-      "Cancel E-Way Bill",
-      "View E-Way Bill",
-      "Share PDF",
-    ],
-  },
-  {
-    column: "ewbNo",
-    example: "EWB-10045678",
-    actions: [
-      "Extend Validity",
-      "Cancel E-Way Bill",
-      "View E-Way Bill",
-      "Share PDF",
-    ],
-  },
-  {
-    column: "vehicle",
-    example: "RJ14 XX 5555",
-    actions: [
-      "Extend Validity",
-      "Cancel E-Way Bill",
-      "View E-Way Bill",
-      "Share PDF",
-    ],
-  },
-  {
-    column: "status",
-    example: "Generated / Pending / Expired",
-    actions: [
-      "Extend Validity",
-      "Cancel E-Way Bill",
-      "View E-Way Bill",
-      "Share PDF",
-    ],
-  },
+const TRANSPOART = [
+  { title: "Road", amount: "240" },
+  { title: "Rail", amount: "20" },
+  { title: "Air", amount: "38" },
+  { title: "Ship", amount: "0" },
 ];
 
 const EWayBill = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
+
   return (
-    <div className="mx-5">
+    <div className="mx-5 overflow-y-scroll">
       <section className="mx-auto mt-8">
         <div className="grid grid-cols-12 xl:grid-cols-5 md:grid-cols-12 sm:grid-cols-6 items-center md:gap-2.5 gap-4">
-          {kpiData.map((data) => (
-            <div
-              key={data.title}
-              className="xl:col-span-1 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12"
-            >
-              <KPIStrip {...data} />
-            </div>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="xl:col-span-1 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full"
+                >
+                  <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[84px]">
+                    <CardBody>
+                      <div></div>
+                    </CardBody>
+                  </Card>
+                </div>
+              ))
+            : kpiData.map((data) => (
+                <div
+                  key={data.title}
+                  className="xl:col-span-1 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12"
+                >
+                  <KPIStrip {...data} />
+                </div>
+              ))}
         </div>
       </section>
-      <section className="mt-5">
+      <section className="my-5">
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-8">
             <Card className="shadow-sm border border-gray-200 !rounded-lg h-full">
@@ -163,77 +124,84 @@ const EWayBill = () => {
               >
                 <Typography variant="h6">E Bill</Typography>
               </CardHeader>
-              <CardBody className="!p-2">
-                <div className="overflow-x-auto overflow-y-hidden">
-                  <Chart
-                    type="bar"
-                    height={350}
-                    series={[
-                      {
-                        // name: "Cash In",
-                        data: [
-                          110419, 210419, 110519, 120419, 130419, 113419,
-                          150419, 220419, 210519, 210219, 115419, 160819, 10419,
-                          210419, 110519, 120419, 130419, 113419, 150419,
-                          220419, 210519, 210219, 115419, 160819, 110419,
-                          210419, 110519, 120419, 130419, 113419, 150419,
-                        ],
-                      },
-                    ]}
-                    options={{
-                      fill: {
-                        type: "gradient",
-                      },
-                      plotOptions: {
-                        bar: {
-                          borderRadius: 5,
-                          borderRadiusApplication: "end",
-                          borderRadiusWhenStacked: "all",
-                          barHeight: "80%",
+              {isLoading ? (
+                <CardBody className="h-[375px] bg-[#ECEEF1] rounded !mx-6 mb-4 mt-2">
+                  <div></div>
+                </CardBody>
+              ) : (
+                <CardBody className="!p-2">
+                  <div className="overflow-x-auto overflow-y-hidden">
+                    <Chart
+                      type="bar"
+                      height={350}
+                      series={[
+                        {
+                          // name: "Cash In",
+                          data: [
+                            110419, 210419, 110519, 120419, 130419, 113419,
+                            150419, 220419, 210519, 210219, 115419, 160819,
+                            10419, 210419, 110519, 120419, 130419, 113419,
+                            150419, 220419, 210519, 210219, 115419, 160819,
+                            110419, 210419, 110519, 120419, 130419, 113419,
+                            150419,
+                          ],
                         },
-                        toolbar: {
-                          show: false,
+                      ]}
+                      options={{
+                        // fill: {
+                        //   type: "gradient",
+                        // },
+                        plotOptions: {
+                          bar: {
+                            borderRadius: 5,
+                            borderRadiusApplication: "end",
+                            borderRadiusWhenStacked: "all",
+                            barHeight: "80%",
+                          },
+                          toolbar: {
+                            show: false,
+                          },
                         },
-                      },
-                      dataLabels: {
-                        enabled: false,
-                      },
-                      stroke: {
-                        show: true,
-                        width: 1,
-                        colors: ["#fff"],
-                      },
-                      tooltip: {
-                        shared: true,
-                        intersect: false,
-                      },
-                      xaxis: {
-                        categories: days,
-                        tickPlacement: "on",
-                      },
-                      yaxis: {
-                        show: true,
-                        stepSize: 50000,
-                        axisTicks: {
-                          show: true,
-                        },
-                        axisBorder: {
-                          show: true,
-                        },
-                      },
-                      chart: {
-                        toolbar: {
-                          show: false,
-                        },
-                        zoom: {
+                        dataLabels: {
                           enabled: false,
                         },
-                      },
-                      colors: ["#41cdff", "#7bffd9"],
-                    }}
-                  />
-                </div>
-              </CardBody>
+                        stroke: {
+                          show: true,
+                          width: 1,
+                          colors: ["#fff"],
+                        },
+                        tooltip: {
+                          shared: true,
+                          intersect: false,
+                        },
+                        xaxis: {
+                          categories: days,
+                          tickPlacement: "on",
+                        },
+                        yaxis: {
+                          show: true,
+                          stepSize: 50000,
+                          axisTicks: {
+                            show: true,
+                          },
+                          axisBorder: {
+                            show: true,
+                          },
+                        },
+                        chart: {
+                          toolbar: {
+                            show: false,
+                          },
+                          zoom: {
+                            enabled: false,
+                          },
+                        },
+                        colors: ["#41cdff", "#7bffd9"],
+                      }}
+                    />
+                  </div>
+                </CardBody>
+              )}
             </Card>
           </div>
           <div className="col-span-4">
@@ -245,11 +213,39 @@ const EWayBill = () => {
               >
                 <Typography variant="h6">Transport</Typography>
               </CardHeader>
-              <CardBody className="!p-2">
-                <table className="min-w-full table-auto text-left">
+              <CardBody className="!px-4 !pb-5 !pt-2">
+                <div className="grid grid-cols-4 gap-4">
+                  {isLoading
+                    ? [...Array(4)].map((_, idx) => (
+                        <Card
+                          key={idx}
+                          className="col-span-2 shadow-none border transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[37px]"
+                        >
+                          <CardBody>
+                            <div></div>
+                          </CardBody>
+                        </Card>
+                      ))
+                    : TRANSPOART.map(({ title, amount }) => (
+                        <Card
+                          key={title}
+                          className="col-span-2 shadow-none border"
+                        >
+                          <CardBody className="flex justify-between py-2 px-3">
+                            <Typography className="text-[14px]">
+                              {title}
+                            </Typography>
+                            <Typography className="text-[14px]">
+                              {amount}
+                            </Typography>
+                          </CardBody>
+                        </Card>
+                      ))}
+                </div>
+                {/* <table className="min-w-full table-auto text-left">
                   <tbody>
                     <tr>
-                      <td className="pt-4 pr-4">
+                      <td>
                         <Typography
                           variant="small"
                           className="font-normal pl-3"
@@ -257,7 +253,7 @@ const EWayBill = () => {
                           Road
                         </Typography>
                       </td>
-                      <td className="pt-4 pr-4">
+                      <td className="pr-4">
                         <Typography
                           variant="small"
                           className="font-normal pl-3 float-right"
@@ -267,7 +263,7 @@ const EWayBill = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="pt-4 pr-4">
+                      <td>
                         <Typography
                           variant="small"
                           className="font-normal pl-3"
@@ -275,7 +271,7 @@ const EWayBill = () => {
                           Rail
                         </Typography>
                       </td>
-                      <td className="pt-4 pr-4">
+                      <td className="pr-4">
                         <Typography
                           variant="small"
                           className="font-normal pl-3 float-right"
@@ -285,7 +281,7 @@ const EWayBill = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="pt-4 pr-4">
+                      <td>
                         <Typography
                           variant="small"
                           className="font-normal pl-3"
@@ -293,7 +289,7 @@ const EWayBill = () => {
                           Air
                         </Typography>
                       </td>
-                      <td className="pt-4 pr-4">
+                      <td className="pr-4">
                         <Typography
                           variant="small"
                           className="font-normal pl-3 float-right"
@@ -303,7 +299,7 @@ const EWayBill = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-4 pl-0">
+                      <td>
                         <Typography
                           variant="small"
                           className="font-normal pl-3"
@@ -311,7 +307,7 @@ const EWayBill = () => {
                           Ship
                         </Typography>
                       </td>
-                      <td className="p-4">
+                      <td className="pr-4">
                         <Typography
                           variant="small"
                           className="font-normal pl-3 float-right"
@@ -321,7 +317,7 @@ const EWayBill = () => {
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table> */}
               </CardBody>
             </Card>
             <Card className="shadow-sm border border-gray-200 !rounded-lg mt-5">
@@ -333,54 +329,7 @@ const EWayBill = () => {
                 <Typography variant="h6">Recent Activity</Typography>
               </CardHeader>
               <CardBody className="!p-4">
-                <table className="min-w-full table-auto text-left">
-                  <thead>
-                    <tr>
-                      <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0">
-                        <Typography
-                          variant="small"
-                          className="font-normal leading-none pl-3"
-                        >
-                          Date
-                        </Typography>
-                      </th>
-                      <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0">
-                        <Typography
-                          variant="small"
-                          className="font-normal leading-none pl-3"
-                        >
-                          Activity
-                        </Typography>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentActivity.map(({ date, activity }) => {
-                      const classes = "p-4 px-0 border-b border-blue-gray-50";
-
-                      return (
-                        <tr key={activity}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3"
-                            >
-                              {date || "-"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3"
-                            >
-                              {activity || "-"}
-                            </Typography>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <RecentActivityFilterTable isLoading={isLoading} />
               </CardBody>
             </Card>
           </div>
@@ -393,76 +342,8 @@ const EWayBill = () => {
               >
                 <Typography variant="h6">E-Way Bill List</Typography>
               </CardHeader>
-              <CardBody className="!p-2">
-                <table className="min-w-full table-auto text-left">
-                  <thead>
-                    <tr>
-                      <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0">
-                        <Typography
-                          variant="small"
-                          className="font-normal leading-none pl-3 text-center"
-                        >
-                          Column
-                        </Typography>
-                      </th>
-                      <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0">
-                        <Typography
-                          variant="small"
-                          className="font-normal leading-none pl-3 text-center"
-                        >
-                          Example
-                        </Typography>
-                      </th>
-                      <th className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0">
-                        <Typography
-                          variant="small"
-                          className="font-normal leading-none pl-3"
-                        >
-                          Actions
-                        </Typography>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {eWayBillList.map(({ column, example, actions }) => {
-                      const classes = "p-4 px-0 border-b border-blue-gray-50";
-
-                      return (
-                        <tr key={column}>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 text-center"
-                            >
-                              {column || "-"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography
-                              variant="small"
-                              className="font-normal pl-3 text-center"
-                            >
-                              {example || "-"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <div className="flex gap-3 pl-3">
-                              {actions.map((action) => (
-                                <Typography
-                                  variant="small"
-                                  className="font-normal cursor-pointer"
-                                  key={action}
-                                >
-                                  {action || "-"}
-                                </Typography>
-                              ))}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+              <CardBody className="py-2 px-6">
+                <EWayBillFilterTable isLoading={isLoading} />
               </CardBody>
             </Card>
           </div>

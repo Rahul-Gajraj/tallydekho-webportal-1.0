@@ -4,21 +4,15 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Chip,
   List,
   ListItem,
   ListItemPrefix,
-  Tab,
-  TabPanel,
-  Tabs,
-  TabsBody,
-  TabsHeader,
   Typography,
 } from "@material-tailwind/react";
 
 import CashTransactionsDetail from "@/components/Financials/CashBank/CashTransactionsDetail";
+import BankOverviewFilterTable from "@/components/Financials/CashBank/Table/BankOverviewFilterTable";
 import KPIStrip from "@/components/common/KPIStrip";
-import EmptyData from "@/components/common/EmptyData";
 
 const CASH_BANK_KPI = [
   {
@@ -130,79 +124,6 @@ const CASH_BANK_KPI = [
   },
 ];
 
-const CASH_BANK_TABLE_HEAD = [
-  {
-    head: "Account",
-    customeStyle: "text-center",
-  },
-  {
-    head: "Type",
-  },
-  {
-    head: "Balance",
-  },
-  {
-    head: "Unreconciled",
-  },
-  {
-    head: "Today In",
-  },
-  {
-    head: "Today Out",
-  },
-  {
-    head: "Status",
-  },
-];
-
-const CASH_BANK_TABLE_ROW = [
-  {
-    account: "Main cash",
-    type: "Cash",
-    balance: "₹54,000",
-    unreconciled: "-",
-    todayIn: "₹18,500",
-    todayOut: "12,200",
-    status: "Healthy",
-  },
-  {
-    account: "HDFC CC A/C",
-    type: "Bank OD",
-    balance: "₹180,000",
-    unreconciled: "8",
-    todayIn: "₹32,000",
-    todayOut: "₹44,500",
-    status: "OD Utilised",
-  },
-  {
-    account: "ICICI Bank - 0012",
-    type: "Bank",
-    balance: "₹1,240,000",
-    unreconciled: "12",
-    todayIn: "₹56,500",
-    todayOut: "₹38,400",
-    status: "OK",
-  },
-  {
-    account: "Axis Bank - 3344",
-    type: "Bank",
-    balance: "₹1,45,000",
-    unreconciled: "16",
-    todayIn: "₹41,000",
-    todayOut: "₹28,900",
-    status: "OK",
-  },
-  {
-    account: "Petty Cash - HO",
-    type: "Cash",
-    balance: "₹30,500",
-    unreconciled: "-",
-    todayIn: "₹0",
-    todayOut: "₹7,900",
-    status: "OK",
-  },
-];
-
 const alerts = [
   {
     title: "24 bank entries not reconciled",
@@ -229,7 +150,7 @@ const CashBank = () => {
     setTimeout(() => {
       setIsLoading(false);
       setKpiData(CASH_BANK_KPI);
-    }, 3000);
+    }, 1500);
   }, []);
 
   return (
@@ -268,122 +189,7 @@ const CashBank = () => {
             </Typography>
           </CardHeader>
           <CardBody className="pt-3">
-            <table className="w-full table-auto h-[400px] overflow-scroll">
-              <thead>
-                <tr>
-                  {CASH_BANK_TABLE_HEAD.map(({ head, customeStyle }) => (
-                    <th
-                      key={head}
-                      className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                    >
-                      <div className="flex gap-2 justify-center">
-                        <Typography variant="small" className="!font-bold">
-                          {head}
-                        </Typography>
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              {isLoading ? (
-                <tbody>
-                  {[...Array(5)].map((_, index) => (
-                    <tr key={index} className="animate-pulse">
-                      {CASH_BANK_TABLE_HEAD.map((_, idx) => (
-                        <td key={idx} className="border-b border-gray-300">
-                          <div className="flex justify-center">
-                            <span className="h-4 bg-gray-300 rounded w-24"></span>
-                          </div>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <tbody>
-                  {CASH_BANK_TABLE_ROW.length > 0 ? (
-                    CASH_BANK_TABLE_ROW.map(
-                      (
-                        {
-                          account,
-                          type,
-                          balance,
-                          unreconciled,
-                          todayIn,
-                          todayOut,
-                          status,
-                        },
-                        index
-                      ) => {
-                        const classes = "!p-4 border-b border-gray-300";
-                        return (
-                          <tr key={index}>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {account}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {type}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {balance}
-                              </Typography>
-                            </td>
-                            <td className={classes}>
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {unreconciled}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {todayIn}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {todayOut}
-                              </Typography>
-                            </td>
-                            <td className="border-b border-gray-300">
-                              <Typography
-                                variant="small"
-                                className="!font-normal text-center"
-                              >
-                                {status}
-                              </Typography>
-                            </td>
-                          </tr>
-                        );
-                      }
-                    )
-                  ) : (
-                    <EmptyData colSpan={7} />
-                  )}
-                </tbody>
-              )}
-            </table>
+            <BankOverviewFilterTable isLoading={isLoading} />
           </CardBody>
         </Card>
         <div className="col-span-3 xl:col-span-1 flex xl:flex-col gap-5">
@@ -449,46 +255,47 @@ const CashBank = () => {
                 Actionable issues from bank & cash ledgers
               </Typography>
             </CardHeader>
-            {isLoading ? (
-              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
-                <CardBody>
-                  <div></div>
-                </CardBody>
-              </Card>
-            ) : (
-              <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-                {alerts.length > 0 ? (
-                  <List className="pt-0 gap-3">
-                    {alerts.map(({ title, subtitle, img }) => (
-                      <Card key={title} className="border shadow-none">
-                        <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                          <ListItemPrefix className="items-start mr-2">
-                            {img}
-                          </ListItemPrefix>
-                          <div>
-                            <Typography>{title}</Typography>
-                            <Typography className="text-[14px]">
-                              {subtitle}
-                            </Typography>
-                          </div>
-                        </ListItem>
-                      </Card>
-                    ))}
-                  </List>
-                ) : (
-                  <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
-                    <img
-                      src="/media/icons/line_graph.svg"
-                      alt="line_graph"
-                      className="h-5 w-5"
-                    />
-                    <Typography className="!text-[#6f7c97]">
-                      No Alerts
-                    </Typography>
-                  </div>
-                )}
-              </CardBody>
-            )}
+            <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
+              {isLoading ? (
+                <List className="pt-0 gap-3">
+                  {[...Array(3)].map((_, idx) => (
+                    <Card
+                      key={idx}
+                      className="transition-all animate-pulse w-full h-[67px] shadow-none bg-[#E1E6EA]"
+                    >
+                      <div></div>
+                    </Card>
+                  ))}
+                </List>
+              ) : alerts.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <ListItemPrefix className="items-start mr-2">
+                          {img}
+                        </ListItemPrefix>
+                        <div>
+                          <Typography>{title}</Typography>
+                          <Typography className="text-[14px]">
+                            {subtitle}
+                          </Typography>
+                        </div>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
+                </div>
+              )}
+            </CardBody>
           </Card>
         </div>
       </div>

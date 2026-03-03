@@ -75,7 +75,7 @@ const Purchase = () => {
     setTimeout(() => {
       setIsLoading(false);
       setKpiData(KPI_DATA);
-    }, 3000);
+    }, 1500);
   }, []);
 
   return (

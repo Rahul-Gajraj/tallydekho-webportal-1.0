@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "react-phone-number-input/style.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
-
-import Login from "./pages/Login/Login";
 
 import Header from "./components/Layout/Header";
 import PrivateRoutes from "./components/Routes/PrivateRoutes";

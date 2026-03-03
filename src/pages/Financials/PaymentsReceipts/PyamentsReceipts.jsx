@@ -4,7 +4,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Chip,
   List,
   ListItem,
   ListItemPrefix,
@@ -19,7 +18,8 @@ import {
 import PaymentReceiptRegister from "@/components/Financials/PaymentsReceipts/PaymentReceiptRegister";
 import KPIStrip from "@/components/common/KPIStrip";
 
-import EmptyData from "@/components/common/EmptyData";
+import RecentPaymentFilterTable from "@/components/Financials/PaymentsReceipts/Table/RecentPaymentFilterTable";
+import RecentReceiptFilterTable from "@/components/Financials/PaymentsReceipts/Table/RecentReceiptFilterTable";
 
 const PAYMENTS_RECEIPTS_KPI = [
   {
@@ -134,120 +134,6 @@ const PAYMENTS_RECEIPTS_KPI = [
   },
 ];
 
-const PAYMENTS_TABLE_HEAD = [
-  {
-    head: "Date",
-    customeStyle: "text-center",
-  },
-  {
-    head: "Payment No.",
-  },
-  {
-    head: "Party",
-  },
-  {
-    head: "Amount",
-  },
-  {
-    head: "Mode",
-  },
-];
-
-const PAYMENTS_TABLE_ROW = [
-  {
-    date: "10 Jul 2025",
-    paymentNo: "PAY-201",
-    party: "ABC Traders",
-    amount: "₹42,000",
-    mode: "Bank",
-  },
-  {
-    date: "09 Jul 2025",
-    paymentNo: "PAY-200",
-    party: "Raj Agencies",
-    amount: "₹12,500",
-    mode: "Cash",
-  },
-  {
-    date: "08 Jul 2025",
-    paymentNo: "PAY-199",
-    party: "Metro Logistics",
-    amount: "₹28,400",
-    mode: "UPI",
-  },
-  {
-    date: "08 Jul 2025",
-    paymentNo: "PAY-198",
-    party: "Office Mart",
-    amount: "₹7,250",
-    mode: "Bank",
-  },
-  {
-    date: "07 Jul 2025",
-    paymentNo: "PAY-197",
-    party: "Fuel Station",
-    amount: "₹4,800",
-    mode: "Cash",
-  },
-];
-
-const RECEIPTS_TABLE_HEAD = [
-  {
-    head: "Date",
-    customeStyle: "text-center",
-  },
-  {
-    head: "Receipt No.",
-  },
-  {
-    head: "Party",
-  },
-  {
-    head: "Amount",
-  },
-  {
-    head: "Mode",
-  },
-];
-
-const RECEIPTS_TABLE_ROW = [
-  {
-    date: "10 Jul 2025",
-    receiptNo: "REC-201",
-    party: "XYZ Exports",
-    amount: "₹42,000",
-    mode: "Bank",
-  },
-  {
-    date: "09 Jul 2025",
-    receiptNo: "REC-200",
-    party: "PP Enterprises",
-    amount: "₹12,500",
-    mode: "Cash",
-  },
-  {
-    date: "08 Jul 2025",
-    receiptNo: "REC-199",
-    party: "Global Traders",
-    amount: "₹28,400",
-    mode: "UPI",
-  },
-  {
-    date: "08 Jul 2025",
-    receiptNo: "REC-198",
-    party: "Office Mart",
-    amount: "₹7,250",
-    mode: "Bank",
-  },
-  {
-    date: "07 Jul 2025",
-    receiptNo: "REC-197",
-    party: "Fuel Station",
-    amount: "₹4,800",
-    mode: "Cash",
-  },
-];
-
 const alerts = [
   {
     title: "7 unlinked payments detected",
@@ -275,7 +161,7 @@ const PaymentsReceipts = () => {
     setTimeout(() => {
       setIsLoading(false);
       setKpiData(PAYMENTS_RECEIPTS_KPI);
-    }, 3000);
+    }, 1500);
   }, []);
 
   return (
@@ -341,191 +227,9 @@ const PaymentsReceipts = () => {
           </CardHeader>
           <CardBody className="pt-3">
             {tabValue == "payments" ? (
-              <table className="w-full table-auto h-[400px] overflow-scroll">
-                <thead>
-                  <tr>
-                    {PAYMENTS_TABLE_HEAD.map(({ head, customeStyle }) => (
-                      <th
-                        key={head}
-                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                      >
-                        <div className="flex gap-2 justify-center">
-                          <Typography variant="small" className="!font-bold">
-                            {head}
-                          </Typography>
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                {isLoading ? (
-                  <tbody>
-                    {[...Array(5)].map((_, index) => (
-                      <tr key={index} className="animate-pulse">
-                        {PAYMENTS_TABLE_HEAD.map((_, idx) => (
-                          <td
-                            key={idx}
-                            className="p-4 border-b border-gray-300"
-                          >
-                            <div className="flex justify-center">
-                              <span className="h-4 bg-gray-300 rounded w-24"></span>
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                ) : (
-                  <tbody>
-                    {PAYMENTS_TABLE_ROW.length > 0 ? (
-                      PAYMENTS_TABLE_ROW.map(
-                        ({ date, paymentNo, party, amount, mode }, index) => {
-                          const classes = "!p-4 border-b border-gray-300";
-                          return (
-                            <tr key={index}>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {date}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {paymentNo}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {party}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {amount}
-                                </Typography>
-                              </td>
-                              <td className="border-b border-gray-300">
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {mode}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )
-                    ) : (
-                      <EmptyData colspan={5} />
-                    )}
-                  </tbody>
-                )}
-              </table>
+              <RecentPaymentFilterTable isLoading={isLoading} />
             ) : (
-              <table className="w-full table-auto h-[400px] overflow-scroll">
-                <thead>
-                  <tr>
-                    {RECEIPTS_TABLE_HEAD.map(({ head, customeStyle }) => (
-                      <th
-                        key={head}
-                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
-                      >
-                        <div className="flex gap-2 justify-center">
-                          <Typography variant="small" className="!font-bold">
-                            {head}
-                          </Typography>
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                {isLoading ? (
-                  <tbody>
-                    {[...Array(5)].map((_, index) => (
-                      <tr key={index} className="animate-pulse">
-                        {RECEIPTS_TABLE_HEAD.map((_, idx) => (
-                          <td
-                            key={idx}
-                            className="p-4 border-b border-gray-300"
-                          >
-                            <div className="flex justify-center">
-                              <span className="h-4 bg-gray-300 rounded w-24"></span>
-                            </div>
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                ) : (
-                  <tbody>
-                    {RECEIPTS_TABLE_ROW.length > 0 ? (
-                      RECEIPTS_TABLE_ROW.map(
-                        ({ date, receiptNo, party, amount, mode }, index) => {
-                          const classes = "!p-4 border-b border-gray-300";
-                          return (
-                            <tr key={index}>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {date}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {receiptNo}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {party}
-                                </Typography>
-                              </td>
-                              <td className={classes}>
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {amount}
-                                </Typography>
-                              </td>
-                              <td className="border-b border-gray-300">
-                                <Typography
-                                  variant="small"
-                                  className="!font-normal text-center"
-                                >
-                                  {mode}
-                                </Typography>
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )
-                    ) : (
-                      <EmptyData colspan={5} />
-                    )}
-                  </tbody>
-                )}
-              </table>
+              <RecentReceiptFilterTable isLoading={isLoading} />
             )}
           </CardBody>
         </Card>
@@ -675,46 +379,47 @@ const PaymentsReceipts = () => {
                 Compilance & mapping receivables
               </Typography>
             </CardHeader>
-            {isLoading ? (
-              <Card className="transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[270px] mx-6 mb-6">
-                <CardBody>
-                  <div></div>
-                </CardBody>
-              </Card>
-            ) : (
-              <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
-                {alerts.length > 0 ? (
-                  <List className="pt-0 gap-3">
-                    {alerts.map(({ title, subtitle, img }) => (
-                      <Card key={title} className="border shadow-none">
-                        <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
-                          <ListItemPrefix className="items-start mr-2">
-                            {img}
-                          </ListItemPrefix>
-                          <div>
-                            <Typography>{title}</Typography>
-                            <Typography className="text-[14px]">
-                              {subtitle}
-                            </Typography>
-                          </div>
-                        </ListItem>
-                      </Card>
-                    ))}
-                  </List>
-                ) : (
-                  <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
-                    <img
-                      src="/media/icons/line_graph.svg"
-                      alt="line_graph"
-                      className="h-5 w-5"
-                    />
-                    <Typography className="!text-[#6f7c97]">
-                      No Alerts
-                    </Typography>
-                  </div>
-                )}
-              </CardBody>
-            )}
+            <CardBody className="!p-2 mx-4 h-[270px] overflow-scroll">
+              {isLoading ? (
+                <List className="pt-0 gap-3">
+                  {[...Array(3)].map((_, idx) => (
+                    <Card
+                      key={idx}
+                      className="transition-all animate-pulse w-full h-[67px] shadow-none bg-[#E1E6EA]"
+                    >
+                      <div></div>
+                    </Card>
+                  ))}
+                </List>
+              ) : alerts.length > 0 ? (
+                <List className="pt-0 gap-3">
+                  {alerts.map(({ title, subtitle, img }) => (
+                    <Card key={title} className="border shadow-none">
+                      <ListItem className="items-start hover:!bg-[#eaf8f4] hover:border hover:!border-[#108f6f] focus:border focus:!bg-[#eaf8f4] focus:!border-[#108f6f]">
+                        <ListItemPrefix className="items-start mr-2">
+                          {img}
+                        </ListItemPrefix>
+                        <div>
+                          <Typography>{title}</Typography>
+                          <Typography className="text-[14px]">
+                            {subtitle}
+                          </Typography>
+                        </div>
+                      </ListItem>
+                    </Card>
+                  ))}
+                </List>
+              ) : (
+                <div className="flex flex-col justify-center items-center h-full gap-2 bg-[#F6F7F9]">
+                  <img
+                    src="/media/icons/line_graph.svg"
+                    alt="line_graph"
+                    className="h-5 w-5"
+                  />
+                  <Typography className="!text-[#6f7c97]">No Alerts</Typography>
+                </div>
+              )}
+            </CardBody>
           </Card>
         </div>
       </div>

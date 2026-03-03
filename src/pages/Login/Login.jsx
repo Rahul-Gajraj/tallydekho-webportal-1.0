@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useCountries } from "use-react-countries";
 
 import {
   Card,
@@ -7,68 +8,70 @@ import {
   CardBody,
   CardHeader,
   Typography,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
 } from "@material-tailwind/react";
 
 import { useNavigate } from "react-router-dom";
-// import PhoneInput from "react-phone-input-2";
-import OTPInput from "react-otp-input";
 import toast from "react-hot-toast";
+
 import PairingScreen from "../Pairing/PairingScreen";
-import PhoneInput from "react-phone-number-input";
-
-function CustomInput({ value, onChange, country, ...rest }) {
-  const code = country ? `+${getCountryCallingCode(country)}` : "";
-
-  // Remove country code from value
-  const numberOnly = value?.replace(code, "") || "";
-
-  return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      {/* Non-editable prefix */}
-      {/* <div
-        style={{
-          padding: "8px 10px",
-          border: "1px solid #ccc",
-          borderRight: "none",
-          background: "#f4f4f4",
-          borderRadius: "6px 0 0 6px",
-          fontWeight: "bold",
-          minWidth: "60px",
-        }}
-      >
-        {code}
-      </div> */}
-
-      {/* Editable Input */}
-      <input
-        {...rest}
-        value={numberOnly}
-        onChange={(e) => onChange(code + e.target.value)}
-        className="focus:!border-none active:!border-none bg-transparent"
-        // autoFocus={false}
-        // onFocus={(e) => e.target.blur()}
-      />
-    </div>
-  );
-}
 
 function Login({ isLogged }) {
   const [showPairingScreen, setShowPairingScreen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [mobileOtp, setMobileOtp] = useState(Array(4).fill(""));
   const [isOtpSend, setIsOtpSend] = useState(false);
-  const [mobile, setMobile] = useState("");
-  const [phone, setPhone] = useState();
-  const [otp, setOtp] = useState("");
+  const [mobileTimer, setMobileTimer] = useState(60);
 
-  const inputRef = useRef(null);
+  const inputMobileOtpRefs = useRef([]);
+  const intervalMobileRef = useRef(null);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      // Remove default focus
-      inputRef.current.blur();
+  const { countries } = useCountries();
+
+  const sortedCountries = useMemo(() => {
+    if (countries) {
+      return countries.sort((a, b) => a?.name?.localeCompare(b?.name)) || [];
+    } else {
+      return [];
     }
   }, []);
+
+  const [country, setCountry] = useState(
+    sortedCountries.findIndex((country) => country.name == "India") || 0
+  );
+  const { name, flags, countryCallingCode } = sortedCountries[country];
+
+  useEffect(() => {
+    if (mobileTimer === 0) return;
+
+    intervalMobileRef.current = setInterval(() => {
+      setMobileTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalMobileRef.current);
+    };
+  }, [mobileTimer]);
+
+  const handleMobileOtpChange = (index, value) => {
+    const newOtp = [...mobileOtp];
+    newOtp[index] = value.replace(/[^0-9]/g, "");
+    setMobileOtp(newOtp);
+
+    if (value && index < inputMobileOtpRefs.current.length - 1) {
+      inputMobileOtpRefs.current[index + 1].focus();
+    }
+  };
+
+  function handleMobileOtpBackspace(event, index) {
+    if (event.key === "Backspace" && !event.target.value && index > 0) {
+      inputMobileOtpRefs.current[index - 1].focus();
+    }
+  }
 
   return (
     <>
@@ -92,137 +95,170 @@ function Login({ isLogged }) {
                     Login
                   </Typography>
                 </CardHeader>
-                <CardBody className="md:px-0">
-                  <form action="#" className="flex flex-col">
-                    <div className="flex flex-col gap-2 w-full mb-7">
-                      <label htmlFor="mobile">
-                        <Typography
-                          variant="small"
-                          className="block font-medium"
-                        >
-                          Your Phone Number
-                        </Typography>
-                      </label>
-                      {/* <PhoneInput
-                        country="in"
-                        // {...field}
-                        // inputProps={{
-                        //   ref: (e) => {
-                        //     field.ref(e);
-                        //   },
-                        // }}
-                        // ref={(e) => {
-                        //   e && setValue("phoneNumberCountry", e.getCountryData());
-                        // }}
-                        onChange={(value, country) => {
-                          setMobile(value);
-                          if (value.length != 12) {
-                            setIsOtpSend(false);
-                            setOtp("");
-                          }
-                          // else {
-                          //   setIsOtpSend(false);
-                          // }
-                          // setValue("phoneNumberCountry", country);
-                          // field.onChange(value);
-                        }}
-                        inputStyle={{
-                          width: "100%",
-                          border: "1px solid #DBDFE9",
-                          borderRadius: "5px",
-                          height: "2.5rem",
-                          backgroundColor: isOtpSend
-                            ? "#e9e9eb"
-                            : "transparent",
-                        }}
-                        defaultMask="... ... ... .."
-                        enableSearch={false}
-                        disabled={isOtpSend}
-                        // disableCountryCode={true}
-                        countryCodeEditable={false}
-                      /> */}
-                      <div>
-                        <PhoneInput
-                          // country="IN"
-                          defaultCountry="IN"
-                          international
-                          placeholder="Enter phone number"
-                          value={phone}
-                          onChange={setPhone}
-                          countryCallingCodeEditable={false}
-                          inputRef={inputRef}
-                          style={{
-                            border: "1px solid #E2E2E2",
-                            height: "40px",
-                          }}
-                          className="rounded-lg"
-                          disabled={isOtpSend}
-                          // inputComponent={CustomInput}
-                        />
-                      </div>
-                    </div>
-                    {isOtpSend && (
-                      <div className="flex flex-col gap-2">
-                        <Typography variant="small" className="font-medium">
-                          We have sent OTP on your mobile number
-                          {/* +{mobile.slice(0, 2)} {mobile.slice(2, 5)}***
-                          {mobile.slice(8)} */}
-                        </Typography>
-                        <OTPInput
-                          value={otp}
-                          onChange={setOtp}
-                          numInputs={4}
-                          renderSeparator={<span> </span>}
-                          renderInput={(props) => (
-                            <input
-                              {...props}
-                              className="!w-[35px] h-[35px] border rounded-[5px] border-[#C4CADA] mr-5"
-                              disabled={!isOtpSend}
+                <CardBody className="md:px-0 grid grid-cols-12 gap-4">
+                  <div className="col-span-12">
+                    <Typography variant="small" className="-mb-2">Enter your Whtasapp Number</Typography>
+                  </div>
+                  <div className="col-span-12">
+                    <div className="relative flex w-full">
+                      <Menu placement="bottom-start">
+                        <MenuHandler>
+                          <Button
+                            ripple={false}
+                            variant="text"
+                            className="flex h-10 items-center justify-between rounded-r-none border border-r-0 border-blue-gray-200 bg-blue-gray-500/10 pl-3 w-[150px] pr-3"
+                            disabled={isOtpSend}
+                          >
+                            <img
+                              src={flags.svg}
+                              alt={name}
+                              className="h-4 w-4 rounded-full object-cover"
                             />
+                            {countryCallingCode}
+                            <img
+                              src="/media/icons/cheron_down.svg"
+                              alt="down"
+                              className="w-4 h-4"
+                            />
+                          </Button>
+                        </MenuHandler>
+                        <MenuList className="max-h-[20rem] max-w-[18rem]">
+                          {sortedCountries.map(
+                            ({ name, flags, countryCallingCode }, index) => {
+                              return (
+                                <MenuItem
+                                  key={name}
+                                  value={name}
+                                  className="flex items-center gap-2"
+                                  onClick={() => setCountry(index)}
+                                >
+                                  <img
+                                    src={flags.svg}
+                                    alt={name}
+                                    className="h-5 w-5 rounded-full object-cover"
+                                  />
+                                  {name}{" "}
+                                  <span className="ml-auto">
+                                    {countryCallingCode}
+                                  </span>
+                                </MenuItem>
+                              );
+                            }
                           )}
-                        />
-                        <Typography
-                          variant="small"
-                          className="text-[12px] underline cursor-pointer"
-                          onClick={() => setOtp("")}
+                        </MenuList>
+                      </Menu>
+                      <Input
+                        type="tel"
+                        // placeholder="Mobile Number"
+                        className="rounded-l-none !border-t-blue-gray-200 focus:!border-t-[#108f6f]"
+                        labelProps={{
+                          className: "before:content-none after:content-none",
+                        }}
+                        containerProps={{
+                          className: "min-w-0",
+                        }}
+                        color="green"
+                        disabled={isOtpSend}
+                      />
+                      {isOtpSend ? (
+                        <Button
+                          size="sm"
+                          color="green"
+                          variant="text"
+                          className="!absolute right-1 top-1 rounded normal-case"
+                          onClick={() => {
+                            inputMobileOtpRefs.current.values = [];
+                            setMobileOtp(Array(4).fill(""));
+                            setIsOtpSend(false);
+                          }}
                         >
-                          Resend OTP
-                        </Typography>
+                          Edit
+                        </Button>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+                  {isOtpSend && (
+                    <div className="col-span-12">
+                      <Typography className="flex items-center justify-center gap-1 text-[12px]">
+                        Enter the 4-digit OTP sent to your mobile number
+                      </Typography>
+                      <div className="my-2 flex items-center justify-center gap-2">
+                        {mobileOtp.map((digit, index) => (
+                          <React.Fragment key={index}>
+                            <Input
+                              type="text"
+                              maxLength={1}
+                              className="!w-10 appearance-none !border-t-blue-gray-200 text-center !text-lg placeholder:opacity-100 focus:!border-t-[#108f6f]"
+                              labelProps={{
+                                className:
+                                  "before:content-none after:content-none",
+                              }}
+                              containerProps={{
+                                className: "!min-w-0 !w-10 !shrink-0",
+                              }}
+                              color="green"
+                              value={digit}
+                              onChange={(e) =>
+                                handleMobileOtpChange(index, e.target.value)
+                              }
+                              onKeyDown={(e) =>
+                                handleMobileOtpBackspace(e, index)
+                              }
+                              inputRef={(el) =>
+                                (inputMobileOtpRefs.current[index] = el)
+                              }
+                            />
+                            {/* {index === 2 && (
+                                        <span className="text-2xl text-slate-700">-</span>
+                                      )} */}
+                          </React.Fragment>
+                        ))}
                       </div>
-                    )}
+                      <Typography className="text-center font-normal text-[12px]">
+                        Did not receive the code?{" "}
+                        <span
+                          className={`font-bold ${
+                            mobileTimer == 0
+                              ? "cursor-pointer text-[#108f6f]"
+                              : ""
+                          }`}
+                          onClick={() => {
+                            if (mobileTimer == 0) {
+                              inputMobileOtpRefs.current.values = [];
+                              setMobileOtp(Array(4).fill(""));
+                              setMobileTimer(60);
+                            }
+                          }}
+                        >
+                          Resend {mobileTimer > 0 ? `(${mobileTimer}s)` : ""}
+                        </span>
+                      </Typography>
+                    </div>
+                  )}
+                  <div className="col-span-12 text-center">
                     {!isOtpSend ? (
                       <Button
-                        size="lg"
-                        className="bg-[#07624c] normal-case h-[2.5rem] py-2 mt-5"
-                        fullWidth
-                        disabled={phone ? phone.length != 13 : true}
+                        className="bg-[#07624c] normal-case w-[200px]"
                         onClick={() => {
                           setIsOtpSend(true);
-                          // if (otp.length == 4) {
-                          // } else {
-                          //   toast.error("Enter valid otp");
-                          // }
+                          setMobileTimer(60);
                         }}
                       >
-                        Send Otp
+                        Send OTP
                       </Button>
                     ) : (
                       <Button
-                        size="lg"
-                        className="bg-[#07624c] normal-case h-[2.5rem] py-2 mt-7"
-                        fullWidth
+                        className="bg-[#07624c] normal-case w-[200px]"
                         onClick={() => {
-                          if (otp.length == 4) {
-                            setIsLoggedIn(true);
-                          } else {
-                            toast.error("Enter valid otp");
-                          }
+                          setIsLoggedIn(true);
                         }}
                       >
-                        Login
+                        Continue
                       </Button>
                     )}
-                  </form>
+                  </div>
                 </CardBody>
               </Card>
             ) : (
@@ -246,7 +282,6 @@ function Login({ isLogged }) {
                 </div>
                 <div className="flex flex-col gap-3 items-center">
                   <Button
-                    size="lg"
                     className="bg-[#07624c] normal-case w-[200px]"
                     onClick={() => {
                       // isLogged(true);
@@ -257,7 +292,6 @@ function Login({ isLogged }) {
                     Sync with Tally
                   </Button>
                   <Button
-                    size="lg"
                     variant="outlined"
                     className="normal-case w-[200px]"
                     onClick={() => {

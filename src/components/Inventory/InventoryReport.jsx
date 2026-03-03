@@ -20,6 +20,8 @@ import {
 import merge from "deepmerge";
 
 import EmptyData from "../common/EmptyData";
+import TopMovingFilterTable from "./Table/TopMovingFilterTable";
+import SlowMovingFilterTable from "./Table/SlowMovingFilterTable";
 
 const AreaChart = ({ height = 250, series, colors, options }) => {
   const chartOptions = useMemo(
@@ -176,15 +178,19 @@ const InventoryReport = ({ isLoading }) => {
     {
       head: "Item",
       customeStyle: "text-center",
+      value: "item",
     },
     {
       head: "RO Level",
+      value: "roLevel",
     },
     {
       head: "Current Stock",
+      value: "currentStock",
     },
     {
       head: "Required",
+      value: "required",
     },
   ];
 
@@ -315,184 +321,18 @@ const InventoryReport = ({ isLoading }) => {
               </TabsHeader>
               <TabsBody className="overflow-scroll h-[240px]">
                 <TabPanel value="top_moving">
-                  <table className="w-full min-w-max table-auto">
-                    <thead>
-                      <tr>
-                        {SALES_TABLE_HEAD.map(({ head }) => (
-                          <th
-                            key={head}
-                            className={"border-b border-gray-300 pb-4"}
-                          >
-                            <div className="flex gap-2 justify-center">
-                              <Typography
-                                variant="small"
-                                className="!font-bold"
-                              >
-                                {head}
-                              </Typography>
-                            </div>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    {isLoading ? (
-                      <tbody>
-                        {[...Array(3)].map((_, index) => (
-                          <tr key={index} className="animate-pulse">
-                            {SALES_TABLE_HEAD.map((_, idx) => (
-                              <td
-                                key={idx}
-                                className="py-4 border-b border-gray-300 pl-4"
-                              >
-                                <div className="h-4 bg-gray-300 rounded w-24"></div>
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    ) : (
-                      <tbody>
-                        {SALES_TABLE_ROW.length > 0 ? (
-                          SALES_TABLE_ROW.map(
-                            (
-                              { item, roLevel, currentStock, required },
-                              index
-                            ) => {
-                              const classes = "!p-4 border-b border-gray-300";
-                              return (
-                                <tr key={index}>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {item}
-                                    </Typography>
-                                  </td>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {roLevel}
-                                    </Typography>
-                                  </td>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {currentStock}
-                                    </Typography>
-                                  </td>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {required}
-                                    </Typography>
-                                  </td>
-                                </tr>
-                              );
-                            }
-                          )
-                        ) : (
-                          <EmptyData />
-                        )}
-                      </tbody>
-                    )}
-                  </table>
+                  <TopMovingFilterTable
+                    isLoading={isLoading}
+                    SALES_TABLE_HEAD={SALES_TABLE_HEAD}
+                    SALES_TABLE_ROW={SALES_TABLE_ROW}
+                  />
                 </TabPanel>
                 <TabPanel value="slow_moving">
-                  <table className="w-full min-w-max table-auto">
-                    <thead>
-                      <tr>
-                        {SALES_TABLE_HEAD.map(({ head }) => (
-                          <th
-                            key={head}
-                            className={"border-b border-gray-300 pb-4"}
-                          >
-                            <div className="flex gap-2 justify-center">
-                              <Typography
-                                variant="small"
-                                className="!font-bold"
-                              >
-                                {head}
-                              </Typography>
-                            </div>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    {isLoading ? (
-                      <tbody>
-                        {[...Array(3)].map((_, index) => (
-                          <tr key={index} className="animate-pulse">
-                            {SALES_TABLE_HEAD.map((_, idx) => (
-                              <td
-                                key={idx}
-                                className="py-4 border-b border-gray-300 pl-4"
-                              >
-                                <div className="h-4 bg-gray-300 rounded w-24"></div>
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    ) : (
-                      <tbody>
-                        {SALES_TABLE_ROW.length > 0 ? (
-                          SALES_TABLE_ROW.map(
-                            (
-                              { item, roLevel, currentStock, required },
-                              index
-                            ) => {
-                              const classes = "!p-4 border-b border-gray-300";
-                              return (
-                                <tr key={index}>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {item}
-                                    </Typography>
-                                  </td>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {roLevel}
-                                    </Typography>
-                                  </td>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {currentStock}
-                                    </Typography>
-                                  </td>
-                                  <td className={classes}>
-                                    <Typography
-                                      variant="small"
-                                      className="!font-normal text-center"
-                                    >
-                                      {required}
-                                    </Typography>
-                                  </td>
-                                </tr>
-                              );
-                            }
-                          )
-                        ) : (
-                          <EmptyData />
-                        )}
-                      </tbody>
-                    )}
-                  </table>
+                  <SlowMovingFilterTable
+                    isLoading={isLoading}
+                    SALES_TABLE_HEAD={SALES_TABLE_HEAD}
+                    SALES_TABLE_ROW={SALES_TABLE_ROW}
+                  />
                 </TabPanel>
               </TabsBody>
             </Tabs>

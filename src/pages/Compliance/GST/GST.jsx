@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 
@@ -15,6 +15,13 @@ const KPI_DATA = [
 
 const GST = () => {
   const [isGSTDrawerOpen, setIsGSTDrawerOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
 
   const handleGSTDrawerOpen = () => {
     setIsGSTDrawerOpen((prev) => !prev);
@@ -23,21 +30,37 @@ const GST = () => {
   return (
     <>
       <div className="mx-5 overflow-y-scroll">
-        <section className="mx-auto">
-          <Card className="shadow-sm border border-gray-200 !rounded-lg p-4 mt-8">
-            <Typography className="font-bold text-xl">GST</Typography>
-          </Card>
-        </section>
-        <section className="mt-5">
-          <div className="grid grid-cols-12 items-center md:gap-2.5 gap-4">
-            {KPI_DATA.map((data) => (
-              <div
-                key={data.title}
-                className="xl:col-span-3 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full"
-              >
-                <KPIStrip {...data} />
-              </div>
-            ))}
+        <div className="grid grid-cols-12 items-center md:gap-2.5 gap-4 mt-8">
+          {isLoading
+            ? [...Array(3)].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="xl:col-span-3 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full"
+                >
+                  <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[104px]">
+                    <CardBody>
+                      <div></div>
+                    </CardBody>
+                  </Card>
+                </div>
+              ))
+            : KPI_DATA.map((data) => (
+                <div
+                  key={data.title}
+                  className="xl:col-span-3 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full"
+                >
+                  <KPIStrip {...data} />
+                </div>
+              ))}
+          {isLoading ? (
+            <div className="xl:col-span-3 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full">
+              <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[104px]">
+                <CardBody>
+                  <div></div>
+                </CardBody>
+              </Card>
+            </div>
+          ) : (
             <div
               className="xl:col-span-3 lg:col-span-4 md:col-span-4 sm:col-span-2 col-span-12 h-full cursor-pointer"
               onClick={() => handleGSTDrawerOpen()}
@@ -53,10 +76,10 @@ const GST = () => {
                 </CardBody>
               </Card>
             </div>
-          </div>
-        </section>
+          )}
+        </div>
         <section className="mt-5">
-          <GSTInfo />
+          <GSTInfo isLoading={isLoading} />
         </section>
       </div>
       <UnmatchedGSTDrawer
