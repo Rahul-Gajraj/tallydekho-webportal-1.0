@@ -25,16 +25,7 @@ import { DayPicker } from "react-day-picker";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
 import Error from "@/components/Error/Error";
 import SummaryAccordion from "../Sales/SummaryAccordion";
-
-const ITEM_TABLE_HEAD = [
-  "Warehouse",
-  "Product",
-  "Quantity",
-  "Discount",
-  "Tax",
-  "Unit Price",
-  "Actions",
-];
+import ProductFilterTable from "../Table/ProductFilterTable";
 
 const defaultValues = {
   isOptional: false,
@@ -127,7 +118,7 @@ const DebitNote = ({ open, toggleDrawer }) => {
         className="p-4 overflow-scroll"
         open={open}
         // onClose={() => toggleDrawer("purchaseDebitNote")}
-        size={750}
+        size={900}
       >
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <div className="relative mt-0 flex justify-between">
@@ -405,112 +396,12 @@ const DebitNote = ({ open, toggleDrawer }) => {
                 ) : (
                   <>
                     <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
-                      <table className="w-full min-w-max table-auto text-left">
-                        <thead>
-                          <tr>
-                            {ITEM_TABLE_HEAD.map((head) => (
-                              <th key={head} className="px-4 pt-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-bold leading-none"
-                                >
-                                  {head}
-                                </Typography>
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {products.map((item) => {
-                            const {
-                              id,
-                              warehouse,
-                              product,
-                              qty,
-                              discount,
-                              tax,
-                              unitPrice,
-                              isFlatDiscount,
-                              isFlatTax,
-                            } = item;
-                            return (
-                              <tr key={id}>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {warehouse}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {product}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {qty || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {isFlatDiscount && "₹"}
-                                    {discount || 0}
-                                    {!isFlatDiscount && "%"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {isFlatTax && "₹"}
-                                    {tax || 0}
-                                    {!isFlatTax && "%"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    ₹{unitPrice || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <div className="flex gap-3">
-                                    <img
-                                      src="/media/common/edit.svg"
-                                      alt="edit"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => {
-                                        setSelectedItem(item);
-                                        handleDialogsOpen("product");
-                                      }}
-                                    />
-                                    <img
-                                      src="/media/common/delete.svg"
-                                      alt="delete"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => deleteProductHandler(id)}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
+                      <ProductFilterTable
+                        products={products}
+                        setSelectedItem={setSelectedItem}
+                        handleDialogsOpen={handleDialogsOpen}
+                        deleteProductHandler={deleteProductHandler}
+                      />
                     </Card>
                     <Button
                       color="green"

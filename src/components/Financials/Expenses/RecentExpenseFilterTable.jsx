@@ -94,7 +94,7 @@ const RecentExpenseFilterTable = ({ isLoading }) => {
                 key={head}
                 className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
               >
-                <div className="flex justify-center">
+                <div className="flex">
                   <Typography
                     variant="small"
                     className="flex items-center justify-between gap-2 font-normal leading-none !font-bold pl-3 cursor-pointer"
@@ -114,7 +114,7 @@ const RecentExpenseFilterTable = ({ isLoading }) => {
               <tr key={index} className="animate-pulse">
                 {EXPENSES_TABLE_HEAD.map((_, idx) => (
                   <td key={idx} className="p-4 border-b border-gray-300">
-                    <div className="flex justify-center">
+                    <div className="flex">
                       <span className="h-4 bg-gray-300 rounded w-24"></span>
                     </div>
                   </td>
@@ -131,39 +131,27 @@ const RecentExpenseFilterTable = ({ isLoading }) => {
                   return (
                     <tr key={index}>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          className="!font-normal text-center"
-                        >
+                        <Typography variant="small" className="!font-normal">
                           {date}
                         </Typography>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          className="!font-normal text-center"
-                        >
+                        <Typography variant="small" className="!font-normal">
                           {voucherNo}
                         </Typography>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          className="!font-normal text-center"
-                        >
+                        <Typography variant="small" className="!font-normal">
                           {ledger}
                         </Typography>
                       </td>
                       <td className={classes}>
-                        <Typography
-                          variant="small"
-                          className="!font-normal text-center"
-                        >
+                        <Typography variant="small" className="!font-normal">
                           {amount}
                         </Typography>
                       </td>
-                      <td className="border-b border-gray-300">
-                        <div className="w-full flex justify-center">
+                      <td className={classes}>
+                        <div className="w-full flex">
                           <Chip
                             variant="ghost"
                             value={status}

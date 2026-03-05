@@ -64,7 +64,6 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
       setSelectedCurrency(initialData.currencyType);
       setIsFlatDiscount(initialData.isFlatDiscount);
       setIsFlatTax(initialData.isFlatTax);
-
     } else {
       setSelectedQtyType("KG");
       setSelectedCurrency("INR");
@@ -119,18 +118,20 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
       qtyType: selectedQtyType,
       currencyType: selectedCurrency,
       isFlatDiscount,
-      isFlatTax
+      isFlatTax,
     });
     setSelectedQtyType("KG");
     setSelectedCurrency("INR");
-    resetFields()
+    resetFields();
   };
 
   return (
     <>
       <Dialog size="md" open={open} handler={resetFields} className="p-4">
         <DialogHeader className="relative m-0 block">
-          <Typography variant="h4">Add Product</Typography>
+          <Typography variant="h4">
+            {initialData ? "Update" : "Add"} Product
+          </Typography>
           <Typography className="mt-1 font-normal">
             Fill the form for information
           </Typography>
@@ -389,11 +390,7 @@ const AddProductDialog = ({ open, handleOpen, upsertHandler, initialData }) => {
             </div>
           </DialogBody>
           <DialogFooter>
-            <Button
-              className="ml-auto"
-              color="green"
-              type="submit"
-            >
+            <Button className="ml-auto" color="green" type="submit">
               {initialData ? "Update" : "Add"}
             </Button>
           </DialogFooter>

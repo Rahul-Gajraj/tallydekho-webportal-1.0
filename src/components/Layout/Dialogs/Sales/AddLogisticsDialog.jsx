@@ -78,7 +78,9 @@ const AddLogisticsDialog = ({
     <>
       <Dialog size="md" open={open} handler={resetFields} className="p-4">
         <DialogHeader className="relative m-0 block">
-          <Typography variant="h4">Add Logistics</Typography>
+          <Typography variant="h4">
+            {initialData ? "Update" : "Add"} Logistics
+          </Typography>
           <Typography className="mt-1 font-normal">
             Fill the form for information
           </Typography>
@@ -256,11 +258,7 @@ const AddLogisticsDialog = ({
             </div>
           </DialogBody>
           <DialogFooter>
-            <Button
-              className="ml-auto"
-              color="green"
-              type="submit"
-            >
+            <Button className="ml-auto" color="green" type="submit">
               {initialData ? "Update" : "Add"}
             </Button>
           </DialogFooter>

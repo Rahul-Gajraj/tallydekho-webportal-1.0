@@ -25,27 +25,10 @@ import { DayPicker } from "react-day-picker";
 
 import AddLogisticsDialog from "../../Dialogs/Sales/AddLogisticsDialog";
 import AddProductDialog from "../../Dialogs/Sales/AddProductDrawer";
+import ProductFilterTable from "../Table/ProductFilterTable";
+import LogisticsFilterTable from "../Table/LogisticsFilterTable";
 import SummaryAccordion from "./SummaryAccordion";
 import Error from "@/components/Error/Error";
-
-const ITEM_TABLE_HEAD = [
-  "Warehouse",
-  "Product",
-  "Quantity",
-  "Discount",
-  "Tax",
-  "Unit Price",
-  "Actions",
-];
-
-const LOGISTIC_TABLE_HEAD = [
-  "Logistics Type",
-  "Amount",
-  "Tracking Number",
-  "Remarks",
-  "Tax On Logistics",
-  "Actions",
-];
 
 const defaultValues = {
   quotationNo: "",
@@ -537,113 +520,12 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                 ) : (
                   <>
                     <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
-                      <table className="w-full min-w-max table-auto text-left">
-                        <thead>
-                          <tr>
-                            {ITEM_TABLE_HEAD.map((head) => (
-                              <th key={head} className="px-4 pt-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-bold leading-none"
-                                >
-                                  {head}
-                                </Typography>
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {items.map((item) => {
-                            const {
-                              warehouse,
-                              product,
-                              qty,
-                              discount,
-                              tax,
-                              unitPrice,
-                              id,
-                              isFlatDiscount,
-                              isFlatTax,
-                            } = item;
-
-                            return (
-                              <tr key={warehouse}>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {warehouse}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {product}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {qty || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {isFlatDiscount && "₹"}
-                                    {discount || 0}
-                                    {!isFlatDiscount && "%"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {isFlatTax && "₹"}
-                                    {tax || 0}
-                                    {!isFlatTax && "%"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    ₹{unitPrice || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <div className="flex gap-3">
-                                    <img
-                                      src="/media/common/edit.svg"
-                                      alt="edit"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => {
-                                        setSelectedItem(item);
-                                        handleDialogsOpen("product");
-                                      }}
-                                    />
-                                    <img
-                                      src="/media/common/delete.svg"
-                                      alt="delete"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => deleteProductHandler(id)}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
+                      <ProductFilterTable
+                        products={items}
+                        setSelectedItem={setSelectedItem}
+                        handleDialogsOpen={handleDialogsOpen}
+                        deleteProductHandler={deleteProductHandler}
+                      />
                     </Card>
                     <Button
                       color="green"
@@ -673,126 +555,12 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                 ) : (
                   <>
                     <Card className="max-h-[300px] border border-[#B0BEC5] overflow-scroll">
-                      <table className="w-full min-w-max table-auto text-left">
-                        <thead>
-                          <tr>
-                            {LOGISTIC_TABLE_HEAD.map((head) => (
-                              <th key={head} className="px-4 pt-4">
-                                <Typography
-                                  variant="small"
-                                  className="font-bold leading-none"
-                                >
-                                  {head}
-                                </Typography>
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {logistics.map((logistic) => {
-                            const {
-                              logisticsType,
-                              amount,
-                              trackingNumber,
-                              remark,
-                              taxOnLogistics,
-                              id,
-                            } = logistic;
-
-                            return (
-                              <tr key={logisticsType}>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {logisticsType || "-"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    ₹{amount || 0}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {trackingNumber || "-"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {remark || "-"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <Typography
-                                    variant="small"
-                                    className="font-normal"
-                                  >
-                                    {taxOnLogistics || "-"}
-                                  </Typography>
-                                </td>
-                                <td className="p-2 px-4">
-                                  <div className="flex gap-3">
-                                    <img
-                                      src="/media/common/edit.svg"
-                                      alt="edit"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => {
-                                        setSelectedLogistic(logistic);
-                                        handleDialogsOpen("logistics");
-                                      }}
-                                    />
-                                    <img
-                                      src="/media/common/delete.svg"
-                                      alt="delete"
-                                      className="h-5 cursor-pointer"
-                                      onClick={() => deleteLogisticHandler(id)}
-                                    />
-                                  </div>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                        {/* <tfoot className="border-t border-gray-300">
-                          <tr>
-                            <td className="p-2 px-4">
-                              <Typography variant="small" className="font-bold">
-                                Total
-                              </Typography>
-                            </td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4"></td>
-                            <td className="p-2 px-4">
-                              <Typography variant="small" className="font-bold">
-                                ₹
-                                {items.reduce((prevVal, currVal) => {
-                                  const { qty, unitPrice, discount, tax } =
-                                    currVal;
-                                  return (
-                                    prevVal +
-                                    Number(qty || 0) * Number(unitPrice || 0) -
-                                    Number(discount || 0) / 100 +
-                                    Number(tax || 0)
-                                  );
-                                }, 0)}
-                              </Typography>
-                            </td>
-                          </tr>
-                        </tfoot> */}
-                      </table>
+                      <LogisticsFilterTable
+                        logistics={logistics}
+                        setSelectedLogistic={setSelectedLogistic}
+                        handleDialogsOpen={handleDialogsOpen}
+                        deleteLogisticHandler={deleteLogisticHandler}
+                      />
                     </Card>
                     <Button
                       color="green"

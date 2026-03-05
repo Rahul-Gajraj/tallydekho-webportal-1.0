@@ -53,7 +53,7 @@ const Pagination = () => {
               />
             </Button>
           </MenuHandler>
-          <MenuList>
+          <MenuList className="z-[9999]">
             <MenuItem onClick={() => setDataCountPerPage("20")}>20</MenuItem>
             <MenuItem onClick={() => setDataCountPerPage("50")}>50</MenuItem>
             <MenuItem onClick={() => setDataCountPerPage("100")}>100</MenuItem>
