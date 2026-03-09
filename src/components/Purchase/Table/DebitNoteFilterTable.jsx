@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Typography, Chip } from "@material-tailwind/react";
 
@@ -8,6 +8,7 @@ import EmptyData from "@/components/common/EmptyData";
 import Pagination from "@/components/common/Pagination";
 
 import useTableSort from "@/hooks/useTableSort";
+import useDebounce from "@/hooks/useDebouncy";
 
 const DEBIT_TABLE_HEAD = [
   {
@@ -47,11 +48,19 @@ const DEBIT_TABLE_ROW = [
   },
 ];
 
-const DebitNoteFilterTable = ({ isLoading }) => {
+const DebitNoteFilterTable = ({ registerSearchText, isLoading, status }) => {
+  const debouncedRegisterSearchText = useDebounce(registerSearchText, 500);
+
+  const debitNotesRegisterData = useMemo(() => {
+    return DEBIT_TABLE_ROW.filter((data) =>
+      status == "All" ? data : data.status === status
+    ).filter((data) => data.supplier.includes(debouncedRegisterSearchText));
+  }, [status, debouncedRegisterSearchText]);
+
   const {
     sortedData: sortedDeliveryRegisterRows,
     handleSort: handleDeliveryRegisterSort,
-  } = useTableSort(DEBIT_TABLE_ROW);
+  } = useTableSort(debitNotesRegisterData);
 
   return (
     <div>

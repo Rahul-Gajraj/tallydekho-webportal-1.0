@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Typography, Chip } from "@material-tailwind/react";
 
@@ -8,6 +8,7 @@ import EmptyData from "@/components/common/EmptyData";
 import Pagination from "@/components/common/Pagination";
 
 import useTableSort from "@/hooks/useTableSort";
+import useDebounce from "@/hooks/useDebouncy";
 
 const DELIVERY_TABLE_HEAD = [
   {
@@ -52,11 +53,23 @@ const DELIVERY_TABLE_ROW = [
   },
 ];
 
-const DeliveryRegisterFilterTable = ({ isLoading }) => {
+const DeliveryRegisterFilterTable = ({
+  registerSearchText,
+  isLoading,
+  status,
+}) => {
+  const debouncedRegisterSearchText = useDebounce(registerSearchText, 500);
+
+  const deliveryRegisterData = useMemo(() => {
+    return DELIVERY_TABLE_ROW.filter((data) =>
+      status == "All" ? data : data.status === status
+    ).filter((data) => data.customer.includes(debouncedRegisterSearchText));
+  }, [status, debouncedRegisterSearchText]);
+
   const {
     sortedData: sortedDeliveryRegisterRows,
     handleSort: handleDeliveryRegisterSort,
-  } = useTableSort(DELIVERY_TABLE_ROW);
+  } = useTableSort(deliveryRegisterData);
 
   return (
     <div>

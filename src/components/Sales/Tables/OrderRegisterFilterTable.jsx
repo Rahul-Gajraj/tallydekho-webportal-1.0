@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 
@@ -8,6 +8,7 @@ import Pagination from "@/components/common/Pagination";
 import EmptyData from "@/components/common/EmptyData";
 
 import useTableSort from "@/hooks/useTableSort";
+import useDebounce from "@/hooks/useDebouncy";
 
 const ORDER_TABLE_HEAD = [
   {
@@ -55,11 +56,23 @@ const ORDER_TABLE_ROW = [
   },
 ];
 
-const OrderRegisterFilterTable = ({ isLoading }) => {
+const OrderRegisterFilterTable = ({
+  registerSearchText,
+  isLoading,
+  status,
+}) => {
+  const debouncedRegisterSearchText = useDebounce(registerSearchText, 500);
+
+  const orderRegisterData = useMemo(() => {
+    return ORDER_TABLE_ROW.filter((data) =>
+      status == "All" ? data : data.status === status
+    ).filter((data) => data.customer.includes(debouncedRegisterSearchText));
+  }, [status, debouncedRegisterSearchText]);
+
   const {
     sortedData: sortedOrderRegisterRows,
     handleSort: handleOrderRegisterSort,
-  } = useTableSort(ORDER_TABLE_ROW);
+  } = useTableSort(orderRegisterData);
 
   return (
     <div>

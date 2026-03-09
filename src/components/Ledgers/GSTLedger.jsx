@@ -106,7 +106,7 @@ const GSTLedger = ({ isLoading }) => {
               <tr key={index} className="animate-pulse">
                 {GST_LEDGER_HEAD.map((data, idx) => (
                   <td
-                    key={data}
+                    key={`${index}_${idx}`}
                     className={`py-4 ${
                       index == 2 ? "border-none" : "border-b border-gray-300"
                     } pl-3`}

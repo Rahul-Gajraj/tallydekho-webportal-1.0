@@ -44,6 +44,9 @@ const PurchaseInfo = ({ isLoading }) => {
   const timezone = preference?.timezone ?? "Asia/Kolkata";
 
   const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
+  const [registerSearchText, setRegisterSearchText] = useState("");
+
+  const [status, setStatus] = useState("All");
 
   const [date, setDate] = useState({
     from: new Date(),
@@ -136,22 +139,49 @@ const PurchaseInfo = ({ isLoading }) => {
               <Select
                 className="bg-white-600"
                 label="Status"
-                // value={value}
-                // onChange={(val) => setValue(val)}
+                value={status}
+                onChange={(val) => setStatus(val)}
                 containerProps={{
                   style: {
-                    minWidth: "100px",
+                    minWidth: "130px",
                   },
                 }}
                 color="green"
               >
-                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                <Option
+                  value="All"
+                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                >
                   All
                 </Option>
-                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                <Option
+                  value="Delivered"
+                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                >
+                  Delivered
+                </Option>
+                <Option
+                  value="Issued"
+                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                >
+                  Issued
+                </Option>
+                <Option
+                  value="Paid"
+                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                >
                   Paid
                 </Option>
-                <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+                <Option
+                  value="Pending"
+                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                >
+                  Pending
+                </Option>
+                <Option
+                  value="Unpaid"
+                  className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+                >
                   Unpaid
                 </Option>
               </Select>
@@ -180,6 +210,8 @@ const PurchaseInfo = ({ isLoading }) => {
             </div>
             <Input
               label="Search in registers..."
+              value={registerSearchText}
+              onChange={(e) => setRegisterSearchText(e.target.value)}
               icon={<MagnifyingGlassIcon className="h-5" />}
               className="w-[150px]"
               color="green"
@@ -197,16 +229,32 @@ const PurchaseInfo = ({ isLoading }) => {
             </TabsHeader>
             <TabsBody>
               <TabPanel value="purchase_register">
-                <PurchaseRegisterFilterTable isLoading={isLoading} />
+                <PurchaseRegisterFilterTable
+                  registerSearchText={registerSearchText}
+                  isLoading={isLoading}
+                  status={status}
+                />
               </TabPanel>
               <TabPanel value="purchase_order">
-                <PurchaseOrderFilterTable isLoading={isLoading} />
+                <PurchaseOrderFilterTable
+                  registerSearchText={registerSearchText}
+                  isLoading={isLoading}
+                  status={status}
+                />
               </TabPanel>
               <TabPanel value="delivery_register">
-                <DeliveryRegisterFilterTable isLoading={isLoading} />
+                <DeliveryRegisterFilterTable
+                  registerSearchText={registerSearchText}
+                  isLoading={isLoading}
+                  status={status}
+                />
               </TabPanel>
               <TabPanel value="debit_notes_register">
-                <DebitNoteFilterTable isLoading={isLoading} />
+                <DebitNoteFilterTable
+                  registerSearchText={registerSearchText}
+                  isLoading={isLoading}
+                  status={status}
+                />
               </TabPanel>
             </TabsBody>
           </Tabs>

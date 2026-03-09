@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Typography } from "@material-tailwind/react";
+import { Card, CardBody, Typography } from "@material-tailwind/react";
 
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 
@@ -33,6 +33,17 @@ const LEDGERS_ROW = [
   },
 ];
 
+const LEDGER_DETAILS_KPI = [
+  { key: "Ledger Name", value: "ABC Traders" },
+  { key: "Group", value: "Sundry Debtors" },
+  { key: "Ledger Type", value: "Party Ledger" },
+  { key: "Closing Balance", value: "₹82,000 Dr" },
+  { key: "Opening Balance", value: "₹12,000 Dr" },
+  { key: "Contact", value: "+91 9876543210" },
+  { key: "GSTIN", value: "08ABCDE123F1Z5" },
+  { key: "PAN", value: "AAAAA1234A" },
+];
+
 const LedgerDetailFilterTable = ({ isLoading }) => {
   const {
     sortedData: sortedLedgerDetailTableRows,
@@ -41,117 +52,37 @@ const LedgerDetailFilterTable = ({ isLoading }) => {
 
   return (
     <div>
-      <table className="min-w-full table-auto text-left">
-        <thead>
-          <tr>
-            {LEDGERS_HEAD.map(({ head, value }) => (
-              <th
-                key={head}
-                className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
+      <div className="grid grid-cols-8 gap-3">
+        {isLoading
+          ? [...Array(6)].map((_, idx) => (
+              <div
+                key={idx}
+                className="xl:col-span-2 lg:col-span-2 col-span-6 h-full"
               >
-                <div className="flex">
-                  <Typography
-                    variant="small"
-                    className="flex items-center justify-between gap-2 font-normal leading-none !font-bold pl-3 cursor-pointer"
-                    onClick={() => handleLedgerDetailTableSort(value)}
-                  >
-                    {head}
-                    <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
-                  </Typography>
-                </div>
-              </th>
+                <Card className="w-full transition-all animate-pulse shadow-none bg-[#E1E6EA] h-[52px]">
+                  <CardBody>
+                    <div></div>
+                  </CardBody>
+                </Card>
+              </div>
+            ))
+          : LEDGER_DETAILS_KPI.map(({ key, value }) => (
+              <div key={key} className="xl:col-span-2 lg:col-span-2 col-span-6">
+                <Card className="shadow-sm border border-gray-200 !rounded-lg">
+                  <CardBody className="p-4 h-full flex flex-col justify-center">
+                    <div className="flex justify-between">
+                      <Typography className="font-medium !text-sm">
+                        {key}
+                      </Typography>
+                      <Typography className="font-medium !text-sm">
+                        {value}
+                      </Typography>
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
             ))}
-          </tr>
-        </thead>
-        {isLoading ? (
-          <tbody>
-            {[...Array(3)].map((_, index) => (
-              <tr key={index} className="animate-pulse">
-                {LEDGERS_HEAD.map((data, idx) => (
-                  <td
-                    key={data}
-                    className={`py-4 ${
-                      index == 2 ? "border-none" : "border-b border-gray-300"
-                    } pl-3`}
-                  >
-                    <div className="h-4 bg-gray-300 rounded w-24"></div>
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        ) : (
-          <tbody>
-            {sortedLedgerDetailTableRows.map(
-              (
-                {
-                  ledgerName,
-                  group,
-                  ledgerType,
-                  closingBalance,
-                  openingBalance,
-                  contact,
-                  gstin,
-                  pan,
-                },
-                idx
-              ) => {
-                const classes = `p-4 px-0 ${
-                  idx == sortedLedgerDetailTableRows.length - 1
-                    ? "border-b-none pb-0"
-                    : "border-b border-blue-gray-50"
-                }`;
-
-                return (
-                  <tr key={ledgerName} className="cursor-pointer">
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {ledgerName || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {group || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {ledgerType || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {closingBalance || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {openingBalance || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {contact || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {gstin || "-"}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography variant="small" className="font-normal pl-3">
-                        {pan || "-"}
-                      </Typography>
-                    </td>
-                  </tr>
-                );
-              }
-            )}
-          </tbody>
-        )}
-      </table>
-      <Pagination />
+      </div>
     </div>
   );
 };

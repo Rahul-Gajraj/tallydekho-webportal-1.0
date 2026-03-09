@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Typography } from "@material-tailwind/react";
 
@@ -8,6 +8,7 @@ import EmptyData from "@/components/common/EmptyData";
 import Pagination from "@/components/common/Pagination";
 
 import useTableSort from "@/hooks/useTableSort";
+import useDebounce from "@/hooks/useDebouncy";
 
 const PERFORMA_TABLE_HEAD = [
   {
@@ -47,11 +48,19 @@ const PERFORMA_TABLE_ROW = [
   },
 ];
 
-const PerformanceInvoiceFilterTable = ({ isLoading }) => {
+const PerformanceInvoiceFilterTable = ({ registerSearchText, isLoading }) => {
+  const debouncedRegisterSearchText = useDebounce(registerSearchText, 500);
+
+  const performanceInvoiceRegisterData = useMemo(() => {
+    return PERFORMA_TABLE_ROW.filter((data) =>
+      data.customer.includes(debouncedRegisterSearchText)
+    );
+  }, [debouncedRegisterSearchText]);
+
   const {
     sortedData: sortedPerformanceInvoiceRegisterRows,
     handleSort: handlePerformanceInvoiceRegisterSort,
-  } = useTableSort(PERFORMA_TABLE_ROW);
+  } = useTableSort(performanceInvoiceRegisterData);
 
   return (
     <div>

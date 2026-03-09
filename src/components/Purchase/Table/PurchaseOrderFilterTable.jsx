@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Typography, Chip } from "@material-tailwind/react";
 
@@ -8,6 +8,7 @@ import EmptyData from "@/components/common/EmptyData";
 import Pagination from "@/components/common/Pagination";
 
 import useTableSort from "@/hooks/useTableSort";
+import useDebounce from "@/hooks/useDebouncy";
 
 const ORDER_TABLE_HEAD = [
   {
@@ -47,11 +48,23 @@ const ORDER_TABLE_ROW = [
   },
 ];
 
-const PurchaseOrderFilterTable = ({ isLoading }) => {
+const PurchaseOrderFilterTable = ({
+  registerSearchText,
+  isLoading,
+  status,
+}) => {
+  const debouncedRegisterSearchText = useDebounce(registerSearchText, 500);
+
+  const purchaseOrderData = useMemo(() => {
+    return ORDER_TABLE_ROW.filter((data) =>
+      status == "All" ? data : data.status === status
+    ).filter((data) => data.supplier.includes(debouncedRegisterSearchText));
+  }, [status, debouncedRegisterSearchText]);
+
   const {
     sortedData: sortedPurchaseOrderRows,
     handleSort: handlePurchaseOrderSort,
-  } = useTableSort(ORDER_TABLE_ROW);
+  } = useTableSort(purchaseOrderData);
 
   return (
     <div>

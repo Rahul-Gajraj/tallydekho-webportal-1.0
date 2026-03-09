@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 
@@ -49,26 +49,21 @@ const ItemsListFilterTable = ({
   setSelectedWarehouse,
   toggleWarehouseDrawer,
 }) => {
-  const { sortedData: sortedItemTableRows, handleSort: handleItemTableSort } =
-    useTableSort(ITEM_TABLE_BODY);
-
-  // const [itemsListSearchText, setItemsListSearchText] = useState("");
+  const [itemsListSearchText, setItemsListSearchText] = useState("");
   // const [itemsList, setItemsList] = useState(ITEM_TABLE_BODY);
 
-  // const debouncedItemsListSearchText = useDebounce(itemsListSearchText, 500);
+  const debouncedItemsListSearchText = useDebounce(itemsListSearchText, 500);
 
-  // useEffect(() => {
-  //     handleFilterItemsList(debouncedItemsListSearchText);
-  //   }, [debouncedItemsListSearchText]);
+  const itemsListData = useMemo(() => {
+    return ITEM_TABLE_BODY.filter(
+      (data) =>
+        data.item.includes(debouncedItemsListSearchText) ||
+        data.sku.includes(debouncedItemsListSearchText)
+    );
+  }, [debouncedItemsListSearchText]);
 
-  // const handleFilterItemsList = (
-  //   searchText = debouncedItemsListSearchText
-  // ) => {
-  //   const filteredList = ITEM_TABLE_BODY.filter((item) =>
-  //     item.item.includes(searchText)
-  //   );
-  //   setItemsList(filteredList);
-  // };
+  const { sortedData: sortedItemTableRows, handleSort: handleItemTableSort } =
+    useTableSort(itemsListData);
 
   return (
     <>
@@ -83,8 +78,8 @@ const ItemsListFilterTable = ({
             type="text"
             placeholder="Search for item-name / SKU"
             className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
-            // value={itemsListSearchText}
-            // onChange={(e) => setItemsListSearchText(e.target.value)}
+            value={itemsListSearchText}
+            onChange={(e) => setItemsListSearchText(e.target.value)}
           />
         </div>
         <div className="flex flex-wrap gap-2">

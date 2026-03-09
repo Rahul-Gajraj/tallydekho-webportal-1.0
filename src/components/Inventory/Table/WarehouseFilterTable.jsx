@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 
@@ -55,29 +55,23 @@ const WAREHOUSE_TABLE_BODY = [
 ];
 
 const WarehouseFilterTable = ({ isLoading }) => {
+  const [warehouseSearchText, setWarehouseSearchText] = useState("");
+  const debouncedWarehousesSearchText = useDebounce(warehouseSearchText, 500);
+
+  const warehouseListData = useMemo(() => {
+    return WAREHOUSE_TABLE_BODY.filter(
+      (data) =>
+        data.warehouse.includes(debouncedWarehousesSearchText) ||
+        data.code.includes(debouncedWarehousesSearchText)
+    );
+  }, [debouncedWarehousesSearchText]);
+
   const {
     sortedData: sortedWarehouseTableRows,
     handleSort: handleWarehouseTableSort,
-  } = useTableSort(WAREHOUSE_TABLE_BODY);
+  } = useTableSort(warehouseListData);
 
-  //   const debouncedWarehousesSearchText = useDebounce(warehouseSearchText, 500);
-
-  //   const [warehouseSearchText, setWarehouseSearchText] = useState("");
   //   const [warehouses, setWarehouses] = useState(WAREHOUSE_TABLE_BODY);
-
-  //   useEffect(() => {
-  //     handleFilterWarehouses(debouncedWarehousesSearchText);
-  //   }, [debouncedWarehousesSearchText]);
-
-  //   const handleFilterWarehouses = (
-  //     searchText = debouncedWarehousesSearchText
-  //   ) => {
-  //     const filteredWarehouses = WAREHOUSE_TABLE_BODY.filter(
-  //       (item) =>
-  //         item.warehouse.includes(searchText) || item.code.includes(searchText)
-  //     );
-  //     setWarehouses(filteredWarehouses);
-  //   };
 
   return (
     <div>
@@ -92,8 +86,8 @@ const WarehouseFilterTable = ({ isLoading }) => {
             type="text"
             placeholder="Search by warehouse name / code"
             className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
-            // value={warehouseSearchText}
-            // onChange={(e) => setWarehouseSearchText(e.target.value)}
+            value={warehouseSearchText}
+            onChange={(e) => setWarehouseSearchText(e.target.value)}
           />
         </div>
         <div className="flex flex-wrap gap-2">

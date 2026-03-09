@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import { Typography, Chip } from "@material-tailwind/react";
 
@@ -8,6 +8,7 @@ import EmptyData from "@/components/common/EmptyData";
 import Pagination from "@/components/common/Pagination";
 
 import useTableSort from "@/hooks/useTableSort";
+import useDebounce from "@/hooks/useDebouncy";
 
 const SALES_TABLE_HEAD = [
   {
@@ -70,11 +71,23 @@ const SALES_TABLE_ROW = [
   },
 ];
 
-const SalesRegisterFilterTable = ({ isLoading }) => {
+const SalesRegisterFilterTable = ({
+  registerSearchText,
+  isLoading,
+  status,
+}) => {
+  const debouncedRegisterSearchText = useDebounce(registerSearchText, 500);
+
+  const salesRegisterData = useMemo(() => {
+    return SALES_TABLE_ROW.filter((data) =>
+      status == "All" ? data : data.status === status
+    ).filter((data) => data.customer.includes(debouncedRegisterSearchText));
+  }, [status, debouncedRegisterSearchText]);
+
   const {
     sortedData: sortedSalesRegisterRows,
     handleSort: handleSalesRegisterSort,
-  } = useTableSort(SALES_TABLE_ROW);
+  } = useTableSort(salesRegisterData);
 
   return (
     <div>

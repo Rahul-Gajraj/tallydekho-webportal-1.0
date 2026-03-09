@@ -7,9 +7,9 @@ import GSTInfo from "@/components/Compliance/GST/GSTInfo";
 import UnmatchedGSTDrawer from "@/components/Compliance/GST/UnmatchedGSTDrawer";
 
 const KPI_DATA = [
-  { title: "GST Collected", price: "₹475K", subtitle: "Sum of outward tax" },
-  { title: "ITC Balance", price: "₹392K", subtitle: "Input tax" },
-  { title: "Net Payable", price: "₹83K", subtitle: "Outward - Input" },
+  { title: "GST Collected", price: "₹475K"  },
+  { title: "ITC Balance", price: "₹392K" },
+  { title: "Net Payable", price: "₹83K" },
   // { title: "Unwatched Invoices", price: "₹83K" },
 ];
 

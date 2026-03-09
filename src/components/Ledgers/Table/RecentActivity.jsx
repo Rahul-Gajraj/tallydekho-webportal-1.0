@@ -40,9 +40,9 @@ const RecentActivity = ({ isLoading }) => {
       <table className="min-w-full table-auto text-left">
         <thead>
           <tr>
-            {RECENT_ACTIVITIES_HEAD.map(({ head, value }) => (
+            {RECENT_ACTIVITIES_HEAD.map(({ head, value }, idx) => (
               <th
-                key={head}
+                key={idx}
                 className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
               >
                 <div className="flex">
@@ -86,7 +86,7 @@ const RecentActivity = ({ isLoading }) => {
                 }`;
 
                 return (
-                  <tr key={activity}>
+                  <tr key={idx}>
                     <td className={classes}>
                       <Typography
                         variant="small"

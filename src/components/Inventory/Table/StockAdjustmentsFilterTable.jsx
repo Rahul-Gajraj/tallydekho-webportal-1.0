@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 
@@ -31,7 +31,7 @@ const STOCK_ADJUSTMENT_TABLE_BODY = [
     item: "A101 - 2mmm Sheet",
     type: "Increase",
     qty: "+5",
-    reason: "Physical count difference",
+    reason: "Physical Count Difference",
     enteredBy: "Rahul Sharma",
     status: "Approved",
     actions: ["View"],
@@ -43,7 +43,7 @@ const STOCK_ADJUSTMENT_TABLE_BODY = [
     item: "Z901 - 5mm Plate",
     type: "Decrease",
     qty: "-10",
-    reason: "Damage in transit",
+    reason: "Damage In Transit",
     enteredBy: "Anita Vera",
     status: "Pending",
     actions: ["Approve", "Reject"],
@@ -51,41 +51,31 @@ const STOCK_ADJUSTMENT_TABLE_BODY = [
 ];
 
 const StockAdjustmentsFilterTable = ({ isLoading }) => {
+  const [adjustmentsSearchText, setAdjustmentsSearchText] = useState("");
+  const [reason, setReason] = useState("All");
+  const [status, setStatus] = useState("All");
+
+  const debouncedAdjustmentSearchText = useDebounce(adjustmentsSearchText, 500);
+
+  const stockAdjustmentsData = useMemo(() => {
+    return STOCK_ADJUSTMENT_TABLE_BODY.filter((data) =>
+      status === "All" ? data : data.status === status
+    )
+      .filter((data) => (reason === "All" ? data : data.reason === reason))
+      .filter(
+        (data) =>
+          data.adjustmentNo.includes(debouncedAdjustmentSearchText) ||
+          data.item.includes(debouncedAdjustmentSearchText)
+      );
+  }, [debouncedAdjustmentSearchText, status, reason]);
+
   const {
     sortedData: sortedStockAdjustmentsTableRows,
     handleSort: handleStockAdjustmentsTableSort,
-  } = useTableSort(STOCK_ADJUSTMENT_TABLE_BODY);
-
-//   const [adjustmentsSearchText, setAdjustmentsSearchText] = useState("");
-//   const [stockAdjustments, setStockAdjustments] = useState(
-//     STOCK_ADJUSTMENT_TABLE_BODY
-//   );
-
-//   const [stockAdjustmentStatus, setStockAdjustmentStatus] = useState("");
-
-  //   const debouncedAdjustmentSearchText = useDebounce(adjustmentsSearchText, 500);
-
-  //   useEffect(() => {
-  //     handleFilterStockAdjustment(
-  //       debouncedAdjustmentSearchText,
-  //       stockAdjustmentStatus
-  //     );
-  //   }, [debouncedAdjustmentSearchText, stockAdjustmentStatus]);
-
-  //   const handleFilterStockAdjustment = (
-  //     searchText = debouncedAdjustmentSearchText,
-  //     selectedStatus = stockAdjustmentStatus
-  //   ) => {
-  //     const filteredStockAdjustments = STOCK_ADJUSTMENT_TABLE_BODY.filter(
-  //       (item) =>
-  //         item.adjustmentNo.includes(searchText) &&
-  //         item.status.includes(selectedStatus)
-  //     );
-  //     setStockAdjustments(filteredStockAdjustments);
-  //   };
+  } = useTableSort(stockAdjustmentsData);
 
   const allStockAdjustmentsStatus = [
-    { status: "", item: "All" },
+    { status: "All", item: "All" },
     ...STOCK_ADJUSTMENT_TABLE_BODY,
   ];
 
@@ -100,10 +90,10 @@ const StockAdjustmentsFilterTable = ({ isLoading }) => {
             id="header-search-input"
             name="header-search-input"
             type="text"
-            placeholder="Search by item / adjustment no / created by"
+            placeholder="Search by item / adjustment no"
             className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
-            // value={adjustmentsSearchText}
-            // onChange={(e) => setAdjustmentsSearchText(e.target.value)}
+            value={adjustmentsSearchText}
+            onChange={(e) => setAdjustmentsSearchText(e.target.value)}
           />
         </div>
         <div className="flex flex-wrap gap-2">
@@ -116,12 +106,10 @@ const StockAdjustmentsFilterTable = ({ isLoading }) => {
                   minWidth: "150px",
                 },
               }}
-              //   value={
-              //     stockAdjustmentStatus == "All" ? "" : stockAdjustmentStatus
-              //   }
-              //   onChange={(val) => {
-              //     setStockAdjustmentStatus(val);
-              //   }}
+              value={status}
+              onChange={(val) => {
+                setStatus(val);
+              }}
               color="green"
             >
               {/* <Option
@@ -154,26 +142,35 @@ const StockAdjustmentsFilterTable = ({ isLoading }) => {
                         </Option> */}
             </Select>
           </div>
-          <div className="w-[150px]">
+          <div className="w-[220px]">
             <Select
               className="bg-white-600"
               label="Reason"
               containerProps={{
                 style: {
-                  minWidth: "150px",
+                  minWidth: "220px",
                 },
               }}
-              // value={value}
-              // onChange={(val) => setValue(val)}
+              value={reason}
+              onChange={(val) => setReason(val)}
               color="green"
             >
-              <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+              <Option
+                value="All"
+                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+              >
                 All
               </Option>
-              <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+              <Option
+                value="Physical Count Difference"
+                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+              >
                 Physical Count Difference
               </Option>
-              <Option className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]">
+              <Option
+                value="Damage In Transit"
+                className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
+              >
                 Damage In Transit
               </Option>
             </Select>

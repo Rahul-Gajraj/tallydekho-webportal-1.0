@@ -70,11 +70,11 @@ const OtherTaxes = () => {
         </CardBody>
       </Card>
       <div className="grid grid-cols-12 gap-4 mt-4">
-        <div className="col-span-6">
-          <RecentActivity isLoading={isLoading} />
-        </div>
-        <div className="col-span-6">
+        <div className="col-span-8">
           <Challans isLoading={isLoading} />
+        </div>
+        <div className="col-span-4">
+          <RecentActivity isLoading={isLoading} />
         </div>
         <div className="col-span-12">
           <Register isLoading={isLoading} />

@@ -132,7 +132,7 @@ const TransactionsFilterTable = ({ isLoading }) => {
             <tr>
               {TRANSACTIONS_HEAD.map(({ head, value }, idx) => (
                 <th
-                  key={head}
+                  key={idx}
                   className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 px-0"
                 >
                   <div className="flex">
@@ -160,7 +160,7 @@ const TransactionsFilterTable = ({ isLoading }) => {
                 <tr key={index} className="animate-pulse">
                   {TRANSACTIONS_HEAD.map((data, idx) => (
                     <td
-                      key={data}
+                      key={`${index}_${idx}`}
                       className={`py-4 ${
                         index == 2 ? "border-none" : "border-b border-gray-300"
                       } pl-3`}
@@ -185,7 +185,7 @@ const TransactionsFilterTable = ({ isLoading }) => {
                   }`;
 
                   return (
-                    <tr key={date} className="cursor-pointer">
+                    <tr key={idx} className="cursor-pointer">
                       <td className={classes}>
                         <Typography
                           variant="small"

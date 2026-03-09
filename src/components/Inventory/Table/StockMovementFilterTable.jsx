@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Button, Option, Select, Typography } from "@material-tailwind/react";
 
@@ -59,30 +59,26 @@ const STOCK_MOVEMENT_TABLE_BODY = [
 ];
 
 const StockMovementFilterTable = ({ isLoading }) => {
+  const [movementSearchText, setMovementSearchText] = useState("");
+
+  const debouncedMovementSearchText = useDebounce(movementSearchText, 500);
+
+  const stockMovementListData = useMemo(() => {
+    return STOCK_MOVEMENT_TABLE_BODY.filter(
+      (data) =>
+        data.item.includes(debouncedMovementSearchText) ||
+        data.voucherNo.includes(debouncedMovementSearchText)
+    );
+  }, [debouncedMovementSearchText]);
+
   const {
     sortedData: sortedStockMovementTableRows,
     handleSort: handleStockMovementTableSort,
-  } = useTableSort(STOCK_MOVEMENT_TABLE_BODY);
+  } = useTableSort(stockMovementListData);
 
-  //   const [movementSearchText, setMovementSearchText] = useState("");
   //   const [stockMovements, setStockMovements] = useState(
   //     STOCK_MOVEMENT_TABLE_BODY
   //   );
-
-  //   const debouncedMovementSearchText = useDebounce(movementSearchText, 500);
-
-  //   useEffect(() => {
-  //     handleFilterStockMovement(debouncedMovementSearchText);
-  //   }, [debouncedMovementSearchText]);
-
-  //   const handleFilterStockMovement = (
-  //     searchText = debouncedMovementSearchText
-  //   ) => {
-  //     const filteredStockMovement = STOCK_MOVEMENT_TABLE_BODY.filter((item) =>
-  //       item.voucherNo.includes(searchText)
-  //     );
-  //     setStockMovements(filteredStockMovement);
-  //   };
 
   return (
     <div>
@@ -95,10 +91,10 @@ const StockMovementFilterTable = ({ isLoading }) => {
             id="header-search-input"
             name="header-search-input"
             type="text"
-            placeholder="Search by item / voucher number / narration"
+            placeholder="Search by item / voucher number"
             className="block flex-1 focus:outline-none bg-transparent py-1.5 pl-3 placeholder:text-gray-600 sm:text-sm/6 focus:border-0"
-            // value={movementSearchText}
-            // onChange={(e) => setMovementSearchText(e.target.value)}
+            value={movementSearchText}
+            onChange={(e) => setMovementSearchText(e.target.value)}
           />
         </div>
         <div className="flex flex-wrap gap-2">
