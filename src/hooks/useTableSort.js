@@ -48,11 +48,13 @@ const useTableSort = (data) => {
         valB = new Date(valB);
       }
       if (sortBy !== "date" && sortBy !== "amount" && !sortBy.includes("₹")) {
-        let tempValA = valA.split(" ")[0];
-        let tempValB = valB.split(" ")[0];
-        if (Number(tempValA) && Number(tempValB)) {
-          valA = parseInt(valA.match(/\d+/)?.[0] || 0, 10);
-          valB = parseInt(valB.match(/\d+/)?.[0] || 0, 10);
+        const strA =
+          typeof valA === "string" ? valA.split(" ")[0] : String(valA);
+        const strB =
+          typeof valB === "string" ? valB.split(" ")[0] : String(valB);
+        if (Number(strA) && Number(strB)) {
+          valA = parseInt(String(valA).match(/\d+/)?.[0] || 0, 10);
+          valB = parseInt(String(valB).match(/\d+/)?.[0] || 0, 10);
         }
       }
 

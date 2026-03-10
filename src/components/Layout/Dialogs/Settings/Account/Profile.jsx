@@ -150,13 +150,13 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
     let isEmailOtpFieldFilled = true;
 
     mobileOtp.forEach((otp) => {
-      if (otp.length == 0) {
+      if (otp.length === 0) {
         isMobileOtpFieldFilled = false;
       }
     });
 
     emailOtp.forEach((otp) => {
-      if (otp.length == 0) {
+      if (otp.length === 0) {
         isEmailOtpFieldFilled = false;
       }
     });
@@ -268,10 +268,10 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
                         <Button
                           size="sm"
                           color={
-                            field.value.length == 10 ? "green" : "blue-gray"
+                            field.value.length === 10 ? "green" : "blue-gray"
                           }
                           variant="text"
-                          disabled={field.value.length != 10}
+                          disabled={field.value.length !== 10}
                           className="!absolute right-1 top-1 rounded normal-case"
                           onClick={() => {
                             setIsMobileOtpSend(true);
@@ -329,10 +329,10 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
                   Did not receive the code?{" "}
                   <span
                     className={`font-bold ${
-                      mobileTimer == 0 ? "cursor-pointer text-[#108f6f]" : ""
+                      mobileTimer === 0 ? "cursor-pointer text-[#108f6f]" : ""
                     }`}
                     onClick={() => {
-                      if (mobileTimer == 0) {
+                      if (mobileTimer === 0) {
                         inputMobileOtpRefs.current.values = [];
                         setMobileOtp(Array(4).fill(""));
                         setMobileTimer(60);
@@ -391,7 +391,7 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
                           size="sm"
                           color={field.value.length > 0 ? "green" : "blue-gray"}
                           variant="text"
-                          disabled={field.value.length == 0}
+                          disabled={field.value.length === 0}
                           className="!absolute right-1 top-1 rounded normal-case"
                           onClick={() => {
                             setIsEmailOtpSend(true);
@@ -446,10 +446,10 @@ const Profile = ({ open, handleOpen, upsertHandler, initialData }) => {
                   Did not receive the code?{" "}
                   <span
                     className={`font-bold ${
-                      emailTimer == 0 ? "cursor-pointer text-[#108f6f]" : ""
+                      emailTimer === 0 ? "cursor-pointer text-[#108f6f]" : ""
                     }`}
                     onClick={() => {
-                      if (emailTimer == 0) {
+                      if (emailTimer === 0) {
                         inputEmailOtpRefs.current.values = [];
                         setEmailOtp(Array(4).fill(""));
                         setEmailTimer(60);

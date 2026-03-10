@@ -123,7 +123,7 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
   );
 };
 
-const SalesReceiptsComparision = ({ isLoading }) => {
+const SalesReceiptsComparison = ({ isLoading }) => {
   const [salesRecepitData, setSalesRecepitData] = useState([
     {
       name: "Sales",
@@ -241,7 +241,7 @@ const SalesReport = ({ isLoading }) => {
   return (
     <section className="mx-auto">
       <div className="grid grid-cols-12 gap-5 my-5">
-        <SalesReceiptsComparision isLoading={isLoading} />
+        <SalesReceiptsComparison isLoading={isLoading} />
         <Card className="xl:col-span-4 col-span-12 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader
             floated={false}

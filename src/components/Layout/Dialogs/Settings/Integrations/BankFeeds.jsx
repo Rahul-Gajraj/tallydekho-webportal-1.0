@@ -250,7 +250,7 @@ const BankFeeds = ({ open, handleOpen, upsertHandler, initialData }) => {
         <DialogBody className="grid grid-cols-12 gap-4 max-h-[42rem] overflow-scroll pl-2 pr-0">
           <div className="col-span-12">
             {fields.map((item, idx) => (
-              <div key={item.id} className={`${idx == 0 ? "mt-0" : "mt-4"}`}>
+              <div key={item.id} className={`${idx === 0 ? "mt-0" : "mt-4"}`}>
                 <BankCards
                   control={control}
                   fields={fields}

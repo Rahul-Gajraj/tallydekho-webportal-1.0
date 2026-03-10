@@ -226,7 +226,7 @@ const PaymentsReceipts = () => {
             </div>
           </CardHeader>
           <CardBody className="pt-3">
-            {tabValue == "payments" ? (
+            {tabValue === "payments" ? (
               <RecentPaymentFilterTable isLoading={isLoading} />
             ) : (
               <RecentReceiptFilterTable isLoading={isLoading} />

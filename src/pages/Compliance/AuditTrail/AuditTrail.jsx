@@ -14,8 +14,8 @@ import {
 
 import Chart from "react-apexcharts";
 
-import MyEntriesTable from "@/components/Compliance/AuditTrial/MyEntriesTable";
-import DayBookTable from "@/components/Compliance/AuditTrial/DayBookTable";
+import MyEntriesTable from "@/components/Compliance/AuditTrail/MyEntriesTable";
+import DayBookTable from "@/components/Compliance/AuditTrail/DayBookTable";
 
 const KPI_DATA = [
   { title: "Voucher Created", price: "4392" },
@@ -172,7 +172,7 @@ const EntryChart = ({ isLoading }) => {
   );
 };
 
-const AuditTrial = () => {
+const AuditTrail = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -302,4 +302,4 @@ const AuditTrial = () => {
   );
 };
 
-export default AuditTrial;
+export default AuditTrail;

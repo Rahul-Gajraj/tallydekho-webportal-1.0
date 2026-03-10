@@ -163,7 +163,6 @@ const LoadDetailDrawer = ({ open, toggleDrawer, data }) => {
                   textColor,
                   bgColor,
                 } = row;
-                const isLast = index === data.emis.length - 1;
                 const classes = "p-4 px-0 border-b border-blue-gray-50";
 
                 return (

@@ -36,7 +36,7 @@ import AddItem from "./Drawers/Inventory/AddItem";
 
 import SundryCreditors from "./Drawers/Ledgers/SundryCreditors";
 import SundryDebtors from "./Drawers/Ledgers/SundryDebtors";
-import DuitiesTaxes from "./Drawers/Ledgers/DuitiesTaxes";
+import DutiesTaxes from "./Drawers/Ledgers/DutiesTaxes";
 import CustomGroups from "./Drawers/Ledgers/CustomGroups";
 
 import { getInitials } from "@/utils/functions";
@@ -635,7 +635,7 @@ const Header = ({ toggleDrawer, isPinned }) => {
         <SundryDebtors open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer === "duitiesTaxes" && (
-        <DuitiesTaxes open={drawerOpen} toggleDrawer={closeDrawer} />
+        <DutiesTaxes open={drawerOpen} toggleDrawer={closeDrawer} />
       )}
       {activeDrawer === "customGroups" && (
         <CustomGroups open={drawerOpen} toggleDrawer={closeDrawer} />

@@ -252,7 +252,7 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
               {fields.map((item, idx) => (
                 <div
                   className={`grid grid-cols-11 gap-5 ${
-                    idx == 0 ? "mt-0" : "mt-5"
+                    idx === 0 ? "mt-0" : "mt-5"
                   }`}
                   key={item.id}
                 >
@@ -301,7 +301,7 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                     )}
                   </div>
                   <div className="col-span-1">
-                    {idx == fields.length - 1 ? (
+                    {idx === fields.length - 1 ? (
                       <img
                         src="/media/icons/add.svg"
                         alt="add"
@@ -309,7 +309,7 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                         onClick={() => {
                           const rackValue = getValues(`racks.${idx}.rack`);
                           const labelValue = getValues(`racks.${idx}.label`);
-                          if (rackValue.length == 0) {
+                          if (rackValue.length === 0) {
                             setError(`racks.${idx}.rack`, {
                               message: "This field is required",
                             });
@@ -317,7 +317,7 @@ const AddWarehouse = ({ open, toggleDrawer }) => {
                           } else {
                             setError(`racks.${idx}.rack`, null);
                           }
-                          if (labelValue.length == 0) {
+                          if (labelValue.length === 0) {
                             setError(`racks.${idx}.label`, {
                               message: "This field is required",
                             });

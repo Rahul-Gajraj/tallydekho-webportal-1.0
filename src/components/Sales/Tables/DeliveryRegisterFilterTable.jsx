@@ -62,7 +62,7 @@ const DeliveryRegisterFilterTable = ({
 
   const deliveryRegisterData = useMemo(() => {
     return DELIVERY_TABLE_ROW.filter((data) =>
-      status == "All" ? data : data.status === status
+      status === "All" ? data : data.status === status
     ).filter((data) => data.customer.includes(debouncedRegisterSearchText));
   }, [status, debouncedRegisterSearchText]);
 

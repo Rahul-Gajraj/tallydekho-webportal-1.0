@@ -46,7 +46,7 @@ const ReceivablesPayables = () => {
               value={selectedTab}
               onChange={(e) => {
                 const newValue = e.target.value;
-                if (newValue == "receivables") {
+                if (newValue === "receivables") {
                   setSelectedTab("payables");
                 } else {
                   setSelectedTab("receivables");
@@ -74,7 +74,7 @@ const ReceivablesPayables = () => {
             </TabsHeader>
           </Tabs> */}
         </Card>
-        {selectedTab == "receivables" ? (
+        {selectedTab === "receivables" ? (
           <>
             <ReceivablesOverview isLoading={isLoading} />
             <ReceivablesInvoiceTable isLoading={isLoading} />

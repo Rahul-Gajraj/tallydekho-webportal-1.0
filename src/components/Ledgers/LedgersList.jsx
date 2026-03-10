@@ -67,7 +67,7 @@ const LedgersList = ({ isLoading }) => {
 
   const ledgersData = useMemo(() => {
     return LEDGERS_ROW.filter((data) =>
-      group == "All" ? data : data.group === group
+      group === "All" ? data : data.group === group
     ).filter(
       (data) =>
         data.ledgerName.includes(debouncedSearchText) ||

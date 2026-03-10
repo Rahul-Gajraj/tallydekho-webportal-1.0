@@ -576,7 +576,7 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
                   ))}
                 </Select>
               </div>
-              {gstinDetailType == "regular" && (
+              {gstinDetailType === "regular" && (
                 <>
                   <div className="col-span-12">
                     <Controller
@@ -584,7 +584,7 @@ const SundryDebtors = ({ open, toggleDrawer }) => {
                       control={control}
                       rules={{
                         required:
-                          gstinDetailType == "regular"
+                          gstinDetailType === "regular"
                             ? "This field is required"
                             : false,
                       }}

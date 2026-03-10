@@ -123,7 +123,7 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
   );
 };
 
-const PurchaseReceiptsComparision = ({ isLoading }) => {
+const PurchaseReceiptsComparison = ({ isLoading }) => {
   const [purchaseData, setPurchaseData] = useState([
     {
       name: "Purchases",
@@ -259,7 +259,7 @@ const PurchaseReport = ({ isLoading }) => {
   return (
     <section className="mx-auto">
       <div className="grid grid-cols-12 gap-5 my-5">
-        <PurchaseReceiptsComparision isLoading={isLoading} />
+        <PurchaseReceiptsComparison isLoading={isLoading} />
         <Card className="xl:col-span-4 col-span-12 shadow-sm border border-gray-200 !rounded-lg">
           <CardHeader
             floated={false}

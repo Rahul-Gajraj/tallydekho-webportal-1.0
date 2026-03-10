@@ -57,7 +57,7 @@ const PurchaseOrderFilterTable = ({
 
   const purchaseOrderData = useMemo(() => {
     return ORDER_TABLE_ROW.filter((data) =>
-      status == "All" ? data : data.status === status
+      status === "All" ? data : data.status === status
     ).filter((data) => data.supplier.includes(debouncedRegisterSearchText));
   }, [status, debouncedRegisterSearchText]);
 

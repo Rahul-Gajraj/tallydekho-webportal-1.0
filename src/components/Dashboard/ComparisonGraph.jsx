@@ -117,8 +117,8 @@ const AreaChart = ({ height = 350, series, colors, options }) => {
   );
 };
 
-const ComparisionGraph = ({ isLoading }) => {
-  const [comparisionData, setComparisionData] = useState([
+const ComparisonGraph = ({ isLoading }) => {
+  const [comparisonData, setComparisonData] = useState([
     {
       name: "Sales",
       data: [0, 200, 180, 350, 500, 680, 800, 800, 880, 900, 680, 900],
@@ -149,8 +149,8 @@ const ComparisionGraph = ({ isLoading }) => {
           <div></div>
         </CardBody>
       ) : (
-        <CardBody className={comparisionData.length > 0 ? "!p-2" : "!pt-2"}>
-          {comparisionData.length > 0 ? (
+        <CardBody className={comparisonData.length > 0 ? "!p-2" : "!pt-2"}>
+          {comparisonData.length > 0 ? (
             <div className="w-full overflow-x-auto overflow-y-hidden">
               <AreaChart
                 colors={["#4CAF50", "#2196F3", "#673AB7"]}
@@ -172,7 +172,7 @@ const ComparisionGraph = ({ isLoading }) => {
                     ],
                   },
                 }}
-                series={comparisionData}
+                series={comparisonData}
               />
             </div>
           ) : (
@@ -193,4 +193,4 @@ const ComparisionGraph = ({ isLoading }) => {
   );
 };
 
-export default ComparisionGraph;
+export default ComparisonGraph;

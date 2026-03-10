@@ -108,7 +108,7 @@ const GSTLedger = ({ isLoading }) => {
                   <td
                     key={`${index}_${idx}`}
                     className={`py-4 ${
-                      index == 2 ? "border-none" : "border-b border-gray-300"
+                      index === 2 ? "border-none" : "border-b border-gray-300"
                     } pl-3`}
                   >
                     <div className="h-4 bg-gray-300 rounded w-24"></div>
@@ -122,7 +122,7 @@ const GSTLedger = ({ isLoading }) => {
             {sortedGSTLedgerTableRows.map(
               ({ invoice, date, taxableValue, cgst, sgst, igst }, idx) => {
                 const classes = `p-4 px-0 ${
-                  idx == sortedGSTLedgerTableRows.length - 1
+                  idx === sortedGSTLedgerTableRows.length - 1
                     ? "border-b-none pb-0"
                     : "border-b border-blue-gray-50"
                 }`;

@@ -97,7 +97,7 @@ const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
     if (productInfo.id) {
       setProducts((prev) =>
         prev.map((p) => {
-          return p.id == productInfo.id ? productInfo : p;
+          return p.id === productInfo.id ? productInfo : p;
         })
       );
     } else {
@@ -106,14 +106,14 @@ const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
   };
 
   const deleteProductHandler = (id) => {
-    setProducts(products.filter((p) => p.id != id));
+    setProducts(products.filter((p) => p.id !== id));
   };
 
   const upsertLogisticsHandler = (logisticInfo) => {
     if (logisticInfo.id) {
       setLogistics((prev) =>
         prev.map((v) => {
-          return v.id == logisticInfo.id ? logisticInfo : v;
+          return v.id === logisticInfo.id ? logisticInfo : v;
         })
       );
     } else {
@@ -122,7 +122,7 @@ const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
   };
 
   const deleteLogisticHandler = (id) => {
-    setLogistics(logistics.filter((v) => v.id != id));
+    setLogistics(logistics.filter((v) => v.id !== id));
   };
 
   const resetFields = () => {
@@ -432,7 +432,7 @@ const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {products.length == 0 ? (
+                {products.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("product")}
@@ -467,7 +467,7 @@ const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {logistics.length == 0 ? (
+                {logistics.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => {
@@ -542,7 +542,7 @@ const PurchaseInvoice = ({ open, toggleDrawer, data }) => {
                 message={errors.customerName?.message}
               /> */}
               </div>
-              {selectedPaymentStatus == "custom" && (
+              {selectedPaymentStatus === "custom" && (
                 <div className="col-span-12">
                   <Controller
                     name="days"

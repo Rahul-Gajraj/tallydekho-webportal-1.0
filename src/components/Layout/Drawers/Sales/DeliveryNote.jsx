@@ -186,7 +186,7 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
   const [showVehcileInfo, setShowVehicleInfo] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const [dispatchItems, setDispatachItems] = useState([]);
+  const [dispatchItems, setDispatchItems] = useState([]);
 
   const [isDispatchItemDialogOpen, setIsDispatchDialogOpen] = useState(false);
 
@@ -196,13 +196,13 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
 
   const upsertProductHandler = (productInfo) => {
     if (productInfo.id) {
-      setDispatachItems((prev) =>
+      setDispatchItems((prev) =>
         prev.map((p) => {
-          return p.id == productInfo.id ? productInfo : p;
+          return p.id === productInfo.id ? productInfo : p;
         })
       );
     } else {
-      setDispatachItems((prev) => [
+      setDispatchItems((prev) => [
         ...prev,
         { ...productInfo, id: Date.now() },
       ]);
@@ -210,7 +210,7 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
   };
 
   const deleteProductHandler = (id) => {
-    setDispatachItems(dispatchItems.filter((p) => p.id != id));
+    setDispatchItems(dispatchItems.filter((p) => p.id !== id));
   };
 
   const resetFields = () => {
@@ -647,7 +647,7 @@ const DeliveryNote = ({ open, toggleDrawer }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {dispatchItems.length == 0 ? (
+                {dispatchItems.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogOpen()}

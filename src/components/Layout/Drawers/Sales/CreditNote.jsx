@@ -96,7 +96,7 @@ const CreditNote = ({ open, toggleDrawer }) => {
     if (productInfo.id) {
       setProducts((prev) =>
         prev.map((p) => {
-          return p.id == productInfo.id ? productInfo : p;
+          return p.id === productInfo.id ? productInfo : p;
         })
       );
     } else {
@@ -105,7 +105,7 @@ const CreditNote = ({ open, toggleDrawer }) => {
   };
 
   const deleteProductHandler = (id) => {
-    setProducts(products.filter((p) => p.id != id));
+    setProducts(products.filter((p) => p.id !== id));
   };
 
   const resetFields = () => {
@@ -399,7 +399,7 @@ const CreditNote = ({ open, toggleDrawer }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {products.length == 0 ? (
+                {products.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("product")}

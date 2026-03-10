@@ -80,7 +80,7 @@ const SalesRegisterFilterTable = ({
 
   const salesRegisterData = useMemo(() => {
     return SALES_TABLE_ROW.filter((data) =>
-      status == "All" ? data : data.status === status
+      status === "All" ? data : data.status === status
     ).filter((data) => data.customer.includes(debouncedRegisterSearchText));
   }, [status, debouncedRegisterSearchText]);
 

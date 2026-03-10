@@ -71,7 +71,6 @@ const EMIDetailDrawer = ({ open, toggleDrawer, data }) => {
             <tbody>
               {data.emis.map((row, index) => {
                 const { loan, lender, emi, paidOn, penality, status, textColor, bgColor } = row;
-                const isLast = index === data.emis.length - 1;
                 const classes = "p-4 px-0 border-b border-blue-gray-50";
 
                 return (

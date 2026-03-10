@@ -82,7 +82,7 @@ const ReminderAccordion = ({ name, control, errors, idx }) => {
 
   return (
     <Accordion
-      open={isAccordionOpen == idx}
+      open={isAccordionOpen === idx}
       className="mb-3 rounded-lg border border-blue-gray-100 px-4"
       icon={<Icon id={idx} open={isAccordionOpen} />}
     >

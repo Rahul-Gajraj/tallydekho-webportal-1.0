@@ -80,7 +80,7 @@ const RecentActivity = ({ isLoading }) => {
             {sortedRecentActivityTableRows.map(
               ({ date, ledger, activity }, idx) => {
                 const classes = `p-4 px-0 ${
-                  idx == sortedRecentActivityTableRows.length - 1
+                  idx === sortedRecentActivityTableRows.length - 1
                     ? "border-b-none pb-0"
                     : "border-b border-blue-gray-50"
                 }`;

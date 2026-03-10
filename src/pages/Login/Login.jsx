@@ -41,7 +41,7 @@ function Login({ isLogged }) {
   }, []);
 
   const [country, setCountry] = useState(
-    sortedCountries.findIndex((country) => country.name == "India") || 0
+    sortedCountries.findIndex((country) => country.name === "India") || 0
   );
   const { name, flags, countryCallingCode } = sortedCountries[country];
 
@@ -220,12 +220,12 @@ function Login({ isLogged }) {
                         Did not receive the code?{" "}
                         <span
                           className={`font-bold ${
-                            mobileTimer == 0
+                            mobileTimer === 0
                               ? "cursor-pointer text-[#108f6f]"
                               : ""
                           }`}
                           onClick={() => {
-                            if (mobileTimer == 0) {
+                            if (mobileTimer === 0) {
                               inputMobileOtpRefs.current.values = [];
                               setMobileOtp(Array(4).fill(""));
                               setMobileTimer(60);

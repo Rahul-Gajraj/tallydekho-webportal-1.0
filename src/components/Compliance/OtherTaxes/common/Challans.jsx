@@ -66,21 +66,21 @@ const Challans = ({ isLoading }) => {
                 <tr key={index} className="animate-pulse">
                   <td
                     className={`py-4 ${
-                      index == 4 ? "border-none" : "border-b border-gray-300"
+                      index === 4 ? "border-none" : "border-b border-gray-300"
                     } pl-3`}
                   >
                     <div className="h-4 bg-gray-300 rounded w-24"></div>
                   </td>
                   <td
                     className={`py-4 ${
-                      index == 4 ? "border-none" : "border-b border-gray-300"
+                      index === 4 ? "border-none" : "border-b border-gray-300"
                     } pl-3`}
                   >
                     <div className="h-4 bg-gray-300 rounded w-24"></div>
                   </td>
                   <td
                     className={`py-4 ${
-                      index == 4 ? "border-none" : "border-b border-gray-300"
+                      index === 4 ? "border-none" : "border-b border-gray-300"
                     } pl-3`}
                   >
                     <div className="h-4 bg-gray-300 rounded w-24"></div>
@@ -93,7 +93,7 @@ const Challans = ({ isLoading }) => {
               {sortedLateChallansTableRows.map(
                 ({ challanNo, amount, dueDate }, idx) => {
                   const classes = `p-4 px-0 ${
-                    idx == sortedLateChallansTableRows.length - 1
+                    idx === sortedLateChallansTableRows.length - 1
                       ? "border-b-none pb-0"
                       : "border-b border-blue-gray-50"
                   }`;

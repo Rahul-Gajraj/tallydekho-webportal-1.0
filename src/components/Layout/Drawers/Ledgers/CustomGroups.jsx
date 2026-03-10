@@ -547,14 +547,14 @@ const CustomGroups = ({ open, toggleDrawer }) => {
                   ))}
                 </Select>
               </div>
-              {gstinDetailType == "regular" && (
+              {gstinDetailType === "regular" && (
                 <div className="col-span-12">
                   <Controller
                     name="gstin"
                     control={control}
                     rules={{
                       required:
-                        gstinDetailType == "regular"
+                        gstinDetailType === "regular"
                           ? "This field is required"
                           : false,
                     }}

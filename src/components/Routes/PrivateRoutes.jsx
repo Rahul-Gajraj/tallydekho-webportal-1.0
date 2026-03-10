@@ -5,7 +5,7 @@ import Sales from "@/pages/Sales/Sales";
 import Purchase from "@/pages/Purchase/Purchase";
 import Inventory from "@/pages/Inventory/Inventory";
 import Expenses from "@/pages/Financials/Expenses/Expenses";
-import PaymentsReceipts from "@/pages/Financials/PaymentsReceipts/PyamentsReceipts";
+import PaymentsReceipts from "@/pages/Financials/PaymentsReceipts/PaymentsReceipts";
 import CashBank from "@/pages/Financials/CashBank/CashBank";
 import ReceivablesPayables from "@/pages/Financials/ReceivablesPayables/ReceivablesPayables";
 import LoanODs from "@/pages/Financials/LoansODs/LoansODs";
@@ -13,7 +13,7 @@ import Reports from "@/pages/Financials/Reports/Reports";
 import GST from "@/pages/Compliance/GST/GST";
 import EWayBill from "@/pages/Compliance/EWayBill/EWayBill";
 import OtherTaxes from "@/pages/Compliance/OtherTaxes/OtherTaxes";
-import AuditTrial from "@/pages/Compliance/AuditTrail/AuditTrial";
+import AuditTrail from "@/pages/Compliance/AuditTrail/AuditTrail";
 import Ledgers from "@/pages/Ledgers/Ledgers";
 import EInvoice from "@/pages/Compliance/EInvoice/EInvoice";
 
@@ -40,11 +40,11 @@ const PrivateRoutes = () => {
       <Route path="/compliance/e-way-bill" element={<EWayBill />} />
       <Route path="/compliance/e-invoice" element={<EInvoice />} />
       <Route path="/compliance/other-taxes" element={<OtherTaxes />} />
-      <Route path="/compliance/audit-trail" element={<AuditTrial />} />
+      <Route path="/compliance/audit-trail" element={<AuditTrail />} />
       <Route path="/ledgers" element={<Ledgers />} />
 
       <Route path="*" element={<Navigate to="/" replace />} />
-      {/* WIll be redirected to 404 page  */}
+      {/* Will be redirected to home  */}
     </Routes>
   );
 };

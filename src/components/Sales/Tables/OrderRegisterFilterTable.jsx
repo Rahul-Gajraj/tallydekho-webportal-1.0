@@ -65,7 +65,7 @@ const OrderRegisterFilterTable = ({
 
   const orderRegisterData = useMemo(() => {
     return ORDER_TABLE_ROW.filter((data) =>
-      status == "All" ? data : data.status === status
+      status === "All" ? data : data.status === status
     ).filter((data) => data.customer.includes(debouncedRegisterSearchText));
   }, [status, debouncedRegisterSearchText]);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import ComparisionGraph from "@/components/Dashboard/ComparisionGraph";
+import ComparisonGraph from "@/components/Dashboard/ComparisonGraph";
 import GSTLiability from "@/components/Dashboard/GSTLiability";
 import CashFlowTrend from "@/components/Dashboard/CashFlowTrend";
 import PLTrends from "@/components/Dashboard/PLTrends";
@@ -90,7 +90,7 @@ const Dashboard = () => {
       </section>
       <div className="grid grid-cols-12 gap-5 my-5">
         <div className="col-span-12 lg:col-span-7 xl:col-span-8">
-          <ComparisionGraph isLoading={isLoading} />
+          <ComparisonGraph isLoading={isLoading} />
         </div>
         <div className="col-span-12 lg:col-span-5 xl:col-span-4">
           <GSTLiability isLoading={isLoading} />

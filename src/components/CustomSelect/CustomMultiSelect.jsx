@@ -68,7 +68,7 @@ const CustomMultiSelect = ({
             )}
 
             {selected.map((item, idx) =>
-              idx != 3 ? (
+              idx !== 3 ? (
                 <Chip
                   key={item}
                   value={item}

@@ -17,7 +17,7 @@ const COLUMNS = [
 
 const VOUCHER_TYPE = ["All", "Sales", "Purchase", "Expense"];
 
-const MyEntriesTable = ({ isLoading }) => {
+const DayBookTable = ({ isLoading }) => {
   const [entryData, setEntryData] = useState([
     {
       date: "07 May",
@@ -108,11 +108,11 @@ const MyEntriesTable = ({ isLoading }) => {
             <tbody>
               {[...Array(3)].map((_, index) => (
                 <tr key={index} className="animate-pulse">
-                  {COLUMNS.map((data) => (
+                  {COLUMNS.map((data, idx) => (
                     <td
-                      key={data}
+                      key={`${index}_${idx}`}
                       className={`py-4 ${
-                        index == 4 ? "border-none" : "border-b border-gray-300"
+                        index === 4 ? "border-none" : "border-b border-gray-300"
                       } pl-3`}
                     >
                       <div className="h-4 bg-gray-300 rounded w-24"></div>
@@ -129,7 +129,7 @@ const MyEntriesTable = ({ isLoading }) => {
                   idx
                 ) => {
                   const classes = `p-4 px-0 ${
-                    idx == sortedEntryDataTableRows.length - 1
+                    idx === sortedEntryDataTableRows.length - 1
                       ? "border-b-none pb-0"
                       : "border-b border-blue-gray-50"
                   }`;
@@ -189,4 +189,4 @@ const MyEntriesTable = ({ isLoading }) => {
   );
 };
 
-export default MyEntriesTable;
+export default DayBookTable;

@@ -121,11 +121,11 @@ const StockAdjustmentsFilterTable = ({ isLoading }) => {
               {allStockAdjustmentsStatus.map(({ status, item }) => (
                 <Option
                   key={status}
-                  // value={status == "All" ? "" : status}
+                  // value={status === "All" ? "" : status}
                   value={status}
                   className="hover:!bg-[#EAF8F4] focus:!bg-[#EAF8F4] data-[selected=true]:bg-[#EAF8F4] data-[selected=true]:!text-[#108F6F]"
                 >
-                  {status.length == 0 ? "All" : status}
+                  {status.length === 0 ? "All" : status}
                 </Option>
               ))}
               {/* <Option

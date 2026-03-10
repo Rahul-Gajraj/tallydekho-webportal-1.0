@@ -33,7 +33,7 @@ const UNDER_GROUP = [
 
 const TAX = ["CGST", "SGST", "IGST", "CESS", "Others"];
 
-const DuitiesTaxes = ({ open, toggleDrawer }) => {
+const DutiesTaxes = ({ open, toggleDrawer }) => {
   const {
     register,
     handleSubmit,
@@ -279,4 +279,4 @@ const DuitiesTaxes = ({ open, toggleDrawer }) => {
   );
 };
 
-export default DuitiesTaxes;
+export default DutiesTaxes;

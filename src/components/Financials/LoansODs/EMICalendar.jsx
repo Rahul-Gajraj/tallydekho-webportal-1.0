@@ -131,8 +131,8 @@ const EMICalendar = ({ setSelectedEvent }) => {
 
     return {
       html: `<div style="background-color: ${
-        viewType == "listMonth" ? "" : bgColor
-      }; padding: ${viewType == "listMonth" ? "0px" : "1px 6px"};" class="event-box">
+        viewType === "listMonth" ? "" : bgColor
+      }; padding: ${viewType === "listMonth" ? "0px" : "1px 6px"};" class="event-box">
             <span class="event-title">${title}</span>
         </div>`,
     };

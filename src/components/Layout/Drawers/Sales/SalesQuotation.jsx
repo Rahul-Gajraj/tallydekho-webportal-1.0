@@ -94,7 +94,7 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
     if (productInfo.id) {
       setItems((prev) =>
         prev.map((p) => {
-          return p.id == productInfo.id ? productInfo : p;
+          return p.id === productInfo.id ? productInfo : p;
         })
       );
     } else {
@@ -103,14 +103,14 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
   };
 
   const deleteProductHandler = (id) => {
-    setItems(items.filter((p) => p.id != id));
+    setItems(items.filter((p) => p.id !== id));
   };
 
   const upsertLogisticsHandler = (logisticInfo) => {
     if (logisticInfo.id) {
       setLogistics((prev) =>
         prev.map((v) => {
-          return v.id == logisticInfo.id ? logisticInfo : v;
+          return v.id === logisticInfo.id ? logisticInfo : v;
         })
       );
     } else {
@@ -119,7 +119,7 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
   };
 
   const deleteLogisticHandler = (id) => {
-    setLogistics(logistics.filter((v) => v.id != id));
+    setLogistics(logistics.filter((v) => v.id !== id));
   };
 
   const resetFields = () => {
@@ -510,7 +510,7 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {items.length == 0 ? (
+                {items.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("product")}
@@ -545,7 +545,7 @@ const SalesQuotation = ({ open, toggleDrawer }) => {
                 <div className="h-[1px] bg-[#B0BEC5] w-full"></div>
               </div>
               <div className="col-span-12">
-                {logistics.length == 0 ? (
+                {logistics.length === 0 ? (
                   <Card
                     className="border border-[#B0BEC5] h-[100px] cursor-pointer flex items-center justify-center"
                     onClick={() => handleDialogsOpen("logistics")}
